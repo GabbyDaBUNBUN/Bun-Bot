@@ -19,6 +19,7 @@ module.exports = {
         const Information = [ `help\nping` ]
         const Moderation = [ 'embed create\nembed send\nembed list\nembed delete\nticket\nclear\ncounting-save\ncounting-setup\nlevels-setup\nreaction-roles add-role\nreaction-roles remove-role\nreaction-roles panel\nsafe-word-setup' ]
         const Roleplay = [ `bite\nblow-kiss\nblush\nboop\nbrat\ncatch\ncry\ncuddle\ndance\nfeed\nflop\ngiggle\ngood-morning\nheal\nhide\nhug\nhydrate\nlaugh\nnini\nnope\noverwhelmed\npat\npet\npick-up\nplease\npoke\npout\nrun\nshy\nsip\nsleepy\nsmile\nsorry\nthank\ntickle\nup\nwag\nwake-up` ]
+        const Music = [ `play\npause\nresume\nstop\nskip\nrepeat-loop\nqueue\nleave` ]
 
         const Embed = new EmbedBuilder()
             .setColor(color)
@@ -43,6 +44,11 @@ module.exports = {
                 {
                     name: "Roleplay",
                     value: `${Roleplay}`,
+                    inline: true,
+                },
+                {
+                    name: "Music",
+                    value: `${Music}`,
                     inline: true,
                 },
             )
