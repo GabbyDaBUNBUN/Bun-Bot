@@ -8,16 +8,22 @@ module.exports = {
         .setName("reaction-roles")
         .setDescription("Reaction role message.")
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
+        .addSubcommand(sub => sub.setName("add-panel")
+            .setDescription("Create a new panel.")
+            .addStringOption(opt => opt.setName("panel").setDescription("Name of your new panel.")))
         .addSubcommand(sub => sub.setName("add-role")
             .setDescription("Add a custom role.")
+            .addStringOption(opt => opt.setName("panel").setDescription("Name of your panel.").setRequired(true))
             .addRoleOption(opt => opt.setName("role").setDescription("Role you want added.").setRequired(true))
             .addStringOption(opt => opt.setName("description").setDescription("Description of the role.").setRequired(false))
             .addStringOption(opt => opt.setName("emoji").setDescription("Emoji for the role.").setRequired(false)))
         .addSubcommand(sub => sub.setName("remove-role")
             .setDescription("Remove requested custom role.")
+            .addStringOption(opt => opt.setName("panel").setDescription("Name of the panel that holds the role you want to remove.").setRequired(true))
             .addRoleOption(opt => opt.setName("role").setDescription("Role you want removed.").setRequired(true)))
-        .addSubcommand(sub => sub.setName("panel")
+        .addSubcommand(sub => sub.setName("send-panel")
             .setDescription("Sends reaction role panel.")
+            .addStringOption(opt => opt.setName("panel").setDescription("Name of the panel you would like to send.").setRequired(true))
             .addStringOption(opt => opt.setName("title").setDescription("Title of your panel.").setRequired(true))
             .addStringOption(opt => opt.setName("description").setDescription("Description for your panel embed.").setRequired(true))
             .addChannelOption(opt => opt.setName("channel").setDescription("Channel you want the panel sent to.").setRequired(false))),
@@ -32,8 +38,34 @@ module.exports = {
 
         switch (options.getSubcommand()) {
 
+            case "panel": {
+
+                const panel = options.getString("panel")
+
+                let data = await ReactionRolesDB.findOne({ Guild: guild.id, Panel: panel }).catch(err => { })
+
+                if (!data) {
+
+                    new ReactionRolesDB({
+                        Guild: guild.id,
+                        Panel: panel,
+                    })
+
+                    await data.save()
+
+                } else {
+
+                    Reply(interaction, emojilist.cross, `You already have a panel by that name!`)
+
+                }
+
+            }
+
+                break;
+
             case "add-role": {
 
+                const panel = options.getString("panel")
                 const role = options.getRole("role")
                 const description = options.getString("description")
                 const emoji = options.getString("emoji")
@@ -43,7 +75,7 @@ module.exports = {
                     if (role.position >= member.roles.highest)
                         return Reply(interaction, emojilist.cross, "I don't have the required permissions for that.", true)
 
-                    let data = await ReactionRolesDB.findOne({ Guild: guild.id }).catch(err => { })
+                    let data = await ReactionRolesDB.findOne({ Guild: guild.id, Panel: panel }).catch(err => { })
 
                     const newRole = {
                         roleId: role.id,
@@ -61,16 +93,14 @@ module.exports = {
                         }
 
                         await data.save()
+
+                        return Reply(interaction, emojilist.tick, `New reaction role ${role.name} created.`)
+
                     } else {
-                        data = new ReactionRolesDB({
-                            Guild: guild.id,
-                            Roles: newRole,
-                        })
 
-                        await data.save()
+                        Reply(interaction, emojilist.cross, `You do not have a panel by that name set up yet! Use \`/add-panel\` to create one.`)
+
                     }
-
-                    return Reply(interaction, emojilist.tick, `New reaction role ${role.name} created.`)
 
                 } catch (error) {
                     console.log(error)
@@ -82,14 +112,15 @@ module.exports = {
 
             case "remove-role": {
 
+                const panel = options.getString("panel")
                 const role = options.getRole("role")
 
                 try {
 
-                    const data = await ReactionRolesDB.findOne({ Guild: guild.id }).catch(err => { })
+                    const data = await ReactionRolesDB.findOne({ Guild: guild.id, Panel: panel }).catch(err => { })
 
                     if (!data)
-                        return Reply(interaction, emojilist.cross, "This server does not have reaction roles yet.")
+                        return Reply(interaction, emojilist.cross, "This panel does not have reaction roles yet, or you haven't set up any reaction roles yet.")
 
                     const roles = data.Roles
                     const findRole = roles.find((r) => r.roleId === role.id)
@@ -116,13 +147,14 @@ module.exports = {
             case "panel": {
 
                 try {
+                    const panel = options.getString("panel")
                     const title = options.getString("title")
                     const description = options.getString("description")
                     const Channel = options.getChannel("channel") || channel
-                    const data = await ReactionRolesDB.findOne({ Guild: guild.id }).catch(err => { })
+                    const data = await ReactionRolesDB.findOne({ Guild: guild.id, Panel: panel }).catch(err => { })
 
                     if (!data.Roles.length > 0)
-                        return Reply(interaction, emojilist.cross, "This server does not have any reaction roles yet.")
+                        return Reply(interaction, emojilist.cross, "This panel does not have any reaction roles yet.")
 
                     const panelEmbed = new EmbedBuilder()
                         .setColor(color)
