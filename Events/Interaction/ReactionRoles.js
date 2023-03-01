@@ -1,5 +1,6 @@
 const { Events, StringSelectMenuInteraction } = require("discord.js")
 const { CustomClient } = require("../../Structures/Classes/CustomClient")
+const ReactionRolesDB = require("../../Structures/Schemas/ReactionRolesDB")
 const Reply = require("../../Systems/Reply")
 
 module.exports = {
@@ -14,8 +15,10 @@ module.exports = {
         const { customId, values, member, guild } = interaction
         const { emojilist } = client
 
+        const data = await ReactionRolesDB.findOne({ Guild: guild.id, Panel: customId }).catch(err => { })
+
         if (interaction.isStringSelectMenu()) {
-            if (customId === "reaction-roles") {
+            if (customId === data.Panel) {
                 for (let i = 0; i < values.length; i++) {
                     const roleId = values[ i ]
 

@@ -179,7 +179,7 @@ module.exports = {
                     const menuComponents = [
                         new ActionRowBuilder().addComponents(
                             new StringSelectMenuBuilder()
-                                .setCustomId(`reaction-roles`)
+                                .setCustomId(`${panel}`)
                                 .setMinValues(0)
                                 .setMaxValues(roleOptions.length)
                                 .addOptions(roleOptions)
