@@ -46,7 +46,7 @@ module.exports = {
 
                 if (!data) {
 
-                    new ReactionRolesDB({
+                    data = new ReactionRolesDB({
                         Guild: guild.id,
                         Panel: panel,
                     })
@@ -146,7 +146,7 @@ module.exports = {
 
                 break;
 
-            case "panel": {
+            case "send-panel": {
 
                 try {
                     const panel = options.getString("panel")
