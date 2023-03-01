@@ -27,10 +27,10 @@ module.exports = {
 
                     switch (hasRole) {
                         case true:
-                            member.roles.remove(roleId)
+                            member.roles.remove(role)
                             break;
                         case false:
-                            member.roles.add(roleId)
+                            member.roles.add(role)
                             break;
                     }
                 }

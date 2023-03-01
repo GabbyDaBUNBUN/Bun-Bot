@@ -23,7 +23,8 @@ module.exports = {
         const { emojilist } = client
 
         const channel = options.getChannel("channel")
-        const role = options.getRole("role")
+        const rawRole = options.getRole("role")
+        const role = rawRole.id
 
         let data = await CountingDB.findOne({ Guild: guild.id }).catch(err => { })
         if (data) {
