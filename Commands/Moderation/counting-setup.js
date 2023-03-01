@@ -30,7 +30,7 @@ module.exports = {
 
             data.Channel = channel
             data.Role = role
-            data.save
+            data.save()
 
         } else if (!data) {
 
