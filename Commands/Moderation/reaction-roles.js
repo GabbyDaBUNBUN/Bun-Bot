@@ -38,7 +38,7 @@ module.exports = {
 
         switch (options.getSubcommand()) {
 
-            case "panel": {
+            case "add-panel": {
 
                 const panel = options.getString("panel")
 
@@ -52,6 +52,8 @@ module.exports = {
                     })
 
                     await data.save()
+
+                    Reply(interaction, emojilist.tick, `Your panel \`${panel}\` has been successfully saved!`)
 
                 } else {
 
