@@ -19,20 +19,27 @@ module.exports = {
 
         if (interaction.isStringSelectMenu()) {
             if (customId === data.Panel) {
-                for (let i = 0; i < values.length; i++) {
-                    const roleId = values[ i ]
 
-                    const role = guild.roles.cache.get(roleId)
-                    const hasRole = member.roles.cache.has(roleId)
+                if (values.length >= 1) {
 
-                    switch (hasRole) {
-                        case true:
-                            member.roles.remove(role)
-                            break;
-                        case false:
-                            member.roles.add(role)
-                            break;
-                    }
+                    const roles = data.Roles
+                    roles.forEach(role => {
+                        let eachValue = values.find(value => value === role.roleId)
+                        if (eachValue) {
+                            member.roles.add(role.roleId)
+                        } else {
+                            member.roles.remove(role.roleId)
+                        }
+                    })
+
+                } else if (values.length == 0) {
+                    const roles = data.Roles
+                    roles.forEach(role => {
+
+                        let eachRole = role.roleId
+                        member.roles.remove(eachRole)
+
+                    })
                 }
 
                 Reply(interaction, emojilist.tick, "Roles uploaded.")
