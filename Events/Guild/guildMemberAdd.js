@@ -21,7 +21,7 @@ module.exports = {
         Embed = new EmbedBuilder()
             .setColor("0xffc0cb")
             .setAuthor({ name: user.tag, iconURL: user.displayAvatarURL() })
-            .setDescription(`Welcome ${member} to the server!\n\nWelcome to Miss Star's Daycare! We hope you enjoy your stay here. There are a few things you need to do before you can access the rest of the server. Head over to <#1037959716946591814> read the rules and then follow the directions given to get verified (DO NOT OPEN A TICKET UNTIL YOU ARE READY TO VERIFY). If you do not verify within 24 hours you will be kicked. IF YOU OPEN A TICKET AND THEN LEAVE YOU WILL BE BANNED. We hope you enjoy your stay!\n\nAccount Created: <t:${parseInt(user.createdTimestamp / 1000)}:R>\nMemberCount: \`${guild.memberCount}\``)
+            .setDescription(`Welcome ${member} to Kawaii Daycare 18+!\n\nWe hope you enjoy your stay here. There are a few things you need to do before you can access the rest of the server. Head over to <#1037959716946591814> read the rules and then follow the directions given to get verified (DO NOT OPEN A TICKET UNTIL YOU ARE READY TO VERIFY). If you do not verify within 24 hours you will be kicked. IF YOU OPEN A TICKET AND THEN LEAVE YOU WILL BE BANNED. We hope you enjoy your stay!\n\nAccount Created: <t:${parseInt(user.createdTimestamp / 1000)}:R>\nMemberCount: \`${guild.memberCount}\``)
             .setThumbnail(user.displayAvatarURL())
             .setFooter({ text: "Welcome by Bun Bot" })
             .setTimestamp()
