@@ -44,7 +44,7 @@ module.exports = {
 
         }
 
-        Reply(interaction, emojilist.tick, `Your counting setup info has been saved!`)
+        Reply(interaction, emojilist.tick, `Your qotd setup info has been saved!`)
 
     }
 }
