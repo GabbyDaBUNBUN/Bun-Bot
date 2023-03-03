@@ -42,7 +42,7 @@ module.exports = {
         let Guilds = client.guilds.cache.map(guild => guild.id)
         Guilds.forEach(async guild => {
 
-            const data = await QotdDB.findOne({ Guild: guild.id }).catch(err => { })
+            const data = await QotdDB.findOne({ Guild: guild }).catch(err => { })
             if (!data) return
             const Guild = guilds.cache.get(data.Guild)
 
