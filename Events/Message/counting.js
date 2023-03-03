@@ -41,6 +41,7 @@ module.exports = {
                 await message.react(`🏆`)
                 Data.HighScore = Number(solved)
             }
+            Data.LastMessageId = message.id
             await Data.save()
         } else if (author.id !== user.id) {
             Data.Count = 0
@@ -52,6 +53,7 @@ module.exports = {
                 member.roles.add(Data.Role)
                 Data.LastUser = author.id
             }
+            Data.LastMessageId = message.id
             await Data.save()
             return Reply(message, emojilist.cross, `Uh-Oh, You messed up the counting!`);
         }

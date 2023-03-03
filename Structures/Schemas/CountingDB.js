@@ -8,5 +8,6 @@ module.exports = model("countingChannel", new Schema({
     HighScore: String,
     LastUser: String,
     Count: String,
+    LastMessageId: String,
 
 }));
