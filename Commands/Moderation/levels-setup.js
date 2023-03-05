@@ -26,14 +26,14 @@ module.exports = {
         let data = await LevelsChannelDB.findOne({ Guild: guild.id }).catch(err => { })
         if (data) {
 
-            data.Channel = channel
+            data.Channel = channel.id
             data.save
 
         } else if (!data) {
 
             data = new LevelsChannelDB({
                 Guild: guild.id,
-                Channel: channel,
+                Channel: channel.id,
             })
 
             await data.save()

@@ -50,8 +50,7 @@ module.exports = {
 
             if (channelData) {
 
-                const replaceChannel = channelData.Channel.replace(/<|>|#/gi, "")
-                const Channel = guild.channels.cache.get(replaceChannel)
+                const Channel = guild.channels.cache.get(channelData.Channel)
                 if (!Channel) return
 
                 Channel.send({

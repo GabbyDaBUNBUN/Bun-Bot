@@ -1,15 +1,15 @@
 const { SlashCommandBuilder, ChatInputCommandInteraction, ChannelType, PermissionFlagsBits } = require("discord.js")
 const { CustomClient } = require("../../Structures/Classes/CustomClient")
-const QotdDB = require("../../Structures/Schemas/QotdDB")
+const CreateVCDB = require("../../Structures/Schemas/CreateVCDB")
 const Reply = require("../../Systems/Reply")
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("qotd-setup")
-        .setDescription("Set the qotd channel.")
+        .setName("create-vc-setup")
+        .setDescription("Set the create a vc channel.")
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-        .addChannelOption(opt => opt.setName("channel").setDescription("Channel you want the qotd to be sent in.").setRequired(true).addChannelTypes(ChannelType.GuildText))
-        .addRoleOption(opt => opt.setName("role").setDescription("Role you want pinged when qotd is sent.").setRequired(true)),
+        .addChannelOption(opt => opt.setName("channel").setDescription("Channel you want the create vc to be. (MUST BE A VC CHANNEL)").setRequired(true).addChannelTypes(ChannelType.GuildVoice))
+        .addStringOption(opt => opt.setName("name").setDescription("What you want your create VC channel to be named.").setRequired(true)),
 
     /**
      * 
@@ -23,28 +23,30 @@ module.exports = {
         const { emojilist } = client
 
         const channel = options.getChannel("channel")
-        const role = options.getRole("role")
+        const name = options.getString("name")
 
-        let data = await QotdDB.findOne({ Guild: guild.id }).catch(err => { })
+        let data = await CreateVCDB.findOne({ Guild: guild.id }).catch(err => { })
         if (data) {
 
             data.Channel = channel.id
-            data.Role = role
+            data.ChannelName = name
             data.save
 
         } else if (!data) {
 
-            data = new QotdDB({
+            data = new CreateVCDB({
                 Guild: guild.id,
                 Channel: channel.id,
-                Role: role,
+                ChannelName: name,
             })
 
             await data.save()
 
         }
 
-        Reply(interaction, emojilist.tick, `Your qotd setup info has been saved!`)
+        channel.setName(data.ChannelName)
+
+        Reply(interaction, emojilist.tick, `Your create a vc setup info has been saved!`)
 
     }
 }
