@@ -9,6 +9,7 @@ class CustomClient extends Client {
     emojilist = emojis
     config = configuration
     commands = new Collection()
+    voiceCollection = new Collection()
 
     start() {
 

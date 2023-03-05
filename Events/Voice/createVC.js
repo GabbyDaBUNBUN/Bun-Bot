@@ -1,8 +1,6 @@
-const { Collection, Events, VoiceState, ChannelType } = require("discord.js")
+const { Events, VoiceState, ChannelType } = require("discord.js")
 const { CustomClient } = require("../../Structures/Classes/CustomClient")
 const CreateVCDB = require("../../Structures/Schemas/CreateVCDB")
-const voiceCollection = new Collection
-module.exports = voiceCollection
 
 module.exports = {
     name: Events.VoiceStateUpdate,
@@ -15,6 +13,7 @@ module.exports = {
     async execute(oldState, newState, client) {
 
         const { member, guild } = newState
+        const { voiceCollection } = client
         const data = await CreateVCDB.findOne({ Guild: guild.id }).catch(err => { })
         const oldChannel = oldState.channel
         const newChannel = newState.channel
@@ -68,15 +67,15 @@ module.exports = {
         }
 
         const ownedChannelId = voiceCollection.get(member.id)
-        const ownedTextChannelId = voiceCollection.get(guild.id)
+        const ownedTextChannelId = voiceCollection.get(member.user.username)
         const ownedChannel = guild.channels.cache.get(ownedChannelId)
         const ownedTextChannel = guild.channels.cache.get(ownedTextChannelId)
 
         if (ownedChannelId && oldChannel.id === ownedChannelId && (!newChannel || newChannel.id !== ownedChannelId)) {
-            voiceCollection.set(member.id, null)
-            voiceCollection.set(member.user.username, null)
             ownedChannel.delete().catch(err => { })
             ownedTextChannel.delete().catch(err => { })
+            voiceCollection.set(member.id, null)
+            voiceCollection.set(member.user.username, null)
         }
 
     }

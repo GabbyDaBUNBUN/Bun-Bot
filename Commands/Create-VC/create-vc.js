@@ -1,5 +1,4 @@
-const { ChatInputCommandInteraction, SlashCommandBuilder, Collection } = require("discord.js")
-const voiceCollection = require("../../Events/Voice/createVC")
+const { ChatInputCommandInteraction, SlashCommandBuilder } = require("discord.js")
 const { CustomClient } = require("../../Structures/Classes/CustomClient")
 const Reply = require("../../Systems/Reply")
 
@@ -23,14 +22,14 @@ module.exports = {
     async execute(interaction, client) {
 
         const { options, user, member, guild } = interaction
-        const { emojilist } = client
+        const { emojilist, voiceCollection } = client
         const voiceChannel = member.voice.channel
-        if (!voiceChannel) Reply(interaction, emojilist.cross, `You must be in a vc first!`)
+        if (!voiceChannel) return Reply(interaction, emojilist.cross, `You must be in a vc first!`)
         const ownedChannelId = voiceCollection.get(member.id)
         const ownedChannel = guild.channels.cache.get(ownedChannelId)
         const ownedTextChannelId = voiceCollection.get(member.user.username)
         const ownedTextChannel = guild.channels.cache.get(ownedTextChannelId)
-        if (!ownedChannel || voiceChannel.id !== ownedChannel) Reply(interaction, emojilist.cross, `You are not the owner of this vc!`)
+        if (!ownedChannelId || voiceChannel.id !== ownedChannelId) return Reply(interaction, emojilist.cross, `You are not the owner of this vc!`)
 
 
         switch (options.getSubcommand()) {
@@ -41,7 +40,7 @@ module.exports = {
                 if (name.length > 22 || name.length < 1) Reply(interaction, emojilist.cross, `The name cannot exceed the 22 character limit!`)
                 ownedChannel.setName(name)
                 ownedTextChannel.setName(name)
-                Reply(interaction, emojilist.tick, `Your Channel names have been changed!`)
+                return Reply(interaction, emojilist.tick, `Your Channel names have been changed!`)
 
             }
 
@@ -103,6 +102,8 @@ module.exports = {
                     })
                 }
 
+                return Reply(interaction, emojilist.tick, `Your changes have been saved!`)
+
             }
 
                 break;
@@ -112,7 +113,7 @@ module.exports = {
                 const targetMember = options.getUser("member")
                 ownedChannel.permissionOverwrites.edit(targetMember, { Connect: true })
                 ownedTextChannel.permissionOverwrites.edit(targetMember, { ViewChannel: true, SendMessages: true, EmbedLinks: true, UseExternalEmojis: true, AttachFiles: true, UseApplicationCommands: true, AddReactions: true })
-                Reply(interaction, emojilist.tick, `${member} has invited ${targetMember} to <#${ownedChannel.id}>`)
+                return Reply(interaction, emojilist.tick, `${member} has invited ${targetMember} to <#${ownedChannel.id}>`)
 
             }
 
