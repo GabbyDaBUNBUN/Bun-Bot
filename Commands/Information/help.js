@@ -19,7 +19,7 @@ module.exports = {
         const Games = [ `rank\nleader-board\nhighscore` ]
         const Information = [ `help\nping` ]
         const Moderation = [ '\nclear\ncounting-save\ncounting-setup\ncreate-vc-setup\nembed create\nembed send\nembed list\nembed delete\nlevels-setup\nqotd-setup\nreaction-roles add-role\nreaction-roles remove-role\nreaction-roles panel\nsafe-word-setup\nticket' ]
-        const Music = [ `play\npause\nresume\nstop\nskip\nrepeat-loop\nqueue\nleave` ]
+        const Music = [ `play\npause\nresume\nstop\nskip\nrepeat-loop\nqueue\nleave\nvolume` ]
         const Roleplay = [ `bite\nblow-kiss\nblush\nboop\nbrat\ncatch\ncry\ncuddle\ndance\nfeed\nflop\ngiggle\ngood-morning\nheal\nhide\nhug\nhydrate\nlaugh\nnini\nnope\noverwhelmed\npat\npet\npick-up\nplease\npoke\npout\nrun\nshy\nsip\nsleepy\nsmile\nsorry\nthank\ntickle\nup\nwag\nwake-up` ]
 
         const Embed = new EmbedBuilder()
