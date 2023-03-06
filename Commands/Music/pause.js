@@ -19,12 +19,12 @@ module.exports = {
         const { emojilist, distube, color } = client
         const voiceChannel = member.voice.channel
         if (!voiceChannel) return Reply(interaction, emojilist.cross, `You must be in a vc to use this command!`)
-        if (guild.client.voice.channel.id && voiceChannel.id !== guild.client.voice.channel.id) return Reply(interaction, emojilist.cross, `I am already being used in another channel, you must be in the same channel as me to use this command!`)
+        if (!member.voice.channelId == guild.members.me.voice.channelId) return Reply(interaction, emojilist.cross, `I am already being used in another channel, you must be in the same channel as me to use this command!`)
         const queue = distube.getQueue(voiceChannel)
         if (!queue) return Reply(interaction, emojilist.cross, `There are no songs in the queue at this time!`)
 
         try {
-            distube.pause(voiceChannel);
+            queue.pause(voiceChannel);
             channel.send({
                 embeds: [
                     new EmbedBuilder()

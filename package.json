@@ -19,7 +19,6 @@
     "discord.js": "^14.7.1",
     "distube": "^4.0.4",
     "dotenv": "^16.0.3",
-    "ffmpeg": "^0.0.4",
     "ffmpeg-static": "^4.4.1",
     "glob": "^8.1.0",
     "libsodium-wrappers": "^0.7.11",

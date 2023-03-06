@@ -19,7 +19,7 @@ module.exports = {
         const { emojilist, distube, color } = client
         const voiceChannel = member.voice.channel
         if (!voiceChannel) return Reply(interaction, emojilist.cross, `You must be in a vc to use this command!`)
-        if (guild.client.voice.channel.id && voiceChannel.id !== guild.client.voice.channel.id) return Reply(interaction, emojilist.cross, `I am already being used in another channel, you must be in the same channel as me to use this command!`)
+        if (!member.voice.channelId == guild.members.me.voice.channelId) return Reply(interaction, emojilist.cross, `I am already being used in another channel, you must be in the same channel as me to use this command!`)
 
         try {
             const mode = distube.setRepeatMode(voiceChannel);

@@ -1,6 +1,10 @@
 const { GatewayIntentBits, Partials } = require("discord.js")
 const { CustomClient } = require("./Classes/CustomClient")
 const { loadEvents } = require("./Functions/EventLoader")
+const { DisTube } = require("distube")
+const { SpotifyPlugin } = require("@distube/spotify")
+const { SoundCloudPlugin } = require("@distube/soundcloud")
+const { YtDlpPlugin } = require("@distube/yt-dlp")
 const ms = require("ms")
 require("dotenv").config()
 
@@ -23,6 +27,13 @@ const client = new CustomClient({
     ],
     allowedMentions: { parse: [ "everyone", "roles", "users" ] },
     rest: { timeout: ms("1m") },
+})
+
+client.distube = new DisTube(client, {
+    emitNewSongOnly: true,
+    leaveOnFinish: true,
+    emitAddSongWhenCreatingQueue: true,
+    plugins: [ new SoundCloudPlugin(), new SpotifyPlugin(), new YtDlpPlugin() ],
 })
 
 loadEvents(client)

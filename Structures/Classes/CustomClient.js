@@ -1,8 +1,4 @@
 const { Client, Collection } = require("discord.js")
-const { DisTube } = require("distube")
-const { SpotifyPlugin } = require("@distube/spotify")
-const { SoundCloudPlugin } = require("@distube/soundcloud")
-const { YtDlpPlugin } = require("@distube/yt-dlp")
 const emojis = require("../../emojis.json")
 const configuration = require("../../config.json")
 const mongoose = require("mongoose")
@@ -14,12 +10,6 @@ class CustomClient extends Client {
     config = configuration
     commands = new Collection()
     voiceCollection = new Collection()
-    distube = new DisTube(Client, {
-        emitNewSongOnly: true,
-        leaveOnFinish: true,
-        emitAddSongWhenCreatingQueue: true,
-        plugins: [ new SoundCloudPlugin(), new SpotifyPlugin(), new YtDlpPlugin() ],
-    })
 
     start() {
 
