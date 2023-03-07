@@ -17,17 +17,19 @@ module.exports = {
 
         let data = await CountingDB.findOne({ Guild: guild.id }).catch(err => { })
 
-        const Embed = new EmbedBuilder()
-            .setColor(color)
-            .setTitle("Deleted Message")
-            .setDescription(`<@${member.id}> has deleted their count of ${data.Count}`)
-            .setFooter({ text: `Counting by Bun Bot.` })
-            .setTimestamp()
-
         if (!data) return
 
         if (data.LastMessageId === id) {
-            channel.send({ embeds: [ Embed ] })
+            channel.send({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(color)
+                        .setTitle("Deleted Message")
+                        .setDescription(`<@${member.id}> has deleted their count of ${data.Count}`)
+                        .setFooter({ text: `Counting by Bun Bot.` })
+                        .setTimestamp()
+                ]
+            })
         }
 
     }

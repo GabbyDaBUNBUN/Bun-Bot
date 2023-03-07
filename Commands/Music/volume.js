@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder } = require("discord.js")
+const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder } = require("discord.js");
 const { CustomClient } = require("../../Structures/Classes/CustomClient");
 const Reply = require("../../Systems/Reply");
 
@@ -6,7 +6,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("volume")
         .setDescription("Set the volume of the song playing.")
-        .addIntegerOption(opt => opt.setName("number").setDescription("The volume 1-100 that you want the song to play at.").setRequired(true)),
+        .addNumberOption(opt => opt.setName("number").setDescription("The volume 1-100 that you want the song to play at.").setRequired(true)),
 
     /**
      * 
@@ -21,17 +21,19 @@ module.exports = {
         const voiceChannel = member.voice.channel
         if (!voiceChannel) return Reply(interaction, emojilist.cross, `You must be in a vc to use this command!`)
         if (!member.voice.channelId == guild.members.me.voice.channelId) return Reply(interaction, emojilist.cross, `I am already being used in another channel, you must be in the same channel as me to use this command!`)
+        const queue = distube.getQueue(voiceChannel)
+        if (!queue) return Reply(interaction, emojilist.cross, `There are no songs in the queue at this time!`)
 
         try {
 
-            const volume = options.getInteger("number")
+            const volume = options.getNumber("number")
             if (volume > 100 || volume < 1) return Reply(interaction, emojilist.cross, `The number must be between 1-100!`)
-            distube.setVolume(voiceChannel, volume)
+            distube.getQueue(voiceChannel).setVolume(volume)
             interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                         .setColor(color)
-                        .setTitle("Play")
+                        .setTitle("Volume")
                         .setDescription(`Volume is now set to **${volume}**`)
                         .setFooter({ text: "Music by Bun Bot" })
                         .setTimestamp()

@@ -26,12 +26,13 @@ module.exports = {
 
             const song = options.getString("song")
             distube.play(voiceChannel, song, { textChannel: channel, member: member })
+
             interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                         .setColor(color)
                         .setTitle("Play")
-                        .setDescription("Request has been recieved!")
+                        .setDescription(`Request has been recieved!`)
                         .setFooter({ text: "Music by Bun Bot" })
                         .setTimestamp()
                 ]
