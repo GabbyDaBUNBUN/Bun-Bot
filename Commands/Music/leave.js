@@ -23,7 +23,7 @@ module.exports = {
 
         try {
             distube.voices.get(voiceChannel)?.leave();
-            channel.send({
+            interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                         .setColor(color)
@@ -31,7 +31,7 @@ module.exports = {
                         .setDescription(`Left the voice channel!`)
                         .setFooter({ text: "Music by Bun Bot" })
                         .setTimestamp()
-                ]
+                ],
             });
         } catch (error) {
             Reply(interaction, emojilist.cross, `Alert!: ${error}`)

@@ -25,7 +25,7 @@ module.exports = {
 
         try {
             queue.skip(voiceChannel);
-            channel.send({
+            interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                         .setColor(color)
@@ -33,7 +33,8 @@ module.exports = {
                         .setDescription(`Skipped the track!`)
                         .setFooter({ text: "Music by Bun Bot" })
                         .setTimestamp()
-                ]
+                ],
+                ephemeral: true,
             });
         } catch (error) {
             Reply(interaction, emojilist.cross, `Alert!: ${error}`)

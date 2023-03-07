@@ -24,7 +24,7 @@ module.exports = {
         if (!queue) return Reply(interaction, emojilist.cross, `There are no songs in the queue at this time!`)
 
         try {
-            channel.send({
+            interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                         .setColor(color)

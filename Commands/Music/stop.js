@@ -25,12 +25,12 @@ module.exports = {
 
         try {
             queue.stop(voiceChannel);
-            channel.send({
+            interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                         .setColor(color)
                         .setTitle(`Stop`)
-                        .setDescription(`Stopped the music!`)
+                        .setDescription(`Stopped the music and left the vc!`)
                         .setFooter({ text: "Music by Bun Bot" })
                         .setTimestamp()
                 ]

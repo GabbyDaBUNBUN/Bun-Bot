@@ -35,7 +35,8 @@ module.exports = {
                         .setDescription(`Request has been recieved!`)
                         .setFooter({ text: "Music by Bun Bot" })
                         .setTimestamp()
-                ]
+                ],
+                ephemeral: true,
             })
 
         } catch (error) {

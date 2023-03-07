@@ -23,7 +23,7 @@ module.exports = {
 
         try {
             const mode = distube.setRepeatMode(voiceChannel);
-            channel.send({
+            interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                         .setColor(color)
@@ -36,7 +36,8 @@ module.exports = {
                             }\``)
                         .setFooter({ text: "Music by Bun Bot" })
                         .setTimestamp()
-                ]
+                ],
+                ephemeral: true,
             });
         } catch (error) {
             Reply(interaction, emojilist.cross, `Alert!: ${error}`)
