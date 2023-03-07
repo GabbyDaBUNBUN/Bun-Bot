@@ -44,28 +44,30 @@ module.exports = {
 
             const data = await QotdDB.findOne({ Guild: guild }).catch(err => { })
             if (!data) return
-            const Guild = guilds.cache.get(data.Guild)
+            if (data.Channel) {
 
-            cron.schedule(`0 8 * * *`, () => {
+                cron.schedule(`0 8 * * *`, () => {
 
-                const channel = Guild.channels.cache.get(data.Channel)
-                if (count >= Questions.length) {
-                    count = 0
-                }
-                const randomQuestion = Questions[ count ]
+                    const channel = client.channels.cache.get(data.Channel)
+                    if (count >= Questions.length) {
+                        count = 0
+                    }
+                    const randomQuestion = Questions[ count ]
 
-                const Embed = new EmbedBuilder()
-                    .setColor("0xffc0cb")
-                    .setTitle("QOTD")
-                    .setDescription(`${randomQuestion}`)
-                    .setFooter({ text: "QOTD by Bun Bot" })
+                    const Embed = new EmbedBuilder()
+                        .setColor("0xffc0cb")
+                        .setTitle("QOTD")
+                        .setDescription(`${randomQuestion}`)
+                        .setFooter({ text: "QOTD by Bun Bot" })
 
-                channel.send({ content: `${data.Role}`, embeds: [ Embed ] })
-                count++
-            }, {
-                scheduled: true,
-                timezone: "America/Chicago"
-            })
+                    channel.send({ content: `${data.Role}`, embeds: [ Embed ] })
+                    count++
+                }, {
+                    scheduled: true,
+                    timezone: "America/Chicago"
+                })
+
+            }
 
         })
 
