@@ -17,7 +17,7 @@ module.exports = {
      */
     execute(client) {
 
-        const { user, guilds } = client
+        const { user, color } = client
 
         //Command Loader
         loadCommands(client)
@@ -77,29 +77,76 @@ module.exports = {
             }\` | Autoplay: \`${queue.autoplay ? 'On' : 'Off'}\``
         client.distube
             .on('playSong', (queue, song) =>
-                queue.textChannel.send(
-                    `▶️ | Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.user
-                    }\n${status(queue)}`
-                )
+                queue.textChannel.send({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(color)
+                            .setTitle("Play Song")
+                            .setDescription(`▶️ | Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.user}\n${status(queue)}`)
+                            .setFooter({ text: `Music by Bun Bot` })
+                            .setTimestamp()
+                    ]
+                })
             )
             .on('addSong', (queue, song) =>
-                queue.textChannel.send(
-                    `✅ | Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.user}`
-                )
+                queue.textChannel.send({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(color)
+                            .setTitle("Add Song")
+                            .setDescription(`✅ | Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.user}`)
+                            .setFooter({ text: `Music by Bun Bot` })
+                            .setTimestamp()
+                    ]
+                })
             )
             .on('addList', (queue, playlist) =>
-                queue.textChannel.send(
-                    `✅ | Added \`${playlist.name}\` playlist (${playlist.songs.length
-                    } songs) to queue\n${status(queue)}`
-                )
+                queue.textChannel.send({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(color)
+                            .setTitle("Add List")
+                            .setDescription(`✅ | Added \`${playlist.name}\` playlist (${playlist.songs.length} songs) to queue\n${status(queue)}`)
+                            .setFooter({ text: `Music by Bun Bot` })
+                            .setTimestamp()
+                    ]
+                })
             )
             .on('error', (channel, e) => {
-                if (channel) channel.send(`❌ | An error encountered: ${e.toString().slice(0, 1974)}`)
+                if (channel) channel.send({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(color)
+                            .setTitle("Error")
+                            .setDescription(`❌ | An error encountered: ${e.toString().slice(0, 1974)}`)
+                            .setFooter({ text: `Music by Bun Bot` })
+                            .setTimestamp()
+                    ]
+                })
                 else console.error(e)
             })
-            .on('empty', channel => channel.send('Voice channel is empty! Leaving the channel...'))
-            .on('searchNoResult', (message, query) =>
-                message.channel.send(`❌ | No result found for \`${query}\`!`)
+            .on('empty', channel => channel.send({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(color)
+                        .setTitle("Empty")
+                        .setDescription(`Voice channel is empty! Leaving the channel...`)
+                        .setFooter({ text: `Music by Bun Bot` })
+                        .setTimestamp()
+                ]
+            })
+            )
+            .on('searchNoResult', (interaction, query) =>
+                interaction.channel.send({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(color)
+                            .setTitle("No Results")
+                            .setDescription(`❌ | No result found for \`${query}\`!`)
+                            .setFooter({ text: `Music by Bun Bot` })
+                            .setTimestamp()
+                    ]
+                })
             )
             .on('finish', queue => queue.textChannel.send('Finished!'))
 
