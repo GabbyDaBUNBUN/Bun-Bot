@@ -1,7 +1,6 @@
 const { Message, Events, EmbedBuilder } = require("discord.js")
 const { CustomClient } = require("../../Structures/Classes/CustomClient")
 const CountingDB = require("../../Structures/Schemas/CountingDB")
-const Reply = require("../../Systems/Reply")
 
 module.exports = {
     name: Events.MessageDelete,
@@ -13,8 +12,9 @@ module.exports = {
     async execute(message, client) {
 
         const { id, guild, member, channel } = message
-        const { emojilist, color } = client
+        const { color } = client
 
+        //Deleted Count
         let data = await CountingDB.findOne({ Guild: guild.id }).catch(err => { })
 
         if (!data) return

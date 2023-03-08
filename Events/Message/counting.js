@@ -13,12 +13,11 @@ module.exports = {
      */
     async execute(message, client) {
 
-        //Counting
         const { author, guild, content, member, channel } = message
         const { user, emojilist } = client
 
+        //Counting
         const Data = await CountingDB.findOne({ Guild: guild.id }).catch(err => { })
-
         if (!Data || `<#${channel.id}>` !== Data.Channel || author.bot || isNaN(content[ 0 ])) return
         let Replace = content.replace(/[a-z]/ig, '')
         let solved = math.evaluate(Replace)

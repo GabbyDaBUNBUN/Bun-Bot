@@ -2,6 +2,7 @@ const { Message, EmbedBuilder, Events } = require("discord.js")
 const { CustomClient } = require("../../Structures/Classes/CustomClient")
 const LevelsChannelDB = require("../../Structures/Schemas/LevelsChannelDB")
 const LevelsDB = require("../../Structures/Schemas/LevelsDB")
+const EconomyDB = require("../../Structures/Schemas/EconomyDB")
 
 module.exports = {
     name: Events.MessageCreate,
@@ -14,6 +15,7 @@ module.exports = {
 
         const { author, guild } = message
 
+        //Levels
         if (!guild || author.bot) return
 
         LevelsDB.findOne({ Guild: guild.id, User: author.id }, async (err, data) => {
@@ -33,6 +35,23 @@ module.exports = {
 
         })
 
+        EconomyDB.findOne({ Guild: guild.id, User: author.id }, async (err, data) => {
+
+            if (err) throw err
+
+            if (!data) {
+
+                EconomyDB.create({
+                    Guild: guild.id,
+                    User: author.id,
+                    Balance: 0,
+                    Inventory: [],
+                })
+
+            }
+
+        })
+
         const channelData = await LevelsChannelDB.findOne({ Guild: guild.id }).catch(err => { })
 
         const give = Math.floor(Math.random() * 29) + 1
@@ -43,6 +62,12 @@ module.exports = {
         const requiredXP = data.Level * data.Level * 100 + 100
 
         if (data.XP + give >= requiredXP) {
+
+            const econData = await EconomyDB.findOne({ Guild: guild.id, User: author.id }).catch(err => { })
+            if (!data) return
+
+            econData.Balance = data.Level += 1
+            await econData.save()
 
             data.XP += give
             data.Level += 1

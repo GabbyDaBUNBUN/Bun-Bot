@@ -38,6 +38,7 @@ module.exports = {
                 Guild: guild.id,
                 Channel: channel.id,
                 Role: role,
+                Count: 0,
             })
 
             await data.save()

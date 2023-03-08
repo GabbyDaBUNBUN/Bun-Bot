@@ -14,6 +14,7 @@ module.exports = {
         const { content, guild } = message
         const { emojilist } = client
 
+        //Safe Word
         const data = await SafeWordDB.findOne({ Guild: guild.id }).catch(err => { })
         if (!data) return
 
