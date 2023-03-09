@@ -40,6 +40,11 @@ module.exports = {
                     inline: true,
                 },
                 {
+                    name: "Currency:",
+                    value: `${Currency}`,
+                    inline: true,
+                },
+                {
                     name: "Game:",
                     value: `${Games}`,
                     inline: true,
