@@ -16,6 +16,8 @@ module.exports = {
         const { customId, member, guild, message } = interaction
         const { emojilist } = client
 
+        if (![ "next", "previous", "exit" ].includes(customId)) return
+
         const data = await EconomyDB.findOne({ Guild: guild.id, User: member.id }).catch(err => { })
         if (!data) return Reply(interaction, emojilist.cross, `You have no balance data yet!`, true)
 
@@ -23,7 +25,6 @@ module.exports = {
         if (!shopData) return Reply(interaction, emojilist.cross, `There is no shop set up yet!`, true)
 
         if (interaction.isButton) {
-            if (customId !== `next` && customId !== `previous` && customId !== `exit`) return
 
             const items = shopData.Items
 

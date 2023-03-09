@@ -112,9 +112,6 @@ module.exports = {
                 const stock = options.getNumber("stock")
                 const role = options.getRole("role") || ``
                 const description = options.getString("description") || ``
-
-                let data = await ShopDB.findOne({ Guild: guild.id }).catch(err => { })
-
                 const newItem = {
                     ItemName: name,
                     ItemPrice: price,
@@ -123,14 +120,32 @@ module.exports = {
                     ItemDescription: description,
                 }
 
-                if (!data) {
+                ShopDB.findOne({ Guild: guild.id }, async (err, data) => {
 
-                    data = new ShopDB.create({
-                        Guild: guild.id,
-                        Items: newItem,
-                    })
+                    if (err) throw err
 
-                    await data.save()
+                    if (!data) {
+
+                        ShopDB.create({
+                            Guild: guild.id,
+                            Items: newItem,
+                        })
+
+                    }
+
+                })
+
+                let data = await ShopDB.findOne({ Guild: guild.id }).catch(err => { })
+
+                let itemData = data.Items.find((x => x.ItemName === name))
+
+                if (itemData) {
+
+                    return Reply(interaction, emojilist.cross, `There is already an item by that name!`, true)
+
+                } else {
+
+                    data.Items = [ ...data.Items, newItem ]
 
                     interaction.reply({
                         embeds: [
@@ -143,34 +158,9 @@ module.exports = {
                         ]
                     })
 
-                } else {
-
-                    let itemData = data.Items.find((x => x.ItemName === name))
-
-                    if (itemData) {
-
-                        return Reply(interaction, emojilist.cross, `There is already an item by that name!`, true)
-
-                    } else {
-
-                        data.Items = [ ...data.Items, newItem ]
-
-                        interaction.reply({
-                            embeds: [
-                                new EmbedBuilder()
-                                    .setColor(color)
-                                    .setTitle("Shop Add")
-                                    .setDescription(`Your item:\n${newItem}\n\nHas been saved!`)
-                                    .setFooter({ text: "Shop by Bun Bot" })
-                                    .setTimestamp()
-                            ]
-                        })
-
-                    }
-
-                    await data.save()
-
                 }
+
+                await data.save()
 
             }
 
