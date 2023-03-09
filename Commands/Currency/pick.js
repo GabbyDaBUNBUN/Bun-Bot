@@ -35,9 +35,12 @@ module.exports = {
                 .setFooter({ text: "Pick by Bun Bot" })
                 .setTimestamp()
 
-            interaction.reply({ embeds: [ Embed ] }).then(msg => {
-                setTimeout(() => msg.delete(), 10000)
-            }).catch(err => { })
+            interaction.reply({ embeds: [ Embed ] }).then(() =>
+                setTimeout(
+                    () => interaction.deleteReply(),
+                    10000
+                )
+            ).catch(err => { })
 
         } else if (pickData.OpenWindow === false) {
 
@@ -48,9 +51,12 @@ module.exports = {
                 .setFooter({ text: "Pick by Bun Bot" })
                 .setTimestamp()
 
-            interaction.reply({ embeds: [ Embed ] }).then(msg => {
-                setTimeout(() => msg.delete(), 10000)
-            }).catch(err => { })
+            interaction.reply({ embeds: [ Embed ] }).then(() =>
+                setTimeout(
+                    () => interaction.deleteReply(),
+                    10000
+                )
+            ).catch(err => { })
 
         }
 

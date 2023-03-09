@@ -37,6 +37,8 @@ module.exports = {
 
         })
 
+        await sleep(500)
+
         let pickData = await PickDB.findOne({ Guild: guild.id }).catch(err => { })
 
         let messageCount = pickData.MessageCount
