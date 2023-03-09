@@ -21,6 +21,22 @@ module.exports = {
             });
         };
 
+        PickDB.findOne({ Guild: guild.id }, async (err, data) => {
+
+            if (err) throw err
+
+            if (!data) {
+
+                PickDB.create({
+                    Guild: guild.id,
+                    OpenWindow: false,
+                    MessageCount: 0,
+                })
+
+            }
+
+        })
+
         let pickData = await PickDB.findOne({ Guild: guild.id }).catch(err => { })
 
         let messageCount = pickData.MessageCount
