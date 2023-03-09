@@ -21,6 +21,7 @@
     "dotenv": "^16.0.3",
     "ffmpeg-static": "^4.4.1",
     "glob": "^8.1.0",
+    "humanize-duration": "^3.28.0",
     "libsodium-wrappers": "^0.7.11",
     "mathjs": "^11.5.1",
     "mongoose": "^6.9.2",

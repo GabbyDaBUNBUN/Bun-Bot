@@ -10,6 +10,7 @@ class CustomClient extends Client {
     config = configuration
     commands = new Collection()
     voiceCollection = new Collection()
+    cooldowns = new Collection()
 
     start() {
 

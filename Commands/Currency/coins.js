@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder } = require("discord.js")
 const { CustomClient } = require("../../Structures/Classes/CustomClient")
 const EconomyDB = require("../../Structures/Schemas/EconomyDB")
+const humanizeDuration = require("humanize-duration")
 const Reply = require("../../Systems/Reply")
 
 module.exports = {
@@ -28,9 +29,9 @@ module.exports = {
     async execute(interaction, client) {
 
         const { options, member, guild } = interaction
-        const { color, emojilist } = client
+        const { color, emojilist, cooldowns } = client
 
-        const user = options.getUser("user") || member
+        const user = options.getUser("user") || member.user
 
         const data = await EconomyDB.findOne({ Guild: guild.id, User: user.id }).catch(err => { })
         if (!data) return Reply(interaction, emojilist.cross, `This user has no Balance data!`)
@@ -58,19 +59,45 @@ module.exports = {
 
             case "snuggle": {
 
-                let memberBalance = data.Balance
-                memberBalance = memberBalance + 3
+                const cooldown = cooldowns.get(interaction.user.id && `snuggle`)
 
-                interaction.reply({
-                    embeds: [
-                        new EmbedBuilder()
-                            .setColor(color)
-                            .setTitle("Snuggle Time!")
-                            .setDescription(`<@${member.id}> snuggled Bun Bot and earned 3 🪙!`)
-                            .setFooter({ text: "Currency by Bun Bot" })
-                            .setTimestamp()
-                    ]
-                })
+                if (cooldown) {
+
+                    const remaining = humanizeDuration(cooldown - Date.now())
+
+                    const Embed = new EmbedBuilder()
+                        .setColor(color)
+                        .setTitle("Snuggle")
+                        .setDescription(`Please wait another ${remaining} before using snuggle again.`)
+                        .setFooter({ text: "Currency by Bun Bot" })
+                        .setTimestamp()
+
+                    interaction.reply({ embeds: [ Embed ] })
+
+                } else {
+
+                    data.Balance = data.Balance + 3
+
+                    await data.save()
+
+                    interaction.reply({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setColor(color)
+                                .setTitle("Snuggle Time!")
+                                .setDescription(`<@${member.id}> snuggled Bun Bot and earned 3 🪙!`)
+                                .setFooter({ text: "Currency by Bun Bot" })
+                                .setTimestamp()
+                        ]
+                    })
+
+                    cooldowns.set(interaction.user.id && `snuggle`, Date.now() + 57600000)
+
+                    setTimeout(() => {
+                        cooldowns.delete(interaction.user.id)
+                    }, 57600000)
+
+                }
 
             }
 
@@ -78,19 +105,45 @@ module.exports = {
 
             case "pet": {
 
-                let memberBalance = data.Balance
-                memberBalance = memberBalance + 5
+                const cooldown = cooldowns.get(interaction.user.id && `pet`)
 
-                interaction.reply({
-                    embeds: [
-                        new EmbedBuilder()
-                            .setColor(color)
-                            .setTitle("Pet!")
-                            .setDescription(`<@${member.id}> petted Bun Bot and earned 5 🪙!`)
-                            .setFooter({ text: "Currency by Bun Bot" })
-                            .setTimestamp()
-                    ]
-                })
+                if (cooldown) {
+
+                    const remaining = humanizeDuration(cooldown - Date.now())
+
+                    const Embed = new EmbedBuilder()
+                        .setColor(color)
+                        .setTitle("Pet")
+                        .setDescription(`Please wait another ${remaining} before using pet again.`)
+                        .setFooter({ text: "Currency by Bun Bot" })
+                        .setTimestamp()
+
+                    interaction.reply({ embeds: [ Embed ] })
+
+                } else {
+
+                    data.Balance = data.Balance + 5
+
+                    await data.save()
+
+                    interaction.reply({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setColor(color)
+                                .setTitle("Pet!")
+                                .setDescription(`<@${member.id}> petted Bun Bot and earned 5 🪙!`)
+                                .setFooter({ text: "Currency by Bun Bot" })
+                                .setTimestamp()
+                        ]
+                    })
+
+                    cooldowns.set(interaction.user.id && `pet`, Date.now() + 57600000)
+
+                    setTimeout(() => {
+                        cooldowns.delete(interaction.user.id)
+                    }, 57600000)
+
+                }
 
             }
 
@@ -101,14 +154,12 @@ module.exports = {
                 const targetUser = options.getUser("user")
                 const amount = options.getNumber("amount")
 
-                let memberBalance = data.Balance
-                memberBalance = memberBalance - amount
+                data.Balance = data.Balance - amount
                 await data.save()
 
                 const targetUserData = await EconomyDB.findOne({ Guild: guild.id, User: targetUser.id }).catch(err => { })
 
-                let targetUserBalance = targetUserData.Balance
-                targetUserBalance = targetUserBalance + amount
+                targetUserData.Balance = targetUserData.Balance + amount
                 await targetUserData.save()
 
                 const Embed = new EmbedBuilder()
