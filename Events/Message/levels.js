@@ -3,6 +3,7 @@ const { CustomClient } = require("../../Structures/Classes/CustomClient")
 const LevelsChannelDB = require("../../Structures/Schemas/LevelsChannelDB")
 const LevelsDB = require("../../Structures/Schemas/LevelsDB")
 const EconomyDB = require("../../Structures/Schemas/EconomyDB")
+let count = 0
 
 module.exports = {
     name: Events.MessageCreate,
@@ -14,6 +15,7 @@ module.exports = {
     async execute(message, client) {
 
         const { author, guild } = message
+        const { color } = client
 
         //Levels
         if (!guild || author.bot) return
@@ -83,9 +85,11 @@ module.exports = {
                     content: `${author}`,
                     embeds: [
                         new EmbedBuilder()
-                            .setColor("0xffc0cb")
+                            .setColor(color)
+                            .setTitle("Level Up!")
                             .setDescription(`Congrats you've reached level ${data.Level}!`)
                             .setFooter({ text: "Leveling System by Bun Bot" })
+                            .setTimestamp()
                     ]
 
                 })

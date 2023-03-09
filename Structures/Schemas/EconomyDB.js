@@ -6,5 +6,6 @@ module.exports = model("economy", new Schema({
     User: String,
     Balance: Number,
     Inventory: Array,
+    ShopPage: Number,
 
 }));
