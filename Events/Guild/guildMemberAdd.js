@@ -13,6 +13,8 @@ module.exports = {
         const { user, guild } = member
         const { emojilist } = client
 
+        if (guild.id !== `1037958833529696276`) return
+
         const role = guild.roles.cache.get(`1037966143081697382`)
         member.roles.add(role)
 

@@ -13,6 +13,8 @@ module.exports = {
         const { user, guild } = member
         const { emojilist } = client
 
+        if (guild.id !== `1037958833529696276`) return
+
         const Channel = guild.channels.cache.get("1037998115510288384")
 
         Embed = new EmbedBuilder()

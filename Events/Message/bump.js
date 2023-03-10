@@ -1,6 +1,5 @@
 const { Message, EmbedBuilder, Events } = require("discord.js")
 const { CustomClient } = require("../../Structures/Classes/CustomClient")
-let timeout = null
 
 module.exports = {
     name: Events.MessageCreate,
@@ -12,27 +11,33 @@ module.exports = {
     async execute(message, client) {
 
         const { author } = message
+        const { color } = client
         if (author.id !== `302050872383242240`) return
 
         //Disboard Bump Buddy
-        clearTimeout(timeout)
+        const sleep = async (ms) => {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve();
+                }, ms || 0);
+            });
+        };
 
-        if (timeout === null) {
+        message.react(`⌚`)
 
-            timeout = setTimeout(function () {
-                message.reply({
-                    embeds: [
-                        new EmbedBuilder()
-                            .setColor(color)
-                            .setTitle("Bump Me")
-                            .setDescription("Help us by bumping the server! Use: \`/bump\`")
-                            .setFooter({ text: "Bump Buddy by Bun Bot" })
-                            .setTimestamp()
-                    ]
-                })
-            }, 7200 * 1000)
+        await sleep(7200000)
 
-        }
+        message.reply({
+            components: `<@&1042275026616983654>`,
+            embeds: [
+                new EmbedBuilder()
+                    .setColor(color)
+                    .setTitle("Bump Me")
+                    .setDescription("Help us by bumping the server! Use: \`/bump\`")
+                    .setFooter({ text: "Bump Buddy by Bun Bot" })
+                    .setTimestamp()
+            ]
+        })
 
     }
 

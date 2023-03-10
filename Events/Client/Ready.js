@@ -50,7 +50,7 @@ module.exports = {
                     if (data.Count >= Questions.length) {
                         data.Count = 0
                     }
-                    const randomQuestion = Questions[ count ]
+                    const randomQuestion = Questions[ data.Count ]
 
                     const Embed = new EmbedBuilder()
                         .setColor("0xffc0cb")
