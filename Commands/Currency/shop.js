@@ -12,7 +12,10 @@ module.exports = {
             .setDescription("View the shop."))
         .addSubcommand(sub => sub.setName("buy")
             .setDescription("Purchase an item from the shop.")
-            .addStringOption(opt => opt.setName("name").setDescription("Name of the item you want to purchase.").setRequired(true))),
+            .addStringOption(opt => opt.setName("name").setDescription("Name of the item you want to purchase.").setRequired(true)))
+        .addSubcommand(sub => sub.setName("use")
+            .setDescription("Use an item from your inventory.")
+            .addStringOption(opt => opt.setName("name").setDescription("Name of the item you want to use.").setRequired(true))),
 
     /**
      * 
@@ -39,22 +42,25 @@ module.exports = {
 
                 const items = shopData.Items
 
-                let firstList = items.splice(0, 10)
+                let firstListSplit = items.splice(0, 10)
+                let firstList = []
+
+                firstListSplit.forEach((i) => {
+
+                    let description = `Name: ${i.ItemName}\nDescription: ${i.ItemDescription}\nPrice: ${i.ItemPrice}\nRole Reward: <@&${i.ItemRole}>`
+                    firstList.push(description + `\n\n`)
+
+                })
 
                 const Embed = new EmbedBuilder()
                     .setColor(color)
                     .setTitle(`Shop`)
-                    .setDescription(firstList)
+                    .setDescription(firstList.toString())
                     .setFooter({ text: "Page 1" })
                     .setTimestamp()
 
                 const Buttons = new ActionRowBuilder()
                     .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId(`next`)
-                            .setStyle(ButtonStyle.Primary)
-                            .setEmoji(`⏭️`)
-                            .setDisabled(false),
                         new ButtonBuilder()
                             .setCustomId(`previous`)
                             .setStyle(ButtonStyle.Primary)
@@ -64,7 +70,12 @@ module.exports = {
                             .setCustomId(`exit`)
                             .setStyle(ButtonStyle.Danger)
                             .setEmoji(`❌`)
-                            .setDisabled(false)
+                            .setDisabled(false),
+                        new ButtonBuilder()
+                            .setCustomId(`next`)
+                            .setStyle(ButtonStyle.Primary)
+                            .setEmoji(`⏭️`)
+                            .setDisabled(items.length <= 10),
                     )
 
                 data.ShopPage = 1
@@ -78,38 +89,26 @@ module.exports = {
 
             case "buy": {
 
-                const user = member
                 const itemName = options.getString("name")
 
-                let data = await EconomyDB.findOne({ Guild: guild.id, User: user.id }).catch(err => { })
+                let data = await EconomyDB.findOne({ Guild: guild.id, User: member.id }).catch(err => { })
                 if (!data) return Reply(interaction, emojilist.cross, `There is no data for you yet!`, true)
 
                 let itemData = await ShopDB.findOne({ Guild: guild.id }).catch(err => { })
                 if (!itemData) return Reply(interaction, emojilist.cross, `There are no items in the shop yet!`, true)
 
-                const items = itemData.Items
-                const item = items.find((i) => i.ItemName === itemName)
+                const item = itemData.Items.find((i) => i.ItemName === itemName)
                 if (!item) return Reply(interaction, emojilist.cross, `There is no item by that name!`, true)
 
                 if (!data.Inventory) {
 
-                    data.Inventory = item
+                    data.Inventory = [ item ]
                     await data.save()
-
-                    if (item.ItemRole !== ``) {
-                        const role = guild.roles.cache.get(item.ItemRole)
-                        member.roles.add(role)
-                    }
 
                 } else {
 
-                    data.Inventory = [ ...data.Inventory, item ]
+                    data.Inventory.push(item)
                     await data.save()
-
-                    if (item.ItemRole !== ``) {
-                        const role = guild.roles.cache.get(item.ItemRole)
-                        member.roles.add(role)
-                    }
 
                 }
 
@@ -118,11 +117,71 @@ module.exports = {
                         new EmbedBuilder()
                             .setColor(color)
                             .setTitle("Buy")
-                            .setDescription(`Your item:\n${item}\n has been added to your inventory!`)
+                            .setDescription(`Your item:\nName: ${item.ItemName}\nDescription: ${item.ItemDescription}\nPrice: ${item.ItemPrice}\nRole Reward: <@&${item.ItemRole}>\n has been added to your inventory!`)
                             .setFooter({ text: "Shop by Bun Bot" })
                             .setTimestamp()
                     ]
                 })
+
+            }
+
+                break;
+
+            case "use": {
+
+                const itemName = options.getString("name")
+
+                let data = await EconomyDB.findOne({ Guild: guild.id, User: member.id }).catch(err => { })
+                if (!data) return Reply(interaction, emojilist.cross, `There is no data for you yet!`, true)
+
+                let itemData = await ShopDB.findOne({ Guild: guild.id }).catch(err => { })
+                if (!itemData) return Reply(interaction, emojilist.cross, `There are no items in the shop yet!`, true)
+
+                if (!data.Inventory) return Reply(interaction, emojilist.cross, `You have no items in your inventory!`)
+                const item = data.Inventory.find((i) => i.ItemName === itemName)
+                if (!item) return Reply(interaction, emojilist.cross, `There is no item by that name!`, true)
+
+                if (!item.ItemReply) {
+
+                    if (item.ItemRole) {
+                        const role = guild.roles.cache.get(item.ItemRole)
+                        member.roles.add(role)
+                    }
+
+                    interaction.reply({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setColor(color)
+                                .setTitle("Use")
+                                .setDescription(`You have used ${itemName}`)
+                                .setFooter({ text: "Shop by Bun Bot" })
+                                .setTimestamp()
+                        ]
+                    })
+
+                } else {
+
+                    if (item.ItemRole) {
+                        const role = guild.roles.cache.get(item.ItemRole)
+                        member.roles.add(role)
+                    }
+
+                    interaction.reply({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setColor(color)
+                                .setTitle("Use")
+                                .setDescription(`${item.ItemReply}`)
+                                .setFooter({ text: "Shop by Bun Bot" })
+                                .setTimestamp()
+                        ]
+                    })
+
+                }
+
+                const filteredItems = data.Inventory.filter((i) => i.ItemName !== itemName)
+                data.Inventory = filteredItems
+                await data.save()
 
             }
 

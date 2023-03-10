@@ -22,11 +22,11 @@ module.exports = {
 
         if (pickData.OpenWindow === true) {
 
-            let coinAmount = [ `1`, `2`, `3`, `4`, `5` ]
+            let coinAmount = [ 1, 2, 3, 4, 5 ]
             let coins = coinAmount[ Math.floor(Math.random() * coinAmount.length) ]
 
-            let userBalance = economyData.Balance
-            userBalance = userBalance + coins
+            economyData.Balance = economyData.Balance + coins
+            await economyData.save()
 
             const Embed = new EmbedBuilder()
                 .setColor(color)

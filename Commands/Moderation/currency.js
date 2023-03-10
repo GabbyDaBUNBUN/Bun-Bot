@@ -2,6 +2,7 @@ const { SlashCommandBuilder, ChatInputCommandInteraction, PermissionFlagsBits, E
 const { CustomClient } = require("../../Structures/Classes/CustomClient")
 const EconomyDB = require("../../Structures/Schemas/EconomyDB")
 const ShopDB = require("../../Structures/Schemas/ShopDB")
+const PickDB = require("../../Structures/Schemas/PickDB")
 const Reply = require("../../Systems/Reply")
 
 module.exports = {
@@ -23,7 +24,6 @@ module.exports = {
             .setDescription("Add inventory to a user.")
             .addStringOption(opt => opt.setName("name").setDescription("Name of the item.").setRequired(true))
             .addNumberOption(opt => opt.setName("price").setDescription("Price of the item.").setRequired(true))
-            .addNumberOption(opt => opt.setName("stock").setDescription("The amount available.").setRequired(true))
             .addRoleOption(opt => opt.setName("role").setDescription("Role you want given to the user when item is purchased.").setRequired(false))
             .addStringOption(opt => opt.setName("description").setDescription("Description of the item.").setRequired(false))
         )
@@ -40,7 +40,10 @@ module.exports = {
             .setDescription("Remove inventory from a user.")
             .addUserOption(opt => opt.setName("user").setDescription("User you want to remove the item from.").setRequired(true))
             .addStringOption(opt => opt.setName("name").setDescription("Name of the item you want to remove.").setRequired(true))
-        ),
+        )
+        .addSubcommand(sub => sub.setName("pick-channel")
+            .setDescription("Pick Channel set up.")
+            .addChannelOption(opt => opt.setName("channel").setDescription("Channel you want to allow pick messages sent in.").setRequired(true))),
 
     /**
      * @param { ChatInputCommandInteraction } interaction
@@ -109,18 +112,21 @@ module.exports = {
 
                 const name = options.getString("name")
                 const price = options.getNumber("price")
-                const stock = options.getNumber("stock")
-                const role = options.getRole("role") || ``
-                const description = options.getString("description") || ``
+                const getRole = options.getRole("role")
+                if (getRole) {
+                    role = getRole.id
+                } else {
+                    role = null
+                }
+                const description = options.getString("description")
                 const newItem = {
                     ItemName: name,
                     ItemPrice: price,
-                    ItemStock: stock,
                     ItemRole: role,
                     ItemDescription: description,
                 }
 
-                ShopDB.findOne({ Guild: guild.id }, async (err, data) => {
+                ShopDB.findOne({ Guild: guild.id }, (err, data) => {
 
                     if (err) throw err
 
@@ -128,7 +134,7 @@ module.exports = {
 
                         ShopDB.create({
                             Guild: guild.id,
-                            Items: newItem,
+                            Items: [ newItem ],
                         })
 
                     }
@@ -136,8 +142,24 @@ module.exports = {
                 })
 
                 let data = await ShopDB.findOne({ Guild: guild.id }).catch(err => { })
+                if (!data) return interaction.reply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(color)
+                            .setTitle("Shop Add")
+                            .setDescription(`Your item:\nName: ${newItem.ItemName}\nDescription: ${newItem.ItemDescription}\nPrice: ${newItem.ItemPrice}\nRole Reward: <@&${newItem.ItemRole}>\n\nHas been saved!`)
+                            .setFooter({ text: "Shop by Bun Bot" })
+                            .setTimestamp()
+                    ]
+                })
 
-                let itemData = data.Items.find((x => x.ItemName === name))
+                let itemData = null;
+                for (var i = 0; i < data.Items.length; i++) {
+                    if (data.Items[ i ].ItemName === name) {
+                        itemData = data.Items[ i ]
+                        break;
+                    }
+                }
 
                 if (itemData) {
 
@@ -145,22 +167,21 @@ module.exports = {
 
                 } else {
 
-                    data.Items = [ ...data.Items, newItem ]
+                    data.Items.push(newItem)
+                    await data.save()
 
                     interaction.reply({
                         embeds: [
                             new EmbedBuilder()
                                 .setColor(color)
                                 .setTitle("Shop Add")
-                                .setDescription(`Your item:\n${newItem}\n\nHas been saved!`)
+                                .setDescription(`Your item:\nName: ${newItem.ItemName}\nDescription: ${newItem.ItemDescription}\nPrice: ${newItem.ItemPrice}\nRole Reward: <@&${newItem.ItemRole}>\n\nHas been saved!`)
                                 .setFooter({ text: "Shop by Bun Bot" })
                                 .setTimestamp()
                         ]
                     })
 
                 }
-
-                await data.save()
 
             }
 
@@ -221,12 +242,12 @@ module.exports = {
 
                 if (!data.Inventory) {
 
-                    data.Inventory = item
+                    data.Inventory = [ item ]
                     await data.save()
 
                 } else {
 
-                    data.Inventory = [ ...data.Inventory, item ]
+                    data.Inventory.push(item)
                     await data.save()
 
                 }
@@ -236,7 +257,7 @@ module.exports = {
                         new EmbedBuilder()
                             .setColor(color)
                             .setTitle("Modify Inventory")
-                            .setDescription(`Your item:\n${item}\n has been given to <@${user.id}>!`)
+                            .setDescription(`Your item:\nName: ${item.ItemName}\nDescription: ${item.ItemDescription}\nPrice: ${item.ItemPrice}\nRole Reward: <@&${item.ItemRole}>\n has been given to <@${user.id}>!`)
                             .setFooter({ text: "Shop by Bun Bot" })
                             .setTimestamp()
                     ]
@@ -257,23 +278,61 @@ module.exports = {
                 let itemData = await ShopDB.findOne({ Guild: guild.id }).catch(err => { })
                 if (!itemData) return Reply(interaction, emojilist.cross, `There are no items in the shop yet!`, true)
 
-                const items = itemData.Items
-                const item = items.find((i) => i.ItemName === itemName)
+                const item = itemData.Items.find((i) => i.ItemName === itemName)
                 if (!item) return Reply(interaction, emojilist.cross, `There is no item by that name!`, true)
 
-                const userItems = data.Inventory
-                const userItem = userItems.find((i) => i.ItemName === itemName)
+                const userItem = data.Inventory.find((i) => i.ItemName === itemName)
                 if (!userItem) return Reply(interaction, emojilist.cross, `This user does not have any item by that name!`, true)
 
-                if (item === itemName && userItem === itemName) {
+                if (item.ItemName === userItem.ItemName) {
 
-                    const filteredItems = items.filter((i) => i.ItemName !== itemName)
+                    const filteredItems = data.Inventory.filter((i) => i.ItemName !== itemName)
                     data.Inventory = filteredItems
                     await data.save()
+
+                    interaction.reply({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setColor(color)
+                                .setTitle("Removed")
+                                .setDescription("The item has been removed from their inventory!")
+                                .setFooter({ text: "Currency by Bun Bot" })
+                                .setTimestamp()
+                        ]
+                    })
 
                 } else {
                     return Reply(interaction, emojilist.cross, `We encountered an error trying to remove the item!`, true)
                 }
+
+            }
+
+                break;
+
+            case "pick-channel": {
+
+                const channel = options.getChannel("channel")
+
+                let data = await PickDB.findOne({ Guild: guild.id }).catch(err => { })
+                if (!data) Reply(interaction, emojilist.cross, `There is no pick data for this server yet!`, true)
+
+                if (!data.PickChannels) {
+                    data.PickChannels = [ `${channel.id}` ]
+                } else {
+                    data.PickChannels.push(`${channel.id}`)
+                }
+                await data.save()
+
+                interaction.reply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(color)
+                            .setTitle("Pick Channel")
+                            .setDescription(`Your channel \`${channel.name}\` has been saved!`)
+                            .setFooter({ text: "Pick by Bun Bot" })
+                            .setTimestamp()
+                    ]
+                })
 
             }
 

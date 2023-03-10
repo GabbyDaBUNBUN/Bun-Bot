@@ -31,23 +31,39 @@ module.exports = {
         const { options, member, guild } = interaction
         const { color, emojilist, cooldowns } = client
 
-        const user = options.getUser("user") || member.user
-
-        const data = await EconomyDB.findOne({ Guild: guild.id, User: user.id }).catch(err => { })
-        if (!data) return Reply(interaction, emojilist.cross, `This user has no Balance data!`)
-
         switch (options.getSubcommand()) {
 
             case "balance": {
 
-                const description = `Balance: ${data.Balance}\nInventory: ${data.Inventory}`
+                const user = options.getUser("user") || member.user
+
+                const data = await EconomyDB.findOne({ Guild: guild.id, User: user.id }).catch(err => { })
+                if (!data) return Reply(interaction, emojilist.cross, `This user has no Balance data!`)
+
+                let inventoryItems = []
+                data.Inventory.forEach((i) => {
+                    let itemNames = `${i.ItemName}`
+                    inventoryItems.push(itemNames + `\n`)
+                })
 
                 interaction.reply({
                     embeds: [
                         new EmbedBuilder()
                             .setColor(color)
-                            .setTitle("Balance")
-                            .setDescription(description)
+                            .setTitle(`${user.username}'s Balance`)
+                            .setDescription(`Here is a list of your balance and items:`)
+                            .setFields(
+                                {
+                                    name: `Inventory`,
+                                    value: `📃 List:\n\n${inventoryItems}`,
+                                    inline: true,
+                                },
+                                {
+                                    name: `Balance`,
+                                    value: `🪙 ${data.Balance}`,
+                                    inline: true,
+                                },
+                            )
                             .setFooter({ text: "Currency by Bun Bot" })
                             .setTimestamp()
                     ]
@@ -58,6 +74,9 @@ module.exports = {
                 break;
 
             case "snuggle": {
+
+                const data = await EconomyDB.findOne({ Guild: guild.id, User: member.id }).catch(err => { })
+                if (!data) return Reply(interaction, emojilist.cross, `This user has no Balance data!`)
 
                 const cooldown = cooldowns.get(interaction.user.id && `snuggle`)
 
@@ -105,6 +124,9 @@ module.exports = {
 
             case "pet": {
 
+                const data = await EconomyDB.findOne({ Guild: guild.id, User: member.id }).catch(err => { })
+                if (!data) return Reply(interaction, emojilist.cross, `This user has no Balance data!`)
+
                 const cooldown = cooldowns.get(interaction.user.id && `pet`)
 
                 if (cooldown) {
@@ -151,8 +173,12 @@ module.exports = {
 
             case "give-bal": {
 
+                const data = await EconomyDB.findOne({ Guild: guild.id, User: member.id }).catch(err => { })
+                if (!data) return Reply(interaction, emojilist.cross, `This user has no Balance data!`)
+
                 const targetUser = options.getUser("user")
                 const amount = options.getNumber("amount")
+                if (data.Balance < amount) return Reply(interaction, emojilist.cross, `You do not have that many coins to give!`, true)
 
                 data.Balance = data.Balance - amount
                 await data.save()

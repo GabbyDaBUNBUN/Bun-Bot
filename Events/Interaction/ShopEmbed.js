@@ -27,10 +27,7 @@ module.exports = {
         if (interaction.isButton) {
 
             const items = shopData.Items
-
-            let embeds = []
             let currentPage = data.ShopPage
-            let id = member.id
             let pageSize = 10
             let countPages = Math.ceil(items.length / pageSize)
 
@@ -43,22 +40,25 @@ module.exports = {
                     await data.save()
 
                     const startIndex = currentPage * pageSize - pageSize
-                    const list = [ ...items ].splice(startIndex, pageSize)
+                    const listSplit = [ ...items ].splice(startIndex, pageSize)
+                    let list = []
+
+                    listSplit.forEach((i) => {
+
+                        let description = `Name: ${i.ItemName}\nDescription: ${i.ItemDescription}\nPrice: ${i.ItemPrice}\nRole Reward: <@&${i.ItemRole}>`
+                        list.push(description)
+
+                    })
 
                     const Embed = new EmbedBuilder()
                         .setColor(color)
                         .setTitle(`Shop`)
-                        .setDescription(list)
+                        .setDescription(list.toString())
                         .setFooter({ text: `Page ${currentPage}` })
                         .setTimestamp()
 
                     const Buttons = new ActionRowBuilder()
                         .addComponents(
-                            new ButtonBuilder()
-                                .setCustomId(`next`)
-                                .setStyle(ButtonStyle.Primary)
-                                .setEmoji(`⏭️`)
-                                .setDisabled(currentPage === items.length - 1),
                             new ButtonBuilder()
                                 .setCustomId(`previous`)
                                 .setStyle(ButtonStyle.Primary)
@@ -68,7 +68,12 @@ module.exports = {
                                 .setCustomId(`exit`)
                                 .setStyle(ButtonStyle.Danger)
                                 .setEmoji(`❌`)
-                                .setDisabled(false)
+                                .setDisabled(false),
+                            new ButtonBuilder()
+                                .setCustomId(`next`)
+                                .setStyle(ButtonStyle.Primary)
+                                .setEmoji(`⏭️`)
+                                .setDisabled(currentPage === items.length - 1),
                         )
 
                     message.edit({ embeds: [ Embed ], components: [ Buttons ] })
@@ -78,22 +83,25 @@ module.exports = {
                     await data.save()
 
                     const startIndex = currentPage * pageSize - pageSize
-                    const list = [ ...items ].splice(startIndex, pageSize)
+                    const listSplit = [ ...items ].splice(startIndex, pageSize)
+                    let list = []
+
+                    listSplit.forEach((i) => {
+
+                        let description = `Name: ${i.ItemName}\nDescription: ${i.ItemDescription}\nPrice: ${i.ItemPrice}\nRole Reward: <@&${i.ItemRole}>`
+                        list.push(description)
+
+                    })
 
                     const Embed = new EmbedBuilder()
                         .setColor(color)
                         .setTitle(`Shop`)
-                        .setDescription(list)
+                        .setDescription(list.toString())
                         .setFooter({ text: `Page ${currentPage}` })
                         .setTimestamp()
 
                     const Buttons = new ActionRowBuilder()
                         .addComponents(
-                            new ButtonBuilder()
-                                .setCustomId(`next`)
-                                .setStyle(ButtonStyle.Primary)
-                                .setEmoji(`⏭️`)
-                                .setDisabled(currentPage === items.length - 1),
                             new ButtonBuilder()
                                 .setCustomId(`previous`)
                                 .setStyle(ButtonStyle.Primary)
@@ -103,7 +111,12 @@ module.exports = {
                                 .setCustomId(`exit`)
                                 .setStyle(ButtonStyle.Danger)
                                 .setEmoji(`❌`)
-                                .setDisabled(false)
+                                .setDisabled(false),
+                            new ButtonBuilder()
+                                .setCustomId(`next`)
+                                .setStyle(ButtonStyle.Primary)
+                                .setEmoji(`⏭️`)
+                                .setDisabled(currentPage === items.length - 1),
                         )
 
                     message.edit({ embeds: [ Embed ], components: [ Buttons ] })
@@ -121,22 +134,25 @@ module.exports = {
                     await data.save()
 
                     const startIndex = currentPage * pageSize - pageSize
-                    const list = [ ...items ].splice(startIndex, pageSize)
+                    const listSplit = [ ...items ].splice(startIndex, pageSize)
+                    let list = []
+
+                    listSplit.forEach((i) => {
+
+                        let description = `Name: ${i.ItemName}\nDescription: ${i.ItemDescription}\nPrice: ${i.ItemPrice}\nRole Reward: <@&${i.ItemRole}>`
+                        list.push(description)
+
+                    })
 
                     const Embed = new EmbedBuilder()
                         .setColor(color)
                         .setTitle(`Shop`)
-                        .setDescription(list)
+                        .setDescription(list.toString())
                         .setFooter({ text: `Page ${currentPage}` })
                         .setTimestamp()
 
                     const Buttons = new ActionRowBuilder()
                         .addComponents(
-                            new ButtonBuilder()
-                                .setCustomId(`next`)
-                                .setStyle(ButtonStyle.Primary)
-                                .setEmoji(`⏭️`)
-                                .setDisabled(currentPage === items.length - 1),
                             new ButtonBuilder()
                                 .setCustomId(`previous`)
                                 .setStyle(ButtonStyle.Primary)
@@ -146,7 +162,12 @@ module.exports = {
                                 .setCustomId(`exit`)
                                 .setStyle(ButtonStyle.Danger)
                                 .setEmoji(`❌`)
-                                .setDisabled(false)
+                                .setDisabled(false),
+                            new ButtonBuilder()
+                                .setCustomId(`next`)
+                                .setStyle(ButtonStyle.Primary)
+                                .setEmoji(`⏭️`)
+                                .setDisabled(currentPage === items.length - 1),
                         )
 
                     message.edit({ embeds: [ Embed ], components: [ Buttons ] })
@@ -156,22 +177,25 @@ module.exports = {
                     await data.save()
 
                     const startIndex = currentPage * pageSize - pageSize
-                    const list = [ ...items ].splice(startIndex, pageSize)
+                    const listSplit = [ ...items ].splice(startIndex, pageSize)
+                    let list = []
+
+                    listSplit.forEach((i) => {
+
+                        let description = `Name: ${i.ItemName}\nDescription: ${i.ItemDescription}\nPrice: ${i.ItemPrice}\nRole Reward: <@&${i.ItemRole}>`
+                        list.push(description)
+
+                    })
 
                     const Embed = new EmbedBuilder()
                         .setColor(color)
                         .setTitle(`Shop`)
-                        .setDescription(list)
+                        .setDescription(list.toString())
                         .setFooter({ text: `Page ${currentPage}` })
                         .setTimestamp()
 
                     const Buttons = new ActionRowBuilder()
                         .addComponents(
-                            new ButtonBuilder()
-                                .setCustomId(`next`)
-                                .setStyle(ButtonStyle.Primary)
-                                .setEmoji(`⏭️`)
-                                .setDisabled(currentPage === items.length - 1),
                             new ButtonBuilder()
                                 .setCustomId(`previous`)
                                 .setStyle(ButtonStyle.Primary)
@@ -181,7 +205,12 @@ module.exports = {
                                 .setCustomId(`exit`)
                                 .setStyle(ButtonStyle.Danger)
                                 .setEmoji(`❌`)
-                                .setDisabled(false)
+                                .setDisabled(false),
+                            new ButtonBuilder()
+                                .setCustomId(`next`)
+                                .setStyle(ButtonStyle.Primary)
+                                .setEmoji(`⏭️`)
+                                .setDisabled(currentPage === items.length - 1),
                         )
 
                     message.edit({ embeds: [ Embed ], components: [ Buttons ] })
