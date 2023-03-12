@@ -1,7 +1,10 @@
-const { Events, MessageComponentInteraction, ChannelType, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, InteractionType } = require("discord.js")
+const { Events, MessageComponentInteraction, ChannelType, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, InteractionType, AttachmentBuilder } = require("discord.js")
 const { CustomClient } = require("../../Structures/Classes/CustomClient")
+const { createTranscript } = require("discord-html-transcripts")
 const TicketDB = require("../../Structures/Schemas/TicketDB")
+const TicketChannelDB = require("../../Structures/Schemas/TicketChannel")
 const Reply = require("../../Systems/Reply")
+const { data } = require("../../Commands/Information/help")
 
 module.exports = {
     name: Events.InteractionCreate,
@@ -15,7 +18,7 @@ module.exports = {
         if (!interaction.isButton()) return
 
         const { guild, member, customId, channel, user, message, type } = interaction
-        const { emojilist } = client
+        const { emojilist, color } = client
 
         if (![ "open", "close-delete", "delete" ].includes(customId)) return
 
@@ -105,6 +108,27 @@ module.exports = {
             case "delete": {
 
                 if (!member.permissions.has("Administrator")) return Reply(interaction, emojilist.cross, "You do not have permission to use this button!", true)
+
+                let data = await TicketChannelDB.findOne({ GuildID: guild.id }).catch(err => { })
+                if (!data) return Reply(interaction, emojilist.cross, `You don't have ticket logs set up yet! You can do so by using \`/ticket log-channel\`!`)
+
+                let ticketData = await TicketDB.findOne({ GuildID: guild.id, ChannelID: channel.id }).catch(err => { })
+
+                const Channel = guild.channels.cache.get(data.ChannelID)
+                const attachement = await createTranscript(channel, {
+                    limit: -1,
+                    returnType: `attachment`,
+                    filename: `${ticketData.TicketID} - ${ticketData.MemberID}.html`,
+                })
+                Channel.send({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(color)
+                            .setTitle(`Ticket: ${ticketData.TicketID}`)
+                            .setTimestamp()
+                    ],
+                    files: [ attachement ]
+                })
 
                 await TicketDB.findOneAndDelete({ ChannelID: channel.id })
 
