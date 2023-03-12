@@ -78,7 +78,7 @@ module.exports = {
                 const data = await EconomyDB.findOne({ Guild: guild.id, User: member.id }).catch(err => { })
                 if (!data) return Reply(interaction, emojilist.cross, `This user has no Balance data!`)
 
-                const cooldown = cooldowns.get(interaction.user.id && `snuggle`)
+                const cooldown = cooldowns.get(`${member.id}, snuggle`)
 
                 if (cooldown) {
 
@@ -110,10 +110,10 @@ module.exports = {
                         ]
                     })
 
-                    cooldowns.set(interaction.user.id && `snuggle`, Date.now() + 57600000)
+                    cooldowns.set(`${member.id}, snuggle`, Date.now() + 57600000)
 
                     setTimeout(() => {
-                        cooldowns.delete(interaction.user.id)
+                        cooldowns.delete(`${member.id}, snuggle`)
                     }, 57600000)
 
                 }
@@ -127,7 +127,7 @@ module.exports = {
                 const data = await EconomyDB.findOne({ Guild: guild.id, User: member.id }).catch(err => { })
                 if (!data) return Reply(interaction, emojilist.cross, `This user has no Balance data!`)
 
-                const cooldown = cooldowns.get(interaction.user.id && `pet`)
+                const cooldown = cooldowns.get(`${member.id}, pet`)
 
                 if (cooldown) {
 
@@ -159,10 +159,10 @@ module.exports = {
                         ]
                     })
 
-                    cooldowns.set(interaction.user.id && `pet`, Date.now() + 57600000)
+                    cooldowns.set(`${member.id}, pet`, Date.now() + 57600000)
 
                     setTimeout(() => {
-                        cooldowns.delete(interaction.user.id)
+                        cooldowns.delete(`${member.id}, pet`)
                     }, 57600000)
 
                 }
