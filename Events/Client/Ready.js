@@ -59,7 +59,7 @@ module.exports = {
                         .setFooter({ text: "QOTD by Bun Bot" })
 
                     channel.send({ content: `${data.Role}`, embeds: [ Embed ] })
-                    data.Count + 1
+                    data.Count = data.Count + 1
                     data.save()
                 }, {
                     scheduled: true,
