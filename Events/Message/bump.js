@@ -1,5 +1,6 @@
 const { Message, EmbedBuilder, Events } = require("discord.js")
 const { CustomClient } = require("../../Structures/Classes/CustomClient")
+const EconomyDB = require("../../Structures/Schemas/EconomyDB")
 
 module.exports = {
     name: Events.MessageCreate,
@@ -10,11 +11,9 @@ module.exports = {
      */
     async execute(message, client) {
 
-        const { author } = message
+        const { author, channel, interaction, guild } = message
+        const bot = author.id
         const { color } = client
-        if (author.id !== `302050872383242240`) return
-
-        //Disboard Bump Buddy
         const sleep = async (ms) => {
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
@@ -22,21 +21,56 @@ module.exports = {
                 }, ms || 0);
             });
         };
+        if (bot !== `302050872383242240`) return
 
-        message.react(`⌚`)
+        const member = interaction.user.id
 
-        await sleep(7200000)
+        EconomyDB.findOne({ Guild: guild.id }, async (err, data) => {
+            if (err) throw err
+
+            if (!data) {
+                EconomyDB.create({
+                    Guild: guild.id,
+                    User: member,
+                    Balance: 0,
+                    Inventory: [],
+                })
+            }
+        })
+
+        //Disboard Bump Buddy
+        message.react(`⏲️`)
+
+        await sleep(500)
+
+        let econData = await EconomyDB.findOne({ Guild: guild.id, User: member }).catch(err => { })
+
+        econData.Balance = econData.Balance + 10
+        await econData.save()
 
         message.reply({
-            components: `<@&1042275026616983654>`,
             embeds: [
                 new EmbedBuilder()
                     .setColor(color)
-                    .setTitle("Bump Me")
-                    .setDescription("Help us by bumping the server! Use: \`/bump\`")
+                    .setTitle("Bumped!")
+                    .setDescription("Thank you for bumping our server! You have been awarded 10 🪙's! We will remind you when to bump again!")
                     .setFooter({ text: "Bump Buddy by Bun Bot" })
                     .setTimestamp()
             ]
+        }).then(async () => {
+            await sleep(7200000)
+
+            channel.send({
+                content: `<@${member}> <@&1042275026616983654>`,
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(color)
+                        .setTitle("Time to Bump!")
+                        .setDescription(`Help us get new members! Use \`/bump\` to bump the server!`)
+                        .setFooter({ text: "Bump Buddy by Bun Bot" })
+                        .setTimestamp()
+                ]
+            })
         })
 
     }

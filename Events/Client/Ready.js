@@ -13,7 +13,7 @@ module.exports = {
      * 
      * @param {CustomClient} client 
      */
-    execute(client) {
+    async execute(client) {
 
         const { user, color } = client
 
@@ -29,8 +29,8 @@ module.exports = {
         setInterval(() => {
 
             user.setActivity({
-                name: `/help for a list of commands`,
-                type: ActivityType.Listening
+                name: `/help for command list`,
+                type: ActivityType.Playing
             })
 
         }, ms("5s"))

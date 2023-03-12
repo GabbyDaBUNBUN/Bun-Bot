@@ -41,22 +41,28 @@ module.exports = {
             case "view": {
 
                 const items = shopData.Items
+                let pageSize = 5
+                let countPages = Math.ceil(items.length / pageSize)
+                let disabled = false
+                if (items.length <= 5) {
+                    disabled = true
+                }
 
-                let firstListSplit = items.splice(0, 10)
+                let firstListSplit = items.splice(0, 5)
                 let firstList = []
 
                 firstListSplit.forEach((i) => {
 
-                    let description = `Name: ${i.ItemName}\nDescription: ${i.ItemDescription}\nPrice: ${i.ItemPrice}\nRole Reward: <@&${i.ItemRole}>`
+                    let description = `🪙**${i.ItemPrice}** **-** **Name: ${i.ItemName}**\nDescription: ${i.ItemDescription}\nRole Reward: <@&${i.ItemRole}>`
                     firstList.push(description + `\n\n`)
 
                 })
 
                 const Embed = new EmbedBuilder()
                     .setColor(color)
-                    .setTitle(`Shop`)
-                    .setDescription(firstList.toString())
-                    .setFooter({ text: "Page 1" })
+                    .setTitle(`${guild.name}'s Shop`)
+                    .setDescription(`buy an item by using \`/shop buy item: <item name>\`\n\n${firstList.toString()}`)
+                    .setFooter({ text: `Page 1 of ${countPages}` })
                     .setTimestamp()
 
                 const Buttons = new ActionRowBuilder()
@@ -75,7 +81,7 @@ module.exports = {
                             .setCustomId(`next`)
                             .setStyle(ButtonStyle.Primary)
                             .setEmoji(`⏭️`)
-                            .setDisabled(items.length <= 10),
+                            .setDisabled(disabled),
                     )
 
                 data.ShopPage = 1

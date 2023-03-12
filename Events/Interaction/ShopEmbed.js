@@ -1,4 +1,4 @@
-const { Events, ButtonInteraction } = require("discord.js")
+const { Events, ButtonInteraction, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js")
 const { CustomClient } = require("../../Structures/Classes/CustomClient")
 const EconomyDB = require("../../Structures/Schemas/EconomyDB")
 const ShopDB = require("../../Structures/Schemas/ShopDB")
@@ -14,7 +14,7 @@ module.exports = {
     async execute(interaction, client) {
 
         const { customId, member, guild, message } = interaction
-        const { emojilist } = client
+        const { emojilist, color } = client
 
         if (![ "next", "previous", "exit" ].includes(customId)) return
 
@@ -27,26 +27,31 @@ module.exports = {
         if (interaction.isButton) {
 
             const items = shopData.Items
-            let currentPage = data.ShopPage
-            let pageSize = 10
+            let pageSize = 5
             let countPages = Math.ceil(items.length / pageSize)
 
-            if (customId === `previous` && currentPage > 0) {
+            if (customId === `previous` && data.ShopPage > 0) {
 
-                let prevPage = currentPage - 1
+                let prevPage = data.ShopPage - 1
 
                 if (prevPage >= 1) {
-                    currentPage = prevPage
+                    data.ShopPage = data.ShopPage - 1
                     await data.save()
 
-                    const startIndex = currentPage * pageSize - pageSize
-                    const listSplit = [ ...items ].splice(startIndex, pageSize)
+                    const startIndex = data.ShopPage * pageSize - pageSize
+                    const listSplit = items.splice(startIndex, pageSize)
                     let list = []
+                    let disabled = false
+                    if (data.ShopPage >= countPages) {
+                        disabled = true
+                    } else {
+                        disabled = false
+                    }
 
                     listSplit.forEach((i) => {
 
-                        let description = `Name: ${i.ItemName}\nDescription: ${i.ItemDescription}\nPrice: ${i.ItemPrice}\nRole Reward: <@&${i.ItemRole}>`
-                        list.push(description)
+                        let description = `🪙**${i.ItemPrice}** **-** **Name: ${i.ItemName}**\nDescription: ${i.ItemDescription}\nRole Reward: <@&${i.ItemRole}>`
+                        list.push(description + `\n\n`)
 
                     })
 
@@ -54,7 +59,7 @@ module.exports = {
                         .setColor(color)
                         .setTitle(`Shop`)
                         .setDescription(list.toString())
-                        .setFooter({ text: `Page ${currentPage}` })
+                        .setFooter({ text: `Page ${data.ShopPage} of ${countPages}` })
                         .setTimestamp()
 
                     const Buttons = new ActionRowBuilder()
@@ -63,7 +68,7 @@ module.exports = {
                                 .setCustomId(`previous`)
                                 .setStyle(ButtonStyle.Primary)
                                 .setEmoji(`⏮️`)
-                                .setDisabled(currentPage === 1),
+                                .setDisabled(data.ShopPage === 1),
                             new ButtonBuilder()
                                 .setCustomId(`exit`)
                                 .setStyle(ButtonStyle.Danger)
@@ -73,23 +78,29 @@ module.exports = {
                                 .setCustomId(`next`)
                                 .setStyle(ButtonStyle.Primary)
                                 .setEmoji(`⏭️`)
-                                .setDisabled(currentPage === items.length - 1),
+                                .setDisabled(disabled),
                         )
 
-                    message.edit({ embeds: [ Embed ], components: [ Buttons ] })
+                    interaction.update({ embeds: [ Embed ], components: [ Buttons ] })
 
                 } else {
-                    currentPage = 1
+                    data.ShopPage = 1
                     await data.save()
 
-                    const startIndex = currentPage * pageSize - pageSize
-                    const listSplit = [ ...items ].splice(startIndex, pageSize)
+                    const startIndex = data.ShopPage * pageSize - pageSize
+                    const listSplit = items.splice(startIndex, pageSize)
                     let list = []
+                    let disabled = false
+                    if (data.ShopPage >= countPages) {
+                        disabled = true
+                    } else {
+                        disabled = false
+                    }
 
                     listSplit.forEach((i) => {
 
-                        let description = `Name: ${i.ItemName}\nDescription: ${i.ItemDescription}\nPrice: ${i.ItemPrice}\nRole Reward: <@&${i.ItemRole}>`
-                        list.push(description)
+                        let description = `🪙**${i.ItemPrice}** **-** **Name: ${i.ItemName}**\nDescription: ${i.ItemDescription}\nRole Reward: <@&${i.ItemRole}>`
+                        list.push(description + `\n\n`)
 
                     })
 
@@ -97,7 +108,7 @@ module.exports = {
                         .setColor(color)
                         .setTitle(`Shop`)
                         .setDescription(list.toString())
-                        .setFooter({ text: `Page ${currentPage}` })
+                        .setFooter({ text: `Page ${data.ShopPage} of ${countPages}` })
                         .setTimestamp()
 
                     const Buttons = new ActionRowBuilder()
@@ -106,7 +117,7 @@ module.exports = {
                                 .setCustomId(`previous`)
                                 .setStyle(ButtonStyle.Primary)
                                 .setEmoji(`⏮️`)
-                                .setDisabled(currentPage === 1),
+                                .setDisabled(data.ShopPage === 1),
                             new ButtonBuilder()
                                 .setCustomId(`exit`)
                                 .setStyle(ButtonStyle.Danger)
@@ -116,31 +127,37 @@ module.exports = {
                                 .setCustomId(`next`)
                                 .setStyle(ButtonStyle.Primary)
                                 .setEmoji(`⏭️`)
-                                .setDisabled(currentPage === items.length - 1),
+                                .setDisabled(disabled),
                         )
 
-                    message.edit({ embeds: [ Embed ], components: [ Buttons ] })
+                    interaction.update({ embeds: [ Embed ], components: [ Buttons ] })
 
                 }
 
             }
 
-            if (customId === `next` && currentPage < items.length) {
+            if (customId === `next` && data.ShopPage <= countPages) {
 
-                let nextPage = currentPage + 1
+                let nextPage = data.ShopPage + 1
 
-                if (nextPage <= countPages) {
-                    currentPage = nextPage
+                if (nextPage < countPages) {
+                    data.ShopPage = data.ShopPage + 1
                     await data.save()
 
-                    const startIndex = currentPage * pageSize - pageSize
-                    const listSplit = [ ...items ].splice(startIndex, pageSize)
+                    const startIndex = data.ShopPage * pageSize - pageSize
+                    const listSplit = items.splice(startIndex, pageSize)
                     let list = []
+                    let disabled = false
+                    if (data.ShopPage >= countPages) {
+                        disabled = true
+                    } else {
+                        disabled = false
+                    }
 
                     listSplit.forEach((i) => {
 
-                        let description = `Name: ${i.ItemName}\nDescription: ${i.ItemDescription}\nPrice: ${i.ItemPrice}\nRole Reward: <@&${i.ItemRole}>`
-                        list.push(description)
+                        let description = `🪙**${i.ItemPrice}** **-** **Name: ${i.ItemName}**\nDescription: ${i.ItemDescription}\nRole Reward: <@&${i.ItemRole}>`
+                        list.push(description + `\n\n`)
 
                     })
 
@@ -148,7 +165,7 @@ module.exports = {
                         .setColor(color)
                         .setTitle(`Shop`)
                         .setDescription(list.toString())
-                        .setFooter({ text: `Page ${currentPage}` })
+                        .setFooter({ text: `Page ${data.ShopPage} of ${countPages}` })
                         .setTimestamp()
 
                     const Buttons = new ActionRowBuilder()
@@ -157,7 +174,7 @@ module.exports = {
                                 .setCustomId(`previous`)
                                 .setStyle(ButtonStyle.Primary)
                                 .setEmoji(`⏮️`)
-                                .setDisabled(currentPage === 1),
+                                .setDisabled(data.ShopPage === 1),
                             new ButtonBuilder()
                                 .setCustomId(`exit`)
                                 .setStyle(ButtonStyle.Danger)
@@ -167,23 +184,29 @@ module.exports = {
                                 .setCustomId(`next`)
                                 .setStyle(ButtonStyle.Primary)
                                 .setEmoji(`⏭️`)
-                                .setDisabled(currentPage === items.length - 1),
+                                .setDisabled(disabled),
                         )
 
-                    message.edit({ embeds: [ Embed ], components: [ Buttons ] })
+                    interaction.update({ embeds: [ Embed ], components: [ Buttons ] })
 
                 } else {
-                    currentPage = countPages
+                    data.ShopPage = countPages
                     await data.save()
 
-                    const startIndex = currentPage * pageSize - pageSize
-                    const listSplit = [ ...items ].splice(startIndex, pageSize)
+                    const startIndex = data.ShopPage * pageSize - pageSize
+                    const listSplit = items.splice(startIndex, pageSize)
                     let list = []
+                    let disabled = false
+                    if (data.ShopPage >= countPages) {
+                        disabled = true
+                    } else {
+                        disabled = false
+                    }
 
                     listSplit.forEach((i) => {
 
-                        let description = `Name: ${i.ItemName}\nDescription: ${i.ItemDescription}\nPrice: ${i.ItemPrice}\nRole Reward: <@&${i.ItemRole}>`
-                        list.push(description)
+                        let description = `🪙**${i.ItemPrice}** **-** **Name: ${i.ItemName}**\nDescription: ${i.ItemDescription}\nRole Reward: <@&${i.ItemRole}>`
+                        list.push(description + `\n\n`)
 
                     })
 
@@ -191,7 +214,7 @@ module.exports = {
                         .setColor(color)
                         .setTitle(`Shop`)
                         .setDescription(list.toString())
-                        .setFooter({ text: `Page ${currentPage}` })
+                        .setFooter({ text: `Page ${data.ShopPage} of ${countPages}` })
                         .setTimestamp()
 
                     const Buttons = new ActionRowBuilder()
@@ -200,7 +223,7 @@ module.exports = {
                                 .setCustomId(`previous`)
                                 .setStyle(ButtonStyle.Primary)
                                 .setEmoji(`⏮️`)
-                                .setDisabled(currentPage === 1),
+                                .setDisabled(data.ShopPage === 1),
                             new ButtonBuilder()
                                 .setCustomId(`exit`)
                                 .setStyle(ButtonStyle.Danger)
@@ -210,10 +233,10 @@ module.exports = {
                                 .setCustomId(`next`)
                                 .setStyle(ButtonStyle.Primary)
                                 .setEmoji(`⏭️`)
-                                .setDisabled(currentPage === items.length - 1),
+                                .setDisabled(disabled),
                         )
 
-                    message.edit({ embeds: [ Embed ], components: [ Buttons ] })
+                    interaction.update({ embeds: [ Embed ], components: [ Buttons ] })
 
                 }
 

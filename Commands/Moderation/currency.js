@@ -61,10 +61,19 @@ module.exports = {
                 const user = options.getUser("user")
                 const amount = options.getNumber("amount")
 
-                const data = await EconomyDB.findOne({ Guild: guild.id, User: user.id }).catch(err => { })
-                if (!data) return Reply(interaction, emojilist.cross, `That user does not exist!`, true)
+                let data = await EconomyDB.findOne({ Guild: guild.id, User: user.id }).catch(err => { })
+                if (!data) {
+                    data = new EconomyDB({
+                        Guild: guild.id,
+                        User: user.id,
+                        Balance: amount,
+                        Inventory: [],
+                    })
+                } else if (data) {
 
-                data.Balance = data.Balance + amount
+                    data.Balance = data.Balance + amount
+
+                }
                 await data.save()
 
                 interaction.reply({
@@ -72,7 +81,7 @@ module.exports = {
                         new EmbedBuilder()
                             .setColor(color)
                             .setTitle("Modify Balance")
-                            .setDescription(`<@${member.id}> has added ${amount} to <@${user.id}>!`)
+                            .setDescription(`<@${member.id}> has added ${amount} 🪙's to <@${user.id}>!`)
                             .setFooter({ text: "Currency by Bun Bot" })
                             .setTimestamp()
                     ]
@@ -98,7 +107,7 @@ module.exports = {
                         new EmbedBuilder()
                             .setColor(color)
                             .setTitle("Modify Balance")
-                            .setDescription(`<@${member.id}> has removed ${amount} from <@${user.id}>!`)
+                            .setDescription(`<@${member.id}> has removed ${amount} 🪙's from <@${user.id}>!`)
                             .setFooter({ text: "Currency by Bun Bot" })
                             .setTimestamp()
                     ]

@@ -41,11 +41,11 @@ module.exports = {
             let MemberTag
 
             if (Member) MemberTag = Member.user.tag
-            else MemberTag = "Unknown"
+            else MemberTag = `<@${User}>`
 
             let shortXp = shorten(XP)
 
-            text += `${counter + 1}. ${MemberTag} | XP: ${shortXp} | Level: ${Level}\n`
+            text += `${counter + 1}. <@${User}> | XP: ${shortXp} | Level: ${Level}\n`
 
         }
 
