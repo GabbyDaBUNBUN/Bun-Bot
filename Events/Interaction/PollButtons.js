@@ -87,7 +87,7 @@ module.exports = {
                 const Embed = new EmbedBuilder()
                     .setColor(color)
                     .setTitle("Poll Ended")
-                    .setDescription(`These are the poll results:\n\n${pollEmbed.description}`)
+                    .setDescription(`${pollEmbed.description}`)
                     .setFields(
                         {
                             name: `${yesField.name}`,
