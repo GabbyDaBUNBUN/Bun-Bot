@@ -15,11 +15,12 @@ module.exports = {
 
         const { color } = client
 
-        const Commands = [ `clear\ncounting-save\nmod-help` ]
+        const Commands = [ `clear\nmod-help\npoll` ]
+        const Counting = [ `save\nset-up` ]
         const Currency = [ `modify-bal-add\nmodify-bal-remove\nshop-add\nshop-remove\nmodify-inv-add\nmodify-inv-remove\npick-channel` ]
         const Embeds = [ `create\nsend\nlist\ndelete` ]
         const Reactions = [ `add-role\nremove-role\npanel` ]
-        const SetUp = [ `confession-setup\ncounting-setup\ncreate-vc-setup\nlevels-setup\nqotd-setup\nsafe-word-setup` ]
+        const SetUp = [ `confession-setup\ncreate-vc-setup\nlevels-setup\nqotd-setup\nsafe-word-setup` ]
         const Ticket = [ `embed\nlog-channel` ]
         const Warn = [ `log-channel\nmember\ninfo` ]
 
@@ -31,6 +32,11 @@ module.exports = {
                 {
                     name: "Commands:",
                     value: `${Commands}`,
+                    inline: true,
+                },
+                {
+                    name: "Counting:",
+                    value: `${Counting}`,
                     inline: true,
                 },
                 {
@@ -51,6 +57,11 @@ module.exports = {
                 {
                     name: "Set Up:",
                     value: `${SetUp}`,
+                    inline: true,
+                },
+                {
+                    name: "Ticket:",
+                    value: `${Ticket}`,
                     inline: true,
                 },
                 {

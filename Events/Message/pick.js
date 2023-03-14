@@ -56,13 +56,13 @@ module.exports = {
                 .setTimestamp()
 
             message.reply({ embeds: [ Embed ] }).then(msg => {
-                setTimeout(() => msg.delete(), 10000)
+                setTimeout(() => msg.delete(), 20000)
             }).catch(err => { })
 
             pickData.OpenWindow = true
             await pickData.save()
 
-            await sleep(10000)
+            await sleep(20000)
             pickData.OpenWindow = false
             pickData.MessageCount = 0
             await pickData.save()
