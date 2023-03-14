@@ -29,29 +29,36 @@ module.exports = {
 
 5. Any and all self-promotion must go through staff. NO EXCEPTIONS!
 
-6. Please keep adult talk (NO NSFW chat of any kind, this is an SFW server) and cussing to <#1037958834053976086> at all times.
+6. Please keep adult talk (NO NSFW chat of any kind, this is an SFW server) and cussing out of <#1037960777136607302> at all times.
 
-7. Please respect peoples' roles - they are there for a reason. That means if they have No Flirting/No Touch/No DMs, then respect that. Do not give anyone a nickname/petname without getting consent first!
+7. Cussing and all Triggering topics must be spoilered/censord when used in the server!
 
-8. Please use the proper channels, they are labeled the way they are for a reason. If you have any questions then refer to <#1040093933675487232>.
+8. Please respect peoples' roles - they are there for a reason. That means if they have No Flirting/No Touch/No DMs, then respect that. Do not give anyone a nickname/petname without getting consent first!
 
-9. We are not a dating server. Some people have the <@&1080517195412541460> role and you may request these people when you need someone to take care of you, but we want our server to continue to be a safe, warm, and little space.
+9. Please use the proper channels, they are labeled the way they are for a reason. If you have any questions then refer to <#1040093933675487232>.
 
-10. Please keep talk about politics/violence/self harm to a minimum. Some people can be triggered by such topics.
+10. This is a server for littles that want to regress, but we do not cater to ageplay rp here. If you want to find a place specifically for that, please find a server that better serves your needs.
 
-11. No attention-seeking (eg. roleplaying self-harm, asking to be taken care of by people without the @babysitter role, ...). Staff will give you a verbal warning first if they think your behavior is inappropriate, and an official one will follow if you continue. 
+11. We are not a dating server. Some people have the <@&1080517195412541460> role and you may request these people when you need someone to take care of you, but we want our server to continue to be a safe, warm, and little space.
 
-12. We have a punishment protocol. For all rules that don't specify a punishment explicitly they are as follows:
+12. Please keep talk about politics/violence/self harm to a minimum. Some people can be triggered by such topics.
+
+12. No attention-seeking (eg. roleplaying self-harm, asking to be taken care of by people without the @babysitter role, ...). Staff will give you a verbal warning first if they think your behavior is inappropriate, and an official one will follow if you continue. 
+
+13. If you as a member feel uncomfortable or threatened around another member, please <#1037971276272242688>. We will resolve the situation for you and never think you are bugging us or wasting our time.
+
+14. We have a punishment protocol. For all rules that don't specify a punishment explicitly they are as follows:
 Warn X3
 Ban
 
-13.Please follow Discord TOS. (not doing so will result in a ban)` ]
+15. Please follow Discord TOS. (not doing so will result in a ban)` ]
 
         const Embed = new EmbedBuilder()
             .setAuthor({ name: user.username, iconURL: member.displayAvatarURL() })
             .setColor("0xffc0cb")
             .setTitle(`Rules:`)
             .setDescription(`${desc}`)
+            .setImage(`https://ucarecdn.com/ce2f5c36-6f93-40f6-a65b-638068de131b/b9d03c1f0fc82d2e07b3e4bc7758d17c.jpg`)
             .setFooter({ text: "Sent by Bun Bot" })
             .setTimestamp();
 

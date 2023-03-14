@@ -48,6 +48,11 @@ module.exports = {
                     .setCustomId(`Poll-Yes-${replyObject.id}`)
                     .setStyle(ButtonStyle.Success),
                 new ButtonBuilder()
+                    .setLabel(`End Poll`)
+                    .setEmoji(`🛑`)
+                    .setCustomId(`Poll-End-${replyObject.id}`)
+                    .setStyle(ButtonStyle.Primary),
+                new ButtonBuilder()
                     .setLabel(`No`)
                     .setEmoji(`❌`)
                     .setCustomId(`Poll-No-${replyObject.id}`)

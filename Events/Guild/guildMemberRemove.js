@@ -1,5 +1,7 @@
 const { GuildMember, EmbedBuilder, Events } = require("discord.js")
 const { CustomClient } = require("../../Structures/Classes/CustomClient")
+const LevelsDB = require("../../Structures/Schemas/LevelsDB")
+const EconomyDB = require("../../Structures/Schemas/EconomyDB")
 
 module.exports = {
     name: Events.GuildMemberRemove,
@@ -16,6 +18,9 @@ module.exports = {
         if (guild.id !== `1037958833529696276`) return
 
         const Channel = guild.channels.cache.get("1037998115510288384")
+
+        await EconomyDB.findOneAndDelete({ Guild: guild.id, User: user.id }).catch(err => { })
+        await LevelsDB.findOneAndDelete({ Guild: guild.id, User: user.id }).catch(err => { })
 
         Embed = new EmbedBuilder()
             .setColor("0xffc0cb")

@@ -6,7 +6,11 @@ const Reply = require("../../Systems/Reply")
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("leader-board")
-        .setDescription("Displays the leaderboard."),
+        .setDescription("Leader-board commands.")
+        .addSubcommand(sub => sub.setName("levels")
+            .setDescription("Levels leader-board."))
+        .addSubcommand(sub => sub.setName("coins")
+            .setDescription("Coins leader-board.")),
 
     /**
      * @param { ChatInputCommandInteraction } interaction
@@ -15,48 +19,104 @@ module.exports = {
 
     async execute(interaction, client) {
 
-        const { guild } = interaction
+        const { guild, options } = interaction
         const { emojilist } = client
 
-        let text = ""
+        switch (options.getSubcommand()) {
 
-        const Data = await LevelsDB.find({ Guild: guild.id })
-            .sort({
-                XP: -1,
-                Level: -1,
-            })
-            .limit(10)
-            .catch(err => { })
+            case "levels": {
 
-        if (!Data) return Reply(interaction, emojilist.cross, "The Leaderboard is currently empty at this time.")
+                let text = ""
 
-        await interaction.deferReply()
+                const Data = await LevelsDB.find({ Guild: guild.id })
+                    .sort({
+                        XP: -1,
+                        Level: -1,
+                    })
+                    .limit(10)
+                    .catch(err => { })
 
-        for (let counter = 0; counter < Data.length; ++counter) {
+                if (!Data) return Reply(interaction, emojilist.cross, "The Leaderboard is currently empty at this time.")
 
-            const { User, XP, Level = 0 } = Data[ counter ]
+                await interaction.deferReply()
 
-            const Member = guild.members.cache.get(User)
+                for (let counter = 0; counter < Data.length; ++counter) {
 
-            let MemberTag
+                    const { User, XP, Level = 0 } = Data[ counter ]
 
-            if (Member) MemberTag = Member.user.tag
-            else MemberTag = `<@${User}>`
+                    const Member = guild.members.cache.get(User)
 
-            let shortXp = shorten(XP)
+                    let MemberTag
 
-            text += `${counter + 1}. <@${User}> | XP: ${shortXp} | Level: ${Level}\n`
+                    if (Member) MemberTag = Member.user.tag
+                    else MemberTag = `<@${User}>`
+
+                    let shortXp = shorten(XP)
+
+                    text += `${counter + 1}. <@${User}> | XP: ${shortXp} | Level: ${Level}\n`
+
+                }
+
+                interaction.editReply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor("0xffc0cb")
+                            .setDescription(`${text}`)
+                            .setFooter({ text: "Leveling System by Bun Bot" })
+                    ]
+                })
+
+            }
+
+                break;
+
+            case "coins": {
+
+                let text = ""
+
+                const Data = await LevelsDB.find({ Guild: guild.id })
+                    .sort({
+                        XP: -1,
+                        Level: -1,
+                    })
+                    .limit(10)
+                    .catch(err => { })
+
+                if (!Data) return Reply(interaction, emojilist.cross, "The Leaderboard is currently empty at this time.")
+
+                await interaction.deferReply()
+
+                for (let counter = 0; counter < Data.length; ++counter) {
+
+                    const { User, XP, Level = 0 } = Data[ counter ]
+
+                    const Member = guild.members.cache.get(User)
+
+                    let MemberTag
+
+                    if (Member) MemberTag = Member.user.tag
+                    else MemberTag = `<@${User}>`
+
+                    let shortXp = shorten(XP)
+
+                    text += `${counter + 1}. <@${User}> | XP: ${shortXp} | Level: ${Level}\n`
+
+                }
+
+                interaction.editReply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor("0xffc0cb")
+                            .setDescription(`${text}`)
+                            .setFooter({ text: "Leveling System by Bun Bot" })
+                    ]
+                })
+
+            }
+
+                break;
 
         }
-
-        interaction.editReply({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor("0xffc0cb")
-                    .setDescription(`\`\`\`${text}\`\`\``)
-                    .setFooter({ text: "Leveling System by Bun Bot" })
-            ]
-        })
 
     }
 }

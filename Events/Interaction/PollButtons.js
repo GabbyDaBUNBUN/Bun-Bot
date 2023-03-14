@@ -1,4 +1,4 @@
-const { Events, ButtonInteraction } = require("discord.js")
+const { Events, ButtonInteraction, PermissionFlagsBits, EmbedBuilder } = require("discord.js")
 const { CustomClient } = require("../../Structures/Classes/CustomClient")
 const PollDB = require("../../Structures/Schemas/PollDB")
 const Reply = require("../../Systems/Reply")
@@ -13,7 +13,7 @@ module.exports = {
     async execute(interaction, client) {
 
         const { customId, user, message, guild } = interaction
-        const { emojilist } = client
+        const { emojilist, color } = client
 
         if (!interaction.isButton()) return
 
@@ -44,7 +44,7 @@ module.exports = {
                     })
                     await data.save()
 
-                    Reply(interaction, emojilist.cross, `Your vote has been counted!`, true)
+                    Reply(interaction, emojilist.tick, `Your vote has been counted!`, true)
                     message.edit({ embeds: [ pollEmbed ] })
 
                 }
@@ -63,7 +63,7 @@ module.exports = {
                     })
                     await data.save()
 
-                    Reply(interaction, emojilist.cross, `Your vote has been counted!`, true)
+                    Reply(interaction, emojilist.tick, `Your vote has been counted!`, true)
                     message.edit({ embeds: [ pollEmbed ] })
 
                 }
@@ -74,7 +74,41 @@ module.exports = {
 
         } else {
 
-            return Reply(interaction, emojilist.cross, `You have already voted!`, true)
+            const Member = guild.members.cache.get(user.id)
+            if (splittedArray[ 1 ] === `End`) {
+                if (Member.roles.highest.permissions.has(PermissionFlagsBits.Administrator)) return Reply(interaction, emojilist.cross, `You do not have permission to end the poll!`, true)
+
+                const pollEmbed = message.embeds[ 0 ]
+                if (!pollEmbed) return Reply(interaction, emojilist.cross, `Unable to find poll embed!`, true)
+
+                const yesField = pollEmbed.fields[ 0 ]
+                const noField = pollEmbed.fields[ 1 ]
+
+                const Embed = new EmbedBuilder()
+                    .setColor(color)
+                    .setTitle("Poll Ended")
+                    .setDescription(`These are the poll results:\n\n${pollEmbed.description}`)
+                    .setFields(
+                        {
+                            name: `${yesField.name}`,
+                            value: `${yesField.value}`,
+                            inline: true,
+                        },
+                        {
+                            name: `${noField.name}`,
+                            value: `${noField.value}`,
+                            inline: true,
+                        },
+                    )
+                    .setFooter({ text: "Poll by Bun Bot" })
+                    .setTimestamp()
+
+                PollDB.deleteMany({ Guild: guild.id, Message: message.id }).catch(err => { })
+
+                message.edit({ embeds: [ Embed ], components: [] })
+            } else {
+                return Reply(interaction, emojilist.cross, `You have already voted!`, true)
+            }
 
         }
 
