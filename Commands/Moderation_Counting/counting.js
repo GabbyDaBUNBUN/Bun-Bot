@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, ChatInputCommandInteraction, EmbedBuilder, PermissionFlagsBits, ChannelType } = require("discord.js")
 const { CustomClient } = require("../../Structures/Classes/CustomClient")
 const CountingDB = require("../../Structures/Schemas/CountingDB")
+const Reply = require("../../Systems/Reply")
 
 module.exports = {
     data: new SlashCommandBuilder()
