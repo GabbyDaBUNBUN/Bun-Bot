@@ -27,7 +27,12 @@ module.exports = {
 
             case "levels": {
 
-                let text = ""
+                const Embed = new EmbedBuilder()
+                    .setColor("0xffc0cb")
+                    .setTitle("Level Leader-Board")
+                    .setDescription(`Here is a list of the current leaders:`)
+                    .setFooter({ text: "Leveling System by Bun Bot" })
+                    .setTimestamp()
 
                 const Data = await LevelsDB.find({ Guild: guild.id })
                     .sort({
@@ -50,22 +55,21 @@ module.exports = {
                     let MemberTag
 
                     if (Member) MemberTag = Member.user.tag
-                    else MemberTag = `<@${User}>`
+                    else MemberTag = `User ID: ${User}`
 
                     let shortXp = shorten(XP)
 
-                    text += `**${counter + 1}.** <@${User}> | **XP:** ${shortXp} | **Level:** ${Level}\n`
+                    Embed.addFields(
+                        {
+                            name: `**${counter + 1}.** ${MemberTag}`,
+                            value: `**XP:** ${shortXp}\n**Level:** ${Level}\n`,
+                            inline: false,
+                        },
+                    )
 
                 }
 
-                interaction.editReply({
-                    embeds: [
-                        new EmbedBuilder()
-                            .setColor("0xffc0cb")
-                            .setDescription(`${text}`)
-                            .setFooter({ text: "Leveling System by Bun Bot" })
-                    ]
-                })
+                interaction.editReply({ embeds: [ Embed ] })
 
             }
 
@@ -73,7 +77,12 @@ module.exports = {
 
             case "coins": {
 
-                let text = ""
+                const Embed = new EmbedBuilder()
+                    .setColor("0xffc0cb")
+                    .setTitle("Coins Leader-Board")
+                    .setDescription(`Here is a list of the current leaders:`)
+                    .setFooter({ text: "Currency by Bun Bot" })
+                    .setTimestamp()
 
                 const Data = await EconomyDB.find({ Guild: guild.id })
                     .sort({
@@ -95,20 +104,18 @@ module.exports = {
                     let MemberTag
 
                     if (Member) MemberTag = Member.user.tag
-                    else MemberTag = `<@${User}>`
+                    else MemberTag = `User ID: ${User}`
 
-                    text += `**${counter + 1}.** <@${User}> | **Balance:** 🪙${Balance}\n`
+                    Embed.addFields(
+                        {
+                            name: `**${counter + 1}.** ${MemberTag}`,
+                            value: `🪙${Balance}`
+                        }
+                    )
 
                 }
 
-                interaction.editReply({
-                    embeds: [
-                        new EmbedBuilder()
-                            .setColor("0xffc0cb")
-                            .setDescription(`${text}`)
-                            .setFooter({ text: "Leveling System by Bun Bot" })
-                    ]
-                })
+                interaction.editReply({ embeds: [ Embed ] })
 
             }
 
