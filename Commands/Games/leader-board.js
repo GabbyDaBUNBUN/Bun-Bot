@@ -1,6 +1,7 @@
 const { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } = require("discord.js")
 const { CustomClient } = require("../../Structures/Classes/CustomClient")
 const LevelsDB = require("../../Structures/Schemas/LevelsDB")
+const EconomyDB = require("../../Structures/Schemas/EconomyDB")
 const Reply = require("../../Systems/Reply")
 
 module.exports = {
@@ -74,10 +75,9 @@ module.exports = {
 
                 let text = ""
 
-                const Data = await LevelsDB.find({ Guild: guild.id })
+                const Data = await EconomyDB.find({ Guild: guild.id })
                     .sort({
-                        XP: -1,
-                        Level: -1,
+                        Balance: -1,
                     })
                     .limit(10)
                     .catch(err => { })
@@ -88,7 +88,7 @@ module.exports = {
 
                 for (let counter = 0; counter < Data.length; ++counter) {
 
-                    const { User, XP, Level = 0 } = Data[ counter ]
+                    const { User, Balance = 0 } = Data[ counter ]
 
                     const Member = guild.members.cache.get(User)
 
@@ -97,9 +97,7 @@ module.exports = {
                     if (Member) MemberTag = Member.user.tag
                     else MemberTag = `<@${User}>`
 
-                    let shortXp = shorten(XP)
-
-                    text += `${counter + 1}. <@${User}> | XP: ${shortXp} | Level: ${Level}\n`
+                    text += `${counter + 1}. <@${User}> | Balance: 🪙${Balance}\n`
 
                 }
 
