@@ -54,7 +54,7 @@ module.exports = {
 
                     let shortXp = shorten(XP)
 
-                    text += `${counter + 1}. <@${User}> | XP: ${shortXp} | Level: ${Level}\n`
+                    text += `**${counter + 1}.** <@${User}> | **XP:** ${shortXp} | **Level:** ${Level}\n`
 
                 }
 
@@ -97,7 +97,7 @@ module.exports = {
                     if (Member) MemberTag = Member.user.tag
                     else MemberTag = `<@${User}>`
 
-                    text += `${counter + 1}. <@${User}> | Balance: 🪙${Balance}\n`
+                    text += `**${counter + 1}.** <@${User}> | **Balance:** 🪙${Balance}\n`
 
                 }
 
