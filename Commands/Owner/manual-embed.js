@@ -51,6 +51,9 @@ module.exports = {
 Warn X3
 Ban
 
+Exception:
+(Staff reserves the right to ban any member at any time if staff feels the members actions threaten other members or the server itself.)
+
 15. Please follow Discord TOS. (not doing so will result in a ban)` ]
 
         const Embed = new EmbedBuilder()
