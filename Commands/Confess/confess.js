@@ -196,7 +196,7 @@ module.exports = {
                                 new EmbedBuilder()
                                     .setColor(color)
                                     .setTitle("Confession Log")
-                                    .setDescription(`Confession has been sent:`)
+                                    .setDescription(`Reply has been sent:`)
                                     .setFields(
                                         {
                                             name: `Username:`,
@@ -209,12 +209,12 @@ module.exports = {
                                             inline: false,
                                         },
                                         {
-                                            name: `Confession:`,
+                                            name: `Reply:`,
                                             value: `${reply}`,
                                             inline: false,
                                         },
                                         {
-                                            name: `Confession Number:`,
+                                            name: `Reply Number:`,
                                             value: `${count}`,
                                             inline: false,
                                         },
@@ -256,7 +256,7 @@ module.exports = {
                                 new EmbedBuilder()
                                     .setColor(color)
                                     .setTitle("Confession Log")
-                                    .setDescription(`Confession has been sent:`)
+                                    .setDescription(`Reply has been sent:`)
                                     .setFields(
                                         {
                                             name: `Username:`,
@@ -269,12 +269,12 @@ module.exports = {
                                             inline: false,
                                         },
                                         {
-                                            name: `Confession:`,
+                                            name: `Reply:`,
                                             value: `${reply}`,
                                             inline: false,
                                         },
                                         {
-                                            name: `Confession Number:`,
+                                            name: `Reply Number:`,
                                             value: `${count}`,
                                             inline: false,
                                         },
