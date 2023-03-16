@@ -14,7 +14,7 @@ module.exports = {
 
         const { color } = client
 
-        const Confess = [ `confess` ]
+        const Confess = [ `confess\nreply` ]
         const CreateVC = [ `create-vc name\ncreate-vc private\ncreate-vc invite` ]
         const Currency = [ `coins balance\ncoins snuggle\ncoins pet\ncoins give-bal\npick\nshop view\nshop buy\nshop use` ]
         const Games = [ `rank\nleader-board\nhighscore` ]
@@ -28,7 +28,7 @@ module.exports = {
             .setDescription("List of all the commands available at this time:")
             .setFields(
                 {
-                    name: "Confess:",
+                    name: "Confession:",
                     value: `${Confess}`,
                     inline: true,
                 },
