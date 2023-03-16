@@ -120,14 +120,26 @@ module.exports = {
                     returnType: `attachment`,
                     filename: `${ticketData.TicketID} - ${ticketData.MemberID}.html`,
                 })
+                const sentTranscript = await Channel.send({
+                    files: [ attachement ]
+                })
+                const Message = Channel.messages.cache.get(sentTranscript.id)
                 Channel.send({
                     embeds: [
                         new EmbedBuilder()
                             .setColor(color)
-                            .setTitle(`Ticket: ${ticketData.TicketID}`)
+                            .setTitle(`Closed Ticket`)
+                            .setDescription(`**Ticket Details:**\n\n\`\`\`Member ID: ${ticketData.MemberID}\nTicket ID: ${ticketData.TicketID}\nChannel ID: ${ticketData.ChannelID}\`\`\``)
+                            .setFields(
+                                {
+                                    name: `Ticket Link:`,
+                                    value: `${Message.attachments.first().url}`,
+                                    inline: true
+                                }
+                            )
+                            .setFooter({ text: "Tickets by Bun Bot" })
                             .setTimestamp()
                     ],
-                    files: [ attachement ]
                 })
 
                 await TicketDB.findOneAndDelete({ ChannelID: channel.id })
