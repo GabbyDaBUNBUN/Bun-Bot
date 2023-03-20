@@ -16,7 +16,7 @@ module.exports = {
 
         const Confess = [ `confess\nreply` ]
         const CreateVC = [ `create-vc name\ncreate-vc private\ncreate-vc invite` ]
-        const Currency = [ `coins balance\ncoins snuggle\ncoins pet\ncoins give-bal\npick\nshop view\nshop buy\nshop use` ]
+        const Currency = [ `coins balance\ncoins snuggle\ncoins pet\ncoins give-bal\ncoins give-inv\npick\nshop view\nshop buy\nshop use` ]
         const Games = [ `rank\nleader-board\nhighscore` ]
         const Information = [ `help\nping` ]
         const Music = [ `play\npause\nresume\nstop\nskip\nrepeat-loop\nqueue\nleave\nvolume` ]

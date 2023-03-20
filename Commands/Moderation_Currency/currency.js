@@ -21,7 +21,7 @@ module.exports = {
             .addNumberOption(opt => opt.setName("amount").setDescription("Amount of currency you want to remove.").setRequired(true))
         )
         .addSubcommand(sub => sub.setName("shop-add")
-            .setDescription("Add inventory to a user.")
+            .setDescription("Add items to the shop.")
             .addStringOption(opt => opt.setName("name").setDescription("Name of the item.").setRequired(true))
             .addNumberOption(opt => opt.setName("price").setDescription("Price of the item.").setRequired(true))
             .addRoleOption(opt => opt.setName("role").setDescription("Role you want given to the user when item is purchased.").setRequired(false))

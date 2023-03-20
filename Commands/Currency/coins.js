@@ -18,7 +18,11 @@ module.exports = {
         .addSubcommand(sub => sub.setName("give-bal")
             .setDescription("Give another user coins!.")
             .addUserOption(opt => opt.setName("user").setDescription("User you want to give coins to.").setRequired(true))
-            .addNumberOption(opt => opt.setName("amount").setDescription("Amount of coins you want to give.").setRequired(true))),
+            .addNumberOption(opt => opt.setName("amount").setDescription("Amount of coins you want to give.").setRequired(true)))
+        .addSubcommand(sub => sub.setName("give-inv")
+            .setDescription("Give another user items!.")
+            .addUserOption(opt => opt.setName("user").setDescription("User you want to give items to.").setRequired(true))
+            .addStringOption(opt => opt.setName("item").setDescription("Name of the item you want to give.").setRequired(true))),
 
     /**
      * 
@@ -196,6 +200,46 @@ module.exports = {
                     .setTimestamp()
 
                 interaction.reply({ content: `<@${targetUser.id}>`, embeds: [ Embed ] })
+
+            }
+
+                break;
+
+            case "give-inv": {
+
+                const data = await EconomyDB.findOne({ Guild: guild.id, User: member.id }).catch(err => { })
+                if (!data) return Reply(interaction, emojilist.cross, `You have no data yet!`, true)
+
+                const targetUser = options.getUser("user")
+                const itemName = options.getString("item")
+                const item = data.Inventory.find((i) => i.ItemName === itemName)
+
+                const targetUserData = await EconomyDB.findOne({ Guild: guild.id, User: targetUser.id }).catch(err => { })
+                if (!targetUserData) return Reply(interaction, emojilist.cross, `This user has no data!`, true)
+
+                if (!item) return Reply(interaction, emojilist.cross, `You do not have an Item by that name!`, true)
+
+                if (!targetUserData.Inventory) {
+                    targetUserData.Inventory = [ item ]
+                } else {
+                    targetUserData.Inventory.push(item)
+                }
+                await targetUserData.save()
+
+                const filteredItems = data.Inventory.filter((i) => i.ItemName !== itemName)
+                data.Inventory = filteredItems
+                await data.save()
+
+                interaction.reply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(color)
+                            .setTitle("Give Inventory")
+                            .setDescription(`The item ${itemName} has been given to ${targetUser}`)
+                            .setFooter({ text: "Currency by Bun Bot" })
+                            .setTimestamp()
+                    ]
+                })
 
             }
 
