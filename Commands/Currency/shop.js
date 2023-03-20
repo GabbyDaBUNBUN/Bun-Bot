@@ -106,28 +106,35 @@ module.exports = {
                 const item = itemData.Items.find((i) => i.ItemName === itemName)
                 if (!item) return Reply(interaction, emojilist.cross, `There is no item by that name!`, true)
 
-                if (!data.Inventory) {
-
-                    data.Inventory = [ item ]
+                if (data.Balance < item.ItemPrice) return Reply(interaction, emojilist.cross, `You do not have enough to buy this item!`, true)
+                else if (data.Balance >= item.ItemPrice) {
+                    data.Balance = data.Balance - item.ItemPrice
                     await data.save()
 
-                } else {
+                    if (!data.Inventory) {
 
-                    data.Inventory.push(item)
-                    await data.save()
+                        data.Inventory = [ item ]
+                        await data.save()
+
+                    } else {
+
+                        data.Inventory.push(item)
+                        await data.save()
+
+                    }
+
+                    interaction.reply({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setColor(color)
+                                .setTitle("Buy")
+                                .setDescription(`Your item:\nName: ${item.ItemName}\nDescription: ${item.ItemDescription}\nPrice: ${item.ItemPrice}\nRole Reward: <@&${item.ItemRole}>\n has been added to your inventory!`)
+                                .setFooter({ text: "Shop by Bun Bot" })
+                                .setTimestamp()
+                        ]
+                    })
 
                 }
-
-                interaction.reply({
-                    embeds: [
-                        new EmbedBuilder()
-                            .setColor(color)
-                            .setTitle("Buy")
-                            .setDescription(`Your item:\nName: ${item.ItemName}\nDescription: ${item.ItemDescription}\nPrice: ${item.ItemPrice}\nRole Reward: <@&${item.ItemRole}>\n has been added to your inventory!`)
-                            .setFooter({ text: "Shop by Bun Bot" })
-                            .setTimestamp()
-                    ]
-                })
 
             }
 
