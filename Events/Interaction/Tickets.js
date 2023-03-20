@@ -31,6 +31,9 @@ module.exports = {
                 const ID = Math.floor(Math.random() * 90000) + 10000
                 const everyone = guild.roles.cache.get(guild.roles.everyone.id)
 
+                const data = await TicketDB.findOne({ GuildID: guild.id, MemberID: user.id }).catch(err => { })
+                if (data) return Reply(interaction, emojilist.cross, `You already have an open ticket: <#${data.ChannelID}>!`, true)
+
                 await guild.channels.create({
                     name: `${customId} + "-" + ${ID}`,
                     type: ChannelType.GuildText,
