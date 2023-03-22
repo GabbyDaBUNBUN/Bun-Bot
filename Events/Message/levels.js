@@ -68,7 +68,7 @@ module.exports = {
             const econData = await EconomyDB.findOne({ Guild: guild.id, User: author.id }).catch(err => { })
             if (!data) return
 
-            econData.Balance = data.Level += 1
+            econData.Balance = econData.Balance += data.Level += 1
             await econData.save()
 
             data.XP += give
