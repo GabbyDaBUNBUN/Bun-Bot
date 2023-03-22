@@ -199,7 +199,12 @@ module.exports = {
                     .setFooter({ text: "Currency by Bun Bot" })
                     .setTimestamp()
 
-                interaction.reply({ content: `<@${targetUser.id}>`, embeds: [ Embed ] })
+                interaction.reply({ content: `<@${targetUser.id}>`, embeds: [ Embed ] }).then(() =>
+                    setTimeout(
+                        () => interaction.deleteReply(),
+                        10000
+                    )
+                ).catch(err => { })
 
             }
 
@@ -239,7 +244,12 @@ module.exports = {
                             .setFooter({ text: "Currency by Bun Bot" })
                             .setTimestamp()
                     ]
-                })
+                }).then(() =>
+                    setTimeout(
+                        () => interaction.deleteReply(),
+                        10000
+                    )
+                ).catch(err => { })
 
             }
 

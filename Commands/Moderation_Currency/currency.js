@@ -85,7 +85,12 @@ module.exports = {
                             .setFooter({ text: "Currency by Bun Bot" })
                             .setTimestamp()
                     ]
-                })
+                }).then(() =>
+                    setTimeout(
+                        () => interaction.deleteReply(),
+                        10000
+                    )
+                ).catch(err => { })
 
             }
 
@@ -111,7 +116,12 @@ module.exports = {
                             .setFooter({ text: "Currency by Bun Bot" })
                             .setTimestamp()
                     ]
-                })
+                }).then(() =>
+                    setTimeout(
+                        () => interaction.deleteReply(),
+                        10000
+                    )
+                ).catch(err => { })
 
             }
 
@@ -226,7 +236,12 @@ module.exports = {
                                 .setFooter({ text: "Shop by Bun Bot" })
                                 .setTimestamp()
                         ]
-                    })
+                    }).then(() =>
+                        setTimeout(
+                            () => interaction.deleteReply(),
+                            10000
+                        )
+                    ).catch(err => { })
 
                 }
 
@@ -270,7 +285,12 @@ module.exports = {
                             .setFooter({ text: "Shop by Bun Bot" })
                             .setTimestamp()
                     ]
-                })
+                }).then(() =>
+                    setTimeout(
+                        () => interaction.deleteReply(),
+                        10000
+                    )
+                ).catch(err => { })
 
             }
 
@@ -308,7 +328,12 @@ module.exports = {
                                 .setFooter({ text: "Currency by Bun Bot" })
                                 .setTimestamp()
                         ]
-                    })
+                    }).then(() =>
+                        setTimeout(
+                            () => interaction.deleteReply(),
+                            10000
+                        )
+                    ).catch(err => { })
 
                 } else {
                     return Reply(interaction, emojilist.cross, `We encountered an error trying to remove the item!`, true)
