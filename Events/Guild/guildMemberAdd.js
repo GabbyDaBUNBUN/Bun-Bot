@@ -23,7 +23,7 @@ module.exports = {
         Embed = new EmbedBuilder()
             .setColor("0xffc0cb")
             .setAuthor({ name: user.tag, iconURL: user.displayAvatarURL() })
-            .setDescription(`Welcome ${member} to Kawaii Daycare 18+!\n\nWe hope you enjoy your stay here. There are a few things you need to do before you can access the rest of the server. Head over to <#1037959716946591814> read the rules and then follow the directions given to get verified. We hope you enjoy your stay!\n\nAccount Created: <t:${parseInt(user.createdTimestamp / 1000)}:R>\nMemberCount: \`${guild.memberCount}\``)
+            .setDescription(`Welcome ${member} to Kawaii Daycare 18+!\n\nWe hope you enjoy your stay here. No DMing other members until you are verified, if you do this you will be kicked. There are a few things you need to do before you can access the rest of the server. Head over to <#1037959716946591814> read the rules and then follow the directions given to get verified. We hope you enjoy your stay!\n\nAccount Created: <t:${parseInt(user.createdTimestamp / 1000)}:R>\nMemberCount: \`${guild.memberCount}\``)
             .setImage(`https://ucarecdn.com/d06d1f51-5850-49f1-89d2-2346ce19d17e/78080b5ee476d374d3a7b40b1aa463b7.jpg`)
             .setThumbnail(user.displayAvatarURL())
             .setFooter({ text: "Welcome by Bun Bot" })
