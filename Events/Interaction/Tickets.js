@@ -35,7 +35,7 @@ module.exports = {
                 if (data) return Reply(interaction, emojilist.cross, `You already have an open ticket: <#${data.ChannelID}>!`, true)
 
                 await guild.channels.create({
-                    name: `${message.embeds[ 0 ].title} + "-" + ${ID}`,
+                    name: `${message.embeds[ 0 ].title} ${ID}`,
                     type: ChannelType.GuildText,
                     parent: channel.parentId,
                     permissionOverwrites: [
