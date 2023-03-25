@@ -4,7 +4,7 @@ const Reply = require("../../Systems/Reply")
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("manual-embed")
+        .setName("daycare-map")
         .setDescription("Sends the manual embed. (Owner only)")
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
@@ -29,11 +29,11 @@ module.exports = {
             .setFields(
                 {
                     name: `Welcome and Rules`,
-                    value: `<#1037959716946591814> - Server rules, and how to verify.\n<#1087841185319636993> - List of triggering topics that you must spoiler, or are banned.\n<#1054880186400784534> - Where you can grab your roles.\n<#1037975377890517014> - Introduce yourself to the server.\n<#1077719282462502993> - Introduce your system to the server.`,
+                    value: `<#1089010680486711366> - Server rules.\n<#1087841185319636993> - List of triggering topics that you must spoiler, or are banned.\n<#1054880186400784534> - Where you can grab your roles.\n<#1037975377890517014> - Introduce yourself to the server.\n<#1077719282462502993> - Introduce your system to the server.`,
                 },
                 {
                     name: `Info and Support`,
-                    value: `<#1039873064348962909> - Announcements for the server.\n<#1040093933675487232> - Map of the server.\n<#1087720598442090519> - Current list of perks for boosting the server.\n<#1087849578956595200> - Where you can apply to be a part of our staff team.\n<#1037971276272242688> - Where you can open a ticket regarding server issues, or when you need to talk to staff privately.\n<#1085316400354181281> - Where we hold server polls for you to vote on.`,
+                    value: `<#1039873064348962909> - Announcements for the server.\n<#1040093933675487232> - Map of the server.\n<#1087720598442090519> - Current list of perks for boosting the server.\n<#1087849578956595200> - Where you can apply to be a part of our staff team.\n<#1037971276272242688> - Where you can open a ticket regarding server issues, or when you need to talk to staff privately.\n<#1089012044642127892> - Where you can make suggestions for the server.\n<#1085316400354181281> - Where we hold server polls for you to vote on.`,
                 },
                 {
                     name: `Text Channels`,
