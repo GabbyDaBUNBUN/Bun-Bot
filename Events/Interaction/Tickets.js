@@ -4,7 +4,6 @@ const { createTranscript } = require("discord-html-transcripts")
 const TicketDB = require("../../Structures/Schemas/TicketDB")
 const TicketChannelDB = require("../../Structures/Schemas/TicketChannel")
 const Reply = require("../../Systems/Reply")
-const { data } = require("../../Commands/Information/help")
 
 module.exports = {
     name: Events.InteractionCreate,
@@ -17,12 +16,13 @@ module.exports = {
 
         if (!interaction.isButton()) return
 
-        const { guild, member, customId, channel, user, message, type } = interaction
+        const { guild, member, customId, channel, user, message } = interaction
         const { emojilist, color } = client
 
         if (![ "open", "close-delete", "delete" ].includes(customId)) return
 
-
+        let channelData = await TicketChannelDB.findOne({ GuildID: guild.id }).catch(err => { })
+        if (!channelData) return Reply(interaction, emojilist.cross, `You don't have ticket logs set up yet! You can do so by using \`/ticket log-channel\`!`)
 
         switch (customId) {
 
@@ -35,7 +35,7 @@ module.exports = {
                 if (data) return Reply(interaction, emojilist.cross, `You already have an open ticket: <#${data.ChannelID}>!`, true)
 
                 await guild.channels.create({
-                    name: `${customId} + "-" + ${ID}`,
+                    name: `${message.embeds[ 0 ].title} + "-" + ${ID}`,
                     type: ChannelType.GuildText,
                     parent: channel.parentId,
                     permissionOverwrites: [
@@ -49,6 +49,7 @@ module.exports = {
                         },
                     ],
                 }).then(async (channel) => {
+
                     await TicketDB.create({
                         GuildID: guild.id,
                         MemberID: member.id,
@@ -112,12 +113,9 @@ module.exports = {
 
                 if (!member.permissions.has("Administrator")) return Reply(interaction, emojilist.cross, "You do not have permission to use this button!", true)
 
-                let data = await TicketChannelDB.findOne({ GuildID: guild.id }).catch(err => { })
-                if (!data) return Reply(interaction, emojilist.cross, `You don't have ticket logs set up yet! You can do so by using \`/ticket log-channel\`!`)
-
                 let ticketData = await TicketDB.findOne({ GuildID: guild.id, ChannelID: channel.id }).catch(err => { })
 
-                const Channel = guild.channels.cache.get(data.ChannelID)
+                const Channel = guild.channels.cache.get(channelData.ChannelID)
                 const attachement = await createTranscript(channel, {
                     limit: -1,
                     returnType: `attachment`,

@@ -33,7 +33,6 @@ module.exports = {
                 const title = options.getString("title")
                 const desc = options.getString("description")
 
-
                 const Embed = new EmbedBuilder()
                     .setAuthor({ name: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                     .setColor("0xffc0cb")
@@ -71,7 +70,8 @@ module.exports = {
 
                     data = new TicketChannelDB({
                         GuildID: guild.id,
-                        ChannelID: Channel.id
+                        ChannelID: Channel.id,
+                        ChannelType: [],
                     })
 
                 }
