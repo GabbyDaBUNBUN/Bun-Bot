@@ -49,7 +49,7 @@ module.exports = {
                 },
                 {
                     name: `Voice Channels`,
-                    value: `<#1041516281003786260> - Where you use music commands while in vc.\n<#1038997540793761833> - This is for anyone that doesn't feel comfortable speaking/can't speak to chat with others in a vc.\n<#1037958834053976087> - Littles vc, No adult topics, just be your little self.\n<#1042630465846263808> - General vc to be used by anyone.\n<#1037967998310432828> - Click on this vc to create your own custom vc.`,
+                    value: `<#1089933193869803676> - Where the list of VC Rules are.\n<#1041516281003786260> - Where you use music commands while in vc.\n<#1038997540793761833> - This is for anyone that doesn't feel comfortable speaking/can't speak to chat with others in a vc.\n<#1037958834053976087> - Littles vc, No adult topics, just be your little self.\n<#1042630465846263808> - General vc to be used by anyone.\n<#1037967998310432828> - Click on this vc to create your own custom vc.`,
                 },
                 {
                     name: `Beep Boop`,
