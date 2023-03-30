@@ -15,7 +15,7 @@ module.exports = {
     async execute(interaction, client) {
 
         const { user, member } = interaction
-        const { emojilist } = client
+        const { emojilist, color } = client
 
         if (user.id !== `806050057811132436`) return Reply(interaction, emojilist.cross, "You do not have access to this command!", true)
 
@@ -23,7 +23,7 @@ module.exports = {
 
         const Embed = new EmbedBuilder()
             .setAuthor({ name: user.username, iconURL: member.displayAvatarURL() })
-            .setColor("0xffc0cb")
+            .setColor(color)
             .setTitle(`Server Map`)
             .setDescription(`Below is a map of the server and what each channel is for:`)
             .setFields(

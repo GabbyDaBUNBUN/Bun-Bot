@@ -15,7 +15,7 @@ module.exports = {
     async execute(interaction, client) {
 
         const { user, member } = interaction
-        const { emojilist } = client
+        const { emojilist, color } = client
 
         if (user.id !== `806050057811132436`) return Reply(interaction, emojilist.cross, "You do not have access to this command!", true)
 
@@ -58,7 +58,7 @@ module.exports = {
 
         const Embed = new EmbedBuilder()
             .setAuthor({ name: user.username, iconURL: member.displayAvatarURL() })
-            .setColor("0xffc0cb")
+            .setColor(color)
             .setTitle(`Rules`)
             .setDescription(`${desc}`)
             .setImage(`https://ucarecdn.com/87c4ca9b-a3af-4756-aaff-9124049f8278/Rules.jpg`)

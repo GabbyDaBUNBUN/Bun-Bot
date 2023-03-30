@@ -30,7 +30,7 @@ module.exports = {
     async execute(interaction, client) {
 
         const { options, user, member, guild } = interaction
-        const { emojilist } = client
+        const { emojilist, color } = client
 
         switch (options.getSubcommand()) {
 
@@ -73,7 +73,7 @@ module.exports = {
 
                 const Embed = new EmbedBuilder()
                     .setAuthor({ name: user.username, iconURL: member.displayAvatarURL() })
-                    .setColor("0xffc0cb")
+                    .setColor(color)
                     .setTitle(`${title}`)
                     .setDescription(desc)
                     .setFooter({ text: "Embeds by Bun Bot" })
@@ -101,7 +101,7 @@ module.exports = {
 
                 const Embed = new EmbedBuilder()
                     .setAuthor({ name: user.username, iconURL: member.displayAvatarURL() })
-                    .setColor("0xffc0cb")
+                    .setColor(color)
                     .setTitle(`Embed List`)
                     .setDescription(filteredList)
                     .setFooter({ text: "Embeds by Bun Bot" })

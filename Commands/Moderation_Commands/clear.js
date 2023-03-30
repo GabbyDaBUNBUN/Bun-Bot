@@ -17,7 +17,7 @@ module.exports = {
     async execute(interaction, client) {
 
         const { options, channel, member } = interaction
-        const { emojilist } = client
+        const { emojilist, color } = client
 
         const amount = options.getNumber("amount")
         if (amount >= 101) return Reply(interaction, emojilist.cross, "You can only delete up to 100 messages at a time!", true)
@@ -27,7 +27,7 @@ module.exports = {
 
         const Embed = new EmbedBuilder()
             .setAuthor({ name: member.user.username, iconURL: member.user.displayAvatarURL() })
-            .setColor("0xffc0cb")
+            .setColor(color)
             .setTitle("Clear Messages")
             .setDescription(`✅ | Successfully deleted ${amount} messages!`)
             .setFooter({ text: "Clear Messages by Bun Bot" })

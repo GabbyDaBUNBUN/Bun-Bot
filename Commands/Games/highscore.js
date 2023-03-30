@@ -14,6 +14,7 @@ module.exports = {
     async execute(interaction, client) {
 
         const { guild } = interaction
+        const { color } = client
 
         const Data = await CountingDB.findOne({ Guild: guild.id })
         if (!Data) return
@@ -21,7 +22,7 @@ module.exports = {
         const highScore = Data.HighScore
 
         const Embed = new EmbedBuilder()
-            .setColor("0xffc0cb")
+            .setColor(color)
             .setTitle("High Score")
             .setDescription(`Current Counting High Score: \`${highScore}\``)
             .setFooter({ text: "Counting by Expression Bot" })

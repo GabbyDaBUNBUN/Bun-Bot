@@ -13,7 +13,7 @@ module.exports = {
     async execute(member, client) {
 
         const { user, guild } = member
-        const { emojilist } = client
+        const { emojilist, color } = client
 
         if (guild.id !== `1037958833529696276`) return
 
@@ -23,7 +23,7 @@ module.exports = {
         await LevelsDB.findOneAndDelete({ Guild: guild.id, User: user.id }).catch(err => { })
 
         Embed = new EmbedBuilder()
-            .setColor("0xffc0cb")
+            .setColor(color)
             .setAuthor({ name: user.tag, iconURL: user.displayAvatarURL() })
             .setDescription(`${member} has left the server!\n\nAccount Created: <t:${parseInt(user.createdTimestamp / 1000)}:R>\nMemberCount: \`${guild.memberCount}\``)
             .setThumbnail(user.displayAvatarURL())

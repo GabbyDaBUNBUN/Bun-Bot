@@ -53,7 +53,7 @@ module.exports = {
                     const randomQuestion = Questions[ data.Count ]
 
                     const Embed = new EmbedBuilder()
-                        .setColor("0xffc0cb")
+                        .setColor(color)
                         .setTitle("QOTD")
                         .setDescription(`${randomQuestion}`)
                         .setFooter({ text: "QOTD by Bun Bot" })

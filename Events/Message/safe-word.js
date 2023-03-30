@@ -12,7 +12,7 @@ module.exports = {
     async execute(message, client) {
 
         const { content, guild } = message
-        const { emojilist } = client
+        const { emojilist, color } = client
 
         //Safe Word
         const data = await SafeWordDB.findOne({ Guild: guild.id }).catch(err => { })
@@ -21,7 +21,7 @@ module.exports = {
         if (content.includes(`${data.SafeWord}`)) {
 
             const Embed = new EmbedBuilder()
-                .setColor("0xffc0cb")
+                .setColor(color)
                 .setTitle(`Safe Word | ${emojilist.cross}`)
                 .setDescription("The safe word has been spoken! Please change the subject of the conversation and an admin will be here shortly to handle the situation.")
                 .setFooter({ text: "Safe Word by Bun Bot" })

@@ -35,7 +35,7 @@ module.exports = {
 
                 const Embed = new EmbedBuilder()
                     .setAuthor({ name: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
-                    .setColor("0xffc0cb")
+                    .setColor(color)
                     .setTitle(`${title}`)
                     .setDescription(`${desc}`)
                     .setFooter({ text: "Ticket System by Bun Bot" })

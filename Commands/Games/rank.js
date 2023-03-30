@@ -18,7 +18,7 @@ module.exports = {
     async execute(interaction, client) {
 
         const { options, user, guild } = interaction
-        const { emojilist } = client
+        const { emojilist, color } = client
 
         const Member = options.getMember("user") || user
         const member = guild.members.cache.get(Member.id)
@@ -63,7 +63,7 @@ module.exports = {
         const Card = await rank.build().catch(err => console.log(err))
 
         const Embed = new EmbedBuilder()
-            .setColor("0xffc0cb")
+            .setColor(color)
             .setTitle(`${member.user.username}'s Rank Card:`)
             .setImage("attachment://rank.png")
             .setFooter({ text: "Leveling System by Bun Bot" })

@@ -21,14 +21,14 @@ module.exports = {
     async execute(interaction, client) {
 
         const { guild, options } = interaction
-        const { emojilist } = client
+        const { emojilist, color } = client
 
         switch (options.getSubcommand()) {
 
             case "levels": {
 
                 const Embed = new EmbedBuilder()
-                    .setColor("0xffc0cb")
+                    .setColor(color)
                     .setTitle("Level Leader-Board")
                     .setDescription(`Here is a list of the current leaders:`)
                     .setFooter({ text: "Leveling System by Bun Bot" })
@@ -78,7 +78,7 @@ module.exports = {
             case "coins": {
 
                 const Embed = new EmbedBuilder()
-                    .setColor("0xffc0cb")
+                    .setColor(color)
                     .setTitle("Coins Leader-Board")
                     .setDescription(`Here is a list of the current leaders:`)
                     .setFooter({ text: "Currency by Bun Bot" })

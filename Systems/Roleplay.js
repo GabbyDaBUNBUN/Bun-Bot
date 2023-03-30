@@ -23,7 +23,7 @@ function Roleplay(interaction, title, user, Mention, description, image, type) {
                 .setThumbnail(user.displayAvatarURL())
                 .setImage(`${image}`)
                 .setTimestamp()
-                .setFooter({ text: "Sent by Bun Bot" }),
+                .setFooter({ text: "Roleplay by Bun Bot" }),
         ],
         ephemeral: type,
     })
