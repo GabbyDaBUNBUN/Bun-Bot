@@ -15,6 +15,8 @@ module.exports = {
         const { customId, values, member, guild } = interaction
         const { emojilist } = client
 
+        if (!interaction.isStringSelectMenu()) return
+
         const data = await ReactionRolesDB.findOne({ Guild: guild.id, Panel: customId }).catch(err => { })
 
         if (interaction.isStringSelectMenu()) {

@@ -23,12 +23,12 @@ module.exports = {
         const Mention = options.getUser("user") || ``
         const pingText = `${Mention} ${Text}`
 
-        const gifs = [ 'https://iili.io/b5aOg4.gif',
-            'https://iili.io/b5akdl.gif',
-            'https://iili.io/b5av72.gif',
-            'https://iili.io/b5a8eS.gif',
-            'https://iili.io/b5aSm7.gif',
-            'https://iili.io/b5agI9.gif' ]
+        const gifs = [ 'https://ucarecdn.com/83ed73a2-054b-47ad-b26c-92b6b0203d21/boop2.gif',
+            'https://ucarecdn.com/5fcce072-4ae7-4242-83b9-4f508bbf5585/boop.gif',
+            'https://ucarecdn.com/c06730a3-e36f-4def-ae9c-d01b6be6b144/boop4.gif',
+            'https://ucarecdn.com/f83373db-b6df-4b39-9615-eb53609f30f2/boop3.gif',
+            'https://ucarecdn.com/e10d0191-a8a6-4c6b-95e0-7118a4766b58/boop5.gif',
+            'https://ucarecdn.com/8271eb28-d167-4fd6-8f40-b25c0568a9d8/boop1.gif' ]
 
         if (count >= gifs.length) count = 0
 

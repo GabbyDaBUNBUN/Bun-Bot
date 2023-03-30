@@ -12,7 +12,7 @@ function EditReply(interaction, emoji, description, type) {
     interaction.editReply({
         embeds: [
             new EmbedBuilder()
-                .setColor("0xffc0cb")
+                .setColor("#ffc0cb")
                 .setDescription(`${emoji} | ${description}`)
                 .setTimestamp()
                 .setFooter({ text: "Sent by Bun Bot" }),

@@ -41,12 +41,13 @@ module.exports = {
 
         let pickData = await PickDB.findOne({ Guild: guild.id }).catch(err => { })
         if (!pickData.PickChannels.includes(channel.id)) return
-        let pickCount = 30
 
         pickData.MessageCount = pickData.MessageCount + 1
         await pickData.save()
 
-        if (pickData.MessageCount === pickCount) {
+        let math = pickData.MessageCount / 30
+
+        if (math === 0) {
 
             const Embed = new EmbedBuilder()
                 .setColor(color)
@@ -64,7 +65,6 @@ module.exports = {
 
             await sleep(20000)
             pickData.OpenWindow = false
-            pickData.MessageCount = 0
             await pickData.save()
 
         }

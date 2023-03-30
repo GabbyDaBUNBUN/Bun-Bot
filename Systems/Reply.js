@@ -14,7 +14,7 @@ function Reply(interaction, emoji, description, type) {
         embeds: [
 
             new EmbedBuilder()
-                .setColor("0xFFC0CB")
+                .setColor(`#ffc0cb`)
                 .setDescription(`\`${emoji}\` | ${description}`)
                 .setTimestamp()
                 .setFooter({ text: "Sent by Bun Bot" })

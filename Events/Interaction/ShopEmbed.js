@@ -16,6 +16,8 @@ module.exports = {
         const { customId, member, guild, message } = interaction
         const { emojilist, color } = client
 
+        if (!interaction.isButton()) return
+
         if (![ "next", "previous", "exit" ].includes(customId)) return
 
         const data = await EconomyDB.findOne({ Guild: guild.id, User: member.id }).catch(err => { })

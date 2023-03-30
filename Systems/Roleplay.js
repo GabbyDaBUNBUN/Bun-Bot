@@ -16,7 +16,7 @@ function Roleplay(interaction, title, user, Mention, description, image, type) {
         content: `${Mention}`,
         embeds: [
             new EmbedBuilder()
-                .setColor("0xffc0cb")
+                .setColor("#ffc0cb")
                 .setTitle(`${title}`)
                 .setAuthor({ name: user.username, iconURL: user.displayAvatarURL() })
                 .setDescription(`${description}`)

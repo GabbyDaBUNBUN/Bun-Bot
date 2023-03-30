@@ -60,7 +60,7 @@ module.exports = {
 
                     const Embed = new EmbedBuilder()
                         .setAuthor({ name: `${guild.name} | Ticket #${ID}`, iconURL: guild.iconURL({ dynamic: true }) })
-                        .setColor("0xffc0cb")
+                        .setColor(color)
                         .setTitle(`Ticket #${ID}`)
                         .setDescription(`Please wait patiently for someone to come and assist you. While you are waiting, please describe your issue in as much detail as possible.`)
                         .setFooter({ text: "Ticket System by Bun Bot" })

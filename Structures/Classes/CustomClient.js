@@ -5,7 +5,7 @@ const mongoose = require("mongoose")
 
 class CustomClient extends Client {
 
-    color = "0xFFC0CB"
+    color = "#ffc0cb"
     emojilist = emojis
     config = configuration
     commands = new Collection()
