@@ -86,8 +86,9 @@ module.exports = {
                     embeds: [
                         new EmbedBuilder()
                             .setColor(color)
+                            .setAuthor({ name: author.username, iconURL: author.displayAvatarURL })
                             .setTitle("Level Up!")
-                            .setDescription(`Congrats you've reached level ${data.Level}!`)
+                            .setDescription(`🎉Looks like ${author} is moving up!🎉\n\n🥳Congrats you've reached level ${data.Level}!🥳\n\n🎀Keep up the good work!🎀`)
                             .setFooter({ text: "Leveling System by Bun Bot" })
                             .setTimestamp()
                     ]

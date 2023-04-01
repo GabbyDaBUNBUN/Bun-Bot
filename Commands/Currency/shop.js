@@ -99,6 +99,8 @@ module.exports = {
 
                 let data = await EconomyDB.findOne({ Guild: guild.id, User: member.id }).catch(err => { })
                 if (!data) return Reply(interaction, emojilist.cross, `There is no data for you yet!`, true)
+                const userItem = data.Inventory.find((i) => i.ItemName === itemName)
+                if (userItem) return Reply(interaction, emojilist.cross, `You already have this item! Please use the one you have before purchasing another!`, true)
 
                 let itemData = await ShopDB.findOne({ Guild: guild.id }).catch(err => { })
                 if (!itemData) return Reply(interaction, emojilist.cross, `There are no items in the shop yet!`, true)
