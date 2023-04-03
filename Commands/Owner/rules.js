@@ -35,7 +35,7 @@ module.exports = {
         
         8. Please respect peoples' roles - they are there for a reason. That means if they have No Flirting/No Touch/No DMs, then respect that. Do not give anyone a nickname/petname without getting consent first!
         
-        9. Please use the proper channels, they are labeled the way they are for a reason. If you have any questions then refer to <#1040093933675487232>.
+        9. Please use the proper channels, they are labeled the way they are for a reason. (You must reach level 5 in the server before you can use the <#1037960677014392832> channel. If you ask to dm someone before you reach level 5 and/or not in <#1037960677014392832> you will be given an automatic warning)
         
         10. This is a server for littles that want to regress, but we do not cater to ageplay rp here. If you want to find a place specifically for that, please find a server that better serves your needs.
         

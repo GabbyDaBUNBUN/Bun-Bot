@@ -75,6 +75,14 @@ module.exports = {
             data.Level += 1
             await data.save()
 
+            if (data.Level === 5) {
+                if (guild.id === "1037958833529696276") {
+                    let role = guild.roles.cache.get("1092388694796808212")
+                    let member = guild.members.cache.get(author.id)
+                    member.roles.add(role)
+                }
+            }
+
             if (channelData) {
 
                 const Channel = guild.channels.cache.get(channelData.Channel)
