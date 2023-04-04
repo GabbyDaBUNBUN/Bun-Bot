@@ -44,14 +44,7 @@ module.exports = {
             await Data.save()
         } else if (author.id !== user.id) {
             Data.Count = 0
-            if (!Data.Role) {
-                Data.LastUser = author.id
-            } else {
-                let lastUser = guild.members.cache.get(Data.LastUser)
-                if (lastUser.roles.cache.has(Data.Role)) { lastUser.roles.remove(Data.Role) }
-                member.roles.add(Data.Role)
-                Data.LastUser = author.id
-            }
+            Data.LastUser = author.id
             Data.LastMessageId = message.id
             await Data.save()
             return Reply(message, emojilist.cross, `Uh-Oh, You messed up the counting!`);
