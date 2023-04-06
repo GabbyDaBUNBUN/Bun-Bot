@@ -22,6 +22,8 @@ module.exports = {
         const Reactions = [ `add-role\nremove-role\npanel` ]
         const SetUp = [ `confession-setup\ncreate-vc-setup\nlevels-setup\nqotd-setup\nsafe-word-setup` ]
         const Ticket = [ `embed\nlog-channel` ]
+        const Ban = [ `log-channel\nmember` ]
+        const Kick = [ `log-channel\nmember` ]
         const Warn = [ `log-channel\nmember\ninfo` ]
 
         const Embed = new EmbedBuilder()
@@ -62,6 +64,16 @@ module.exports = {
                 {
                     name: "Ticket:",
                     value: `${Ticket}`,
+                    inline: true,
+                },
+                {
+                    name: "Ban:",
+                    value: `${Ban}`,
+                    inline: true,
+                },
+                {
+                    name: "Kick:",
+                    value: `${Kick}`,
                     inline: true,
                 },
                 {

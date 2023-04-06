@@ -125,17 +125,35 @@ module.exports = {
                     ],
                 })
 
-                interaction.reply({
-                    embeds: [
-                        new EmbedBuilder()
-                            .setColor(color)
-                            .setTitle("Warned!")
-                            .setDescription(`${user} has been warned.`)
-                            .setFooter({ text: "Warn by Bun Bot" })
-                            .setTimestamp()
-                    ],
-                    ephemeral: true,
-                })
+                if (data.WarnAmount === 4) {
+                    findUser.ban({ reason: reason, deleteMessageSeconds: 7 * 24 * 60 * 60 })
+
+                    return interaction.reply({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setColor(color)
+                                .setTitle("Banned!")
+                                .setDescription(`${user} has been warned for the 4th time and has been banned from the server.`)
+                                .setFooter({ text: "Warn by Bun Bot" })
+                                .setTimestamp()
+                        ],
+                        ephemeral: true,
+                    })
+                } else {
+
+                    interaction.reply({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setColor(color)
+                                .setTitle("Warned!")
+                                .setDescription(`${user} has been warned.`)
+                                .setFooter({ text: "Warn by Bun Bot" })
+                                .setTimestamp()
+                        ],
+                        ephemeral: true,
+                    })
+
+                }
 
             }
 
