@@ -26,6 +26,7 @@ module.exports = {
             .setDescription("Sends a one time embed.")
             .addStringOption(opt => opt.setName("title").setDescription("The title of your embed.").setRequired(true))
             .addStringOption(opt => opt.setName("description").setDescription("The description of your embed.").setRequired(true))
+            .addStringOption(opt => opt.setName("image-url").setDescription("URL of the image you want in the embed").setRequired(false))
             .addRoleOption(opt => opt.setName("role").setDescription("The role you want pinged. (will not ping if left blank)").setRequired(false))
             .addUserOption(opt => opt.setName("user").setDescription("The user you want pinged. (will not ping if left blank)").setRequired(false))),
 
@@ -138,6 +139,7 @@ module.exports = {
 
                 const title = options.getString("title")
                 const desc = options.getString("description")
+                const image = options.getString("image-url") || ``
                 const role = options.getRole("role") || ``
                 const Member = options.getMember("user") || ``
 
@@ -149,6 +151,7 @@ module.exports = {
                             .setColor(color)
                             .setTitle(title)
                             .setDescription(desc)
+                            .setImage(image)
                             .setFooter({ text: "Embeds by Bun Bot" })
                             .setTimestamp()
                     ]
