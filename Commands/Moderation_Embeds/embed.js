@@ -21,7 +21,13 @@ module.exports = {
         .addSubcommand(sub => sub.setName("list").setDescription("Sends a list of your current saved embeds."))
         .addSubcommand(sub => sub.setName("delete")
             .setDescription("Deletes the requested embed.")
-            .addStringOption(opt => opt.setName("name").setDescription("The name of the embed you would like to delete.").setRequired(true))),
+            .addStringOption(opt => opt.setName("name").setDescription("The name of the embed you would like to delete.").setRequired(true)))
+        .addSubcommand(sub => sub.setName("one-time")
+            .setDescription("Sends a one time embed.")
+            .addStringOption(opt => opt.setName("title").setDescription("The title of your embed.").setRequired(true))
+            .addStringOption(opt => opt.setName("description").setDescription("The description of your embed.").setRequired(true))
+            .addRoleOption(opt => opt.setName("role").setDescription("The role you want pinged. (will not ping if left blank)").setRequired(false))
+            .addUserOption(opt => opt.setName("user").setDescription("The user you want pinged. (will not ping if left blank)").setRequired(false))),
 
     /**
      * @param { ChatInputCommandInteraction } interaction
@@ -127,6 +133,28 @@ module.exports = {
             }
 
                 break;
+
+            case "one-time": {
+
+                const title = options.getString("title")
+                const desc = options.getString("description")
+                const role = options.getRole("role") || ``
+                const Member = options.getMember("user") || ``
+
+                interaction.reply({
+                    content: `${role}${Member}`,
+                    embeds: [
+                        new EmbedBuilder()
+                            .setAuthor({ name: user.username, iconURL: member.displayAvatarURL() })
+                            .setColor(color)
+                            .setTitle(title)
+                            .setDescription(desc)
+                            .setFooter({ text: "Embeds by Bun Bot" })
+                            .setTimestamp()
+                    ]
+                })
+
+            }
 
         }
 
