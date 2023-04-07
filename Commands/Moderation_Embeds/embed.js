@@ -2,6 +2,7 @@ const { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder, Permissi
 const { CustomClient } = require("../../Structures/Classes/CustomClient")
 const EmbedDB = require("../../Structures/Schemas/EmbedDB")
 const Reply = require("../../Systems/Reply")
+const { im } = require("mathjs")
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -139,23 +140,42 @@ module.exports = {
 
                 const title = options.getString("title")
                 const desc = options.getString("description")
-                const image = options.getString("image-url") || ``
+                const image = options.getString("image-url")
                 const role = options.getRole("role") || ``
                 const Member = options.getMember("user") || ``
 
-                interaction.reply({
-                    content: `${role}${Member}`,
-                    embeds: [
-                        new EmbedBuilder()
-                            .setAuthor({ name: user.username, iconURL: member.displayAvatarURL() })
-                            .setColor(color)
-                            .setTitle(title)
-                            .setDescription(desc)
-                            .setImage(image)
-                            .setFooter({ text: "Embeds by Bun Bot" })
-                            .setTimestamp()
-                    ]
-                })
+                if (image) {
+
+                    interaction.reply({
+                        content: `${role}${Member}`,
+                        embeds: [
+                            new EmbedBuilder()
+                                .setAuthor({ name: user.username, iconURL: member.displayAvatarURL() })
+                                .setColor(color)
+                                .setTitle(title)
+                                .setDescription(desc)
+                                .setImage(image)
+                                .setFooter({ text: "Embeds by Bun Bot" })
+                                .setTimestamp()
+                        ]
+                    })
+
+                } else if (!image) {
+
+                    interaction.reply({
+                        content: `${role}${Member}`,
+                        embeds: [
+                            new EmbedBuilder()
+                                .setAuthor({ name: user.username, iconURL: member.displayAvatarURL() })
+                                .setColor(color)
+                                .setTitle(title)
+                                .setDescription(desc)
+                                .setFooter({ text: "Embeds by Bun Bot" })
+                                .setTimestamp()
+                        ]
+                    })
+
+                }
 
             }
 
