@@ -70,7 +70,7 @@ module.exports = {
 
                 const kickChannel = await KickChannelDB.findOne({ Guild: guild.id }).catch(err => { })
                 if (!kickChannel) return Reply(interaction, emojilist.cross, `There is no kick log channel yet! Create one by using \`/kick log-channel\`!`, true)
-                const findKickChannel = guild.channels.cache.get(warnChannel.Channel)
+                const findKickChannel = guild.channels.cache.get(kickChannel.Channel)
 
                 if (findMember.roles.highest.position <= findUser.roles.highest.position) return Reply(interaction, emojilist.cross, `You cannot kick someone that is the same level as you or higher!`, true)
 
@@ -103,7 +103,7 @@ module.exports = {
                         new EmbedBuilder()
                             .setColor(color)
                             .setTitle("Warning!")
-                            .setDescription(`${user} has been kicked by ${member} for \`${reason}\` at \`${Date.now}\`.`)
+                            .setDescription(`${user} has been kicked by ${member} for \`${reason}\``)
                             .setFooter({ text: "Kick by Bun Bot" })
                             .setTimestamp()
                     ],

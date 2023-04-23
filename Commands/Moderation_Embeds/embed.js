@@ -2,7 +2,6 @@ const { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder, Permissi
 const { CustomClient } = require("../../Structures/Classes/CustomClient")
 const EmbedDB = require("../../Structures/Schemas/EmbedDB")
 const Reply = require("../../Systems/Reply")
-const { im } = require("mathjs")
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -13,7 +12,8 @@ module.exports = {
             .setDescription("Create a new embed.")
             .addStringOption(opt => opt.setName("name").setDescription("The name you want your embed saved under.").setRequired(true))
             .addStringOption(opt => opt.setName("title").setDescription("The title of your embed.").setRequired(true))
-            .addStringOption(opt => opt.setName("description").setDescription("The description of your embed.").setRequired(true)))
+            .addStringOption(opt => opt.setName("description").setDescription("The description of your embed.").setRequired(true))
+            .addStringOption(opt => opt.setName("image").setDescription("Image you want attached. (must be a link)").setRequired(true)))
         .addSubcommand(sub => sub.setName("send")
             .setDescription("Sends the embed requested.")
             .addStringOption(opt => opt.setName("name").setDescription("The name of the embed you want sent.").setRequired(true))
@@ -47,14 +47,16 @@ module.exports = {
                 const name = options.getString("name")
                 const title = options.getString("title")
                 const desc = options.getString("description")
+                const image = options.getString("image")
 
-                const Data = await EmbedDB.findOne({ Guild: guild.id, Name: name })
+                const Data = await EmbedDB.findOne({ Guild: guild.id, Name: name }).catch(err => { })
                 if (!Data) {
                     new EmbedDB({
                         Guild: guild.id,
                         Name: name,
                         Title: title,
                         Description: desc,
+                        Image: image,
                     }).save()
                     return Reply(interaction, emojilist.tick, "Your embed has been saved!")
                 }
@@ -68,12 +70,14 @@ module.exports = {
 
                 const name = options.getString("name")
 
-                const Data = await EmbedDB.findOne({ Guild: guild.id, Name: name })
+                const Data = await EmbedDB.findOne({ Guild: guild.id, Name: name }).catch(err => { })
                 if (!Data) return Reply(interaction, emojilist.cross, "There is no embed by that name!")
 
                 const title = Data.Title
 
                 const desc = Data.Description
+
+                const image = Data.Image
 
                 const Member = options.getMember("user") || ``
 
@@ -84,6 +88,7 @@ module.exports = {
                     .setColor(color)
                     .setTitle(`${title}`)
                     .setDescription(desc)
+                    .setImage(image)
                     .setFooter({ text: "Embeds by Bun Bot" })
                     .setTimestamp();
 
@@ -95,15 +100,13 @@ module.exports = {
 
             case "list": {
 
-                const Data = await EmbedDB.findOne({ Guild: guild.id })
+                const Data = await EmbedDB.find({ Guild: guild.id }).catch(err => { })
                 if (!Data) return Reply(interaction, emojilist.cross, "There are no embeds yet!")
 
                 const list = []
                 Data.forEach(data => {
-
                     list.push(data.Name)
-
-                })
+                });
 
                 const filteredList = list.toString().split(`,`).join(`\n`)
 
@@ -125,7 +128,7 @@ module.exports = {
 
                 const name = options.getString("name")
 
-                const Data = await EmbedDB.findOne({ Guild: guild.id, Name: name })
+                const Data = await EmbedDB.findOne({ Guild: guild.id, Name: name }).catch(err => { })
                 if (!Data) return Reply(interaction, emojilist.cross, "There is no embed by that name!")
 
                 Data.delete()

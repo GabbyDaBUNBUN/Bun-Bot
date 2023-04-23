@@ -44,7 +44,7 @@ module.exports = {
                     })
                 }
 
-                Reply(interaction, emojilist.tick, "Roles uploaded.")
+                Reply(interaction, emojilist.tick, "Roles updated.")
 
             }
         }

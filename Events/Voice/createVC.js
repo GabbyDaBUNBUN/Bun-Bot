@@ -15,6 +15,7 @@ module.exports = {
         const { member, guild } = newState
         const { voiceCollection } = client
         const data = await CreateVCDB.findOne({ Guild: guild.id }).catch(err => { })
+        if (!data) return
         const oldChannel = oldState.channel
         const newChannel = newState.channel
         const joinToCreate = data.Channel

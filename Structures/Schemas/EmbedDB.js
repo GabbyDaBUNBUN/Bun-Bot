@@ -6,5 +6,6 @@ module.exports = model("embeds", new Schema({
     Name: String,
     Title: String,
     Description: String,
+    Image: String,
 
 }));

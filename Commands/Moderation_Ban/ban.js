@@ -70,7 +70,7 @@ module.exports = {
 
                 const banChannel = await BanChannelDB.findOne({ Guild: guild.id }).catch(err => { })
                 if (!banChannel) return Reply(interaction, emojilist.cross, `There is no ban log channel yet! Create one by using \`/ban log-channel\`!`, true)
-                const findBanChannel = guild.channels.cache.get(warnChannel.Channel)
+                const findBanChannel = guild.channels.cache.get(banChannel.Channel)
 
                 if (findMember.roles.highest.position <= findUser.roles.highest.position) return Reply(interaction, emojilist.cross, `You cannot ban someone that is the same level as you or higher!`, true)
 
@@ -103,7 +103,7 @@ module.exports = {
                         new EmbedBuilder()
                             .setColor(color)
                             .setTitle("Warning!")
-                            .setDescription(`${user} has been Banned by ${member} for \`${reason}\` at \`${Date.now}\`.`)
+                            .setDescription(`${user} has been Banned by ${member} for \`${reason}\``)
                             .setFooter({ text: "Ban by Bun Bot" })
                             .setTimestamp()
                     ],
