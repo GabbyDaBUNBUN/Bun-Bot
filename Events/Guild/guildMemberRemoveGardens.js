@@ -15,9 +15,9 @@ module.exports = {
         const { user, guild } = member
         const { emojilist, color } = client
 
-        if (guild.id !== `1037958833529696276`) return
+        if (guild.id !== `1070558674210267207`) return
 
-        const Channel = guild.channels.cache.get("1037998115510288384")
+        const Channel = guild.channels.cache.get("1070558675271438427")
 
         await EconomyDB.findOneAndDelete({ Guild: guild.id, User: user.id }).catch(err => { })
         await LevelsDB.findOneAndDelete({ Guild: guild.id, User: user.id }).catch(err => { })
