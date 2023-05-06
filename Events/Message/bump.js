@@ -22,6 +22,7 @@ module.exports = {
             });
         };
         if (bot !== `302050872383242240`) return
+        if (guild.id !== `1037958833529696276`) return
 
         const member = interaction.user.id
 

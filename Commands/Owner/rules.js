@@ -41,20 +41,20 @@ module.exports = {
         
         11. We are not a dating server. Some people have the <@&1080517195412541460> role and you may request these people when you need someone to take care of you, but we want our server to continue to be a safe, warm, and little space.
         
-        12. Please keep talk about politics/violence/self harm to a minimum. Some people can be triggered by such topics.
-        
         12. No attention-seeking (eg. roleplaying self-harm, asking to be taken care of by people without the <@&1080517195412541460> role, ...). Staff will give you a verbal warning first if they think your behavior is inappropriate, and an official one will follow if you continue.
         
         13. If you as a member feel uncomfortable or threatened around another member, please <#1037971276272242688>. We will resolve the situation for you and never think you are bugging us or wasting our time.
+
+        14. You must stay active! If you go inactive for 30+ days without notifying staff or opening a ticket you will be kicked. You may rejoin if you like. However you will be kicked again if you go inactive again.
         
-        14. We have a punishment protocol. For all rules that don't specify a punishment explicitly they are as follows:
+        15. We have a punishment protocol. For all rules that don't specify a punishment explicitly they are as follows:
         Warn X3
         Ban
         
         Exception:
         (Staff reserves the right to ban any member at any time if staff feels the members actions threaten other members or the server itself.)
         
-        15. Please follow Discord TOS. (not doing so will result in a ban)` ]
+        16. Please follow Discord TOS. (not doing so will result in a ban)` ]
 
         const Embed = new EmbedBuilder()
             .setAuthor({ name: user.username, iconURL: member.displayAvatarURL() })
