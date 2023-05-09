@@ -3,7 +3,6 @@ const { CustomClient } = require("../../Structures/Classes/CustomClient")
 const LevelsChannelDB = require("../../Structures/Schemas/LevelsChannelDB")
 const LevelsDB = require("../../Structures/Schemas/LevelsDB")
 const EconomyDB = require("../../Structures/Schemas/EconomyDB")
-let count = 0
 
 module.exports = {
     name: Events.MessageCreate,
@@ -81,9 +80,28 @@ module.exports = {
                     let member = guild.members.cache.get(author.id)
                     member.roles.add(role)
                 }
-            }
 
-            if (channelData) {
+                if (channelData) {
+
+                    const Channel = guild.channels.cache.get(channelData.Channel)
+                    if (!Channel) return
+
+                    Channel.send({
+
+                        content: `${author}`,
+                        embeds: [
+                            new EmbedBuilder()
+                                .setColor(color)
+                                .setTitle("Level Up!")
+                                .setDescription(`🎉Looks like ${author} is moving up!🎉\n\n🥳Congrats you've reached level ${data.Level}!🥳\n\n🎀Keep up the good work!🎀`)
+                                .setFooter({ text: "Leveling System by Bun Bot" })
+                                .setTimestamp()
+                        ]
+
+                    })
+
+                }
+            } else if (channelData) {
 
                 const Channel = guild.channels.cache.get(channelData.Channel)
                 if (!Channel) return
@@ -94,7 +112,6 @@ module.exports = {
                     embeds: [
                         new EmbedBuilder()
                             .setColor(color)
-                            .setAuthor({ name: author.username, iconURL: author.displayAvatarURL })
                             .setTitle("Level Up!")
                             .setDescription(`🎉Looks like ${author} is moving up!🎉\n\n🥳Congrats you've reached level ${data.Level}!🥳\n\n🎀Keep up the good work!🎀`)
                             .setFooter({ text: "Leveling System by Bun Bot" })

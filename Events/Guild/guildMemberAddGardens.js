@@ -15,9 +15,6 @@ module.exports = {
 
         if (guild.id !== `1070558674210267207`) return
 
-        const role = guild.roles.cache.get(`1083991702311809054`)
-        member.roles.add(role)
-
         const Channel = guild.channels.cache.get("1070558675271438427")
 
         Embed = new EmbedBuilder()
