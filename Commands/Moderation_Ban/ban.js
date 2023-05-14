@@ -74,30 +74,6 @@ module.exports = {
 
                 if (findMember.roles.highest.position <= findUser.roles.highest.position) return Reply(interaction, emojilist.cross, `You cannot ban someone that is the same level as you or higher!`, true)
 
-                try {
-                    findUser.send({
-                        embeds: [
-                            new EmbedBuilder()
-                                .setColor(color)
-                                .setTitle("Warning!")
-                                .setDescription(`You have been banned by ${member} for \`${reason}\``)
-                                .setFooter({ text: "Ban by Bun Bot" })
-                                .setTimestamp()
-                        ]
-                    })
-                } catch (error) {
-                    findBanChannel.send({
-                        embeds: [
-                            new EmbedBuilder()
-                                .setColor(color)
-                                .setTitle("User not Informed!")
-                                .setDescription(`${user} was not informed of their Ban! \`${error}\``)
-                                .setFooter({ text: "Ban by Bun Bot" })
-                                .setTimestamp()
-                        ]
-                    })
-                }
-
                 findBanChannel.send({
                     embeds: [
                         new EmbedBuilder()

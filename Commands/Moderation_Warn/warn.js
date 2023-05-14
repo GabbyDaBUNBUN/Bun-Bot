@@ -90,30 +90,6 @@ module.exports = {
                 }
                 await data.save()
 
-                try {
-                    findUser.send({
-                        embeds: [
-                            new EmbedBuilder()
-                                .setColor(color)
-                                .setTitle("Warning!")
-                                .setDescription(`You have been warned by ${member} for \`${reason}\``)
-                                .setFooter({ text: "Warn by Bun Bot" })
-                                .setTimestamp()
-                        ]
-                    })
-                } catch (error) {
-                    findWarnChannel.send({
-                        embeds: [
-                            new EmbedBuilder()
-                                .setColor(color)
-                                .setTitle("User not Informed!")
-                                .setDescription(`${user} was not informed of their warning! \`${error}\``)
-                                .setFooter({ text: "Warn by Bun Bot" })
-                                .setTimestamp()
-                        ]
-                    })
-                }
-
                 findWarnChannel.send({
                     embeds: [
                         new EmbedBuilder()
@@ -127,6 +103,18 @@ module.exports = {
 
                 if (data.WarnAmount === 4) {
                     findUser.ban({ reason: reason, deleteMessageSeconds: 7 * 24 * 60 * 60 })
+
+                    findWarnChannel.send({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setColor(color)
+                                .setTitle("Banned!")
+                                .setDescription(`${user} has been warned for the 4th time and has been banned from the server.`)
+                                .setFooter({ text: "Warn by Bun Bot" })
+                                .setTimestamp()
+                        ],
+                        ephemeral: false,
+                    })
 
                     return interaction.reply({
                         embeds: [
