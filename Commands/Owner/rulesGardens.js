@@ -42,6 +42,13 @@ module.exports = {
         🌿11. Keep all discussions in their appropriate channels!! Talking about weed, go to our MaryJane Fields, talk about NSFW go to our Jasmine Path, etc. 
         
         🌿12. Role Consent is key. RESPECT PEOPLES ROLES!!! 
+
+        🌿Safe Word is: <@&1072000898588475462> RESPECT THE SAFE WORD AT ALL TIMES- if it is said it should only be said in a genuine emergency . Misuse of the word will result in a Strike
+
+        🌿STRIKE SYSTEM-
+        🌿Strike 1- Timeout for a day and Warn 
+        🌿Strike 2- Probation and Timeout for 7 days 
+        🌿Strike 3- Ban
         `]
 
         const Embed = new EmbedBuilder()

@@ -30,6 +30,13 @@ module.exports = {
 
         Channel.send({ content: `Welcome <@${member.id}>! ${emojilist.tick}`, embeds: [ Embed ] })
 
+        const Channels = [ `1109203130815627264`, `1109203434349023273` ]
+
+        Channels.forEach(async chan => {
+            const PingChannel = guild.channels.cache.get(`${chan}`)
+            PingChannel.send({ content: `<@${member.id}>` }).then(msg => msg.delete(10000));
+        })
+
     }
 
 }
