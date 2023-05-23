@@ -47,7 +47,7 @@ module.exports = {
             .setColor(color)
             .setTitle(`Custom Chat Room Rules`)
             .setDescription(`${desc}`)
-            .setFooter({ text: "Server Map by Bun Bot" })
+            .setFooter({ text: "Rules by Bun Bot" })
             .setTimestamp();
 
         interaction.reply({

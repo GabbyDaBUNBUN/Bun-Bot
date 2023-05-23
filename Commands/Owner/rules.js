@@ -39,7 +39,7 @@ module.exports = {
         
         10. This is a server for littles that want to regress, but we do not cater to ageplay rp here. If you want to find a place specifically for that, please find a server that better serves your needs.
         
-        11. We are not a dating server. Some people have the <@&1080517195412541460> role and you may request these people when you need someone to take care of you, but we want our server to continue to be a safe, warm, and little space.
+        11. We have a seeking area in the server, but it is level-locked and role-locked. Once you reach level 5, you can grab the <@&1110373693084946573> role to be able to access the seeking area. This is both to protect our members and have people who don't want to deal with seeking not have to.
         
         12. No attention-seeking (eg. roleplaying self-harm, asking to be taken care of by people without the <@&1080517195412541460> role, ...). Staff will give you a verbal warning first if they think your behavior is inappropriate, and an official one will follow if you continue.
         
@@ -62,7 +62,7 @@ module.exports = {
             .setTitle(`Rules`)
             .setDescription(`${desc}`)
             .setImage(`https://ucarecdn.com/87c4ca9b-a3af-4756-aaff-9124049f8278/Rules.jpg`)
-            .setFooter({ text: "Server Map by Bun Bot" })
+            .setFooter({ text: "Rules by Bun Bot" })
             .setTimestamp();
 
         interaction.reply({ embeds: [ Embed ] });

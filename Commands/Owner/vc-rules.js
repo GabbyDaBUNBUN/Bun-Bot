@@ -40,7 +40,7 @@ module.exports = {
             .setTitle(`Rules`)
             .setDescription(`${desc}`)
             .setImage(`https://ucarecdn.com/87c4ca9b-a3af-4756-aaff-9124049f8278/Rules.jpg`)
-            .setFooter({ text: "Server Map by Bun Bot" })
+            .setFooter({ text: "Rules by Bun Bot" })
             .setTimestamp();
 
         interaction.reply({ embeds: [ Embed ] });
