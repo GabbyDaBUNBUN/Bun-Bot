@@ -36,6 +36,7 @@ module.exports = {
 
             case "name": {
 
+                await interaction.deferReply({ ephemeral: true });
                 const name = options.getString("name")
                 if (name.length > 22 || name.length < 1) Reply(interaction, emojilist.cross, `The name cannot exceed the 22 character limit!`)
                 ownedChannel.setName(name)
@@ -48,6 +49,7 @@ module.exports = {
 
             case "private": {
 
+                await interaction.deferReply({ ephemeral: true });
                 const private = options.getBoolean("invite-only")
 
                 if (private === true) {
@@ -110,6 +112,7 @@ module.exports = {
 
             case "invite": {
 
+                await interaction.deferReply({ ephemeral: true });
                 const targetMember = options.getUser("member")
                 ownedChannel.permissionOverwrites.edit(targetMember, { Connect: true })
                 ownedTextChannel.permissionOverwrites.edit(targetMember, { ViewChannel: true, SendMessages: true, EmbedLinks: true, UseExternalEmojis: true, AttachFiles: true, UseApplicationCommands: true, AddReactions: true })
