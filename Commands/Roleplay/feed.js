@@ -23,18 +23,12 @@ module.exports = {
         const Mention = options.getUser("user") || ``
         const pingText = `${Mention} ${Text}`
 
-        const gifs = [ 'https://iili.io/b516uV.gif',
-            'https://iili.io/b51PwB.gif',
-            'https://iili.io/b51iZP.gif',
-            'https://iili.io/b51Ln1.gif',
-            'https://iili.io/b51QMF.gif',
-            'https://iili.io/b51Z6g.gif',
-            'https://iili.io/b51DFa.gif',
-            'https://iili.io/b51bcJ.gif',
-            'https://iili.io/b51m8v.gif',
-            'https://iili.io/b51y9R.gif',
-            'https://iili.io/b5E9up.gif',
-            'https://iili.io/b5EHwN.gif' ]
+        const gifs = [ 'https://ucarecdn.com/23158e92-3cc9-4488-bc26-9dc6ba6a1d06/feed.gif',
+            'https://ucarecdn.com/ffd285f4-272f-4d1b-8bb7-d03658f920a7/feed3.gif',
+            'https://ucarecdn.com/cf0a135b-fd5e-464e-87d3-17df19e1c03a/feed2.gif',
+            'https://ucarecdn.com/fc46ac41-243e-40aa-9d44-1ebe811ec7ae/feed5.gif',
+            'https://ucarecdn.com/c4df6c1c-e102-4292-9b5f-596dc403dc2f/feed4.gif',
+            'https://ucarecdn.com/6aea1bf4-1ad0-4f53-b4ad-8801cce3769a/feed1.gif', ]
 
         if (count >= gifs.length) count = 0
 
