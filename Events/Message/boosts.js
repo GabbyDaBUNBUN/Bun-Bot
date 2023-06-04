@@ -1,26 +1,27 @@
-const { Message, EmbedBuilder, Events } = require("discord.js")
+const { GuildMember, EmbedBuilder, Events } = require("discord.js")
 const { CustomClient } = require("../../Structures/Classes/CustomClient")
 
 module.exports = {
-    name: Events.MessageCreate,
+    name: Events.GuildMemberUpdate,
 
     /**
-     * @param { Message } message
+     * @param { GuildMember } oldMember
+     * @param { GuildMember } newMember
      * @param { CustomClient } client
      */
-    async execute(message, client) {
+    async execute(oldMember, newMember, client) {
 
-        const { guild, author, type } = message
+        const { guild } = newMember
         const { color } = client
 
         const Guild = `1037958833529696276`
+        const Channel = guild.channels.cache.get(`1087720598442090519`)
 
-        const boosts = [ `8`, `9`, `10`, `11` ]
-        if (!guild || guild.id !== Guild || !boosts.includes(type) || author.bot) return
+        if (!guild || guild.id !== Guild) return
 
-        if (boosts.includes(type)) {
+        if (!oldMember.premiumSince && newMember.premiumSince) {
 
-            message.reply({
+            Channel.send({
                 content: `${author}`,
                 embeds: [
                     new EmbedBuilder()
