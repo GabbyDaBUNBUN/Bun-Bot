@@ -23,19 +23,12 @@ module.exports = {
         const Mention = options.getUser("user") || ``
         const pingText = `${Mention} ${Text}`
 
-        const gifs = [ 'https://iili.io/b5Ebs9.gif',
-            'https://iili.io/b5Epfe.gif',
-            'https://iili.io/b5Ey0u.gif',
-            'https://iili.io/b5G9Ub.gif',
-            'https://iili.io/b5Gd5x.gif',
-            'https://iili.io/b5G2OQ.gif',
-            'https://iili.io/b5G3bV.gif',
-            'https://iili.io/b5GKzB.gif',
-            'https://iili.io/b5GfWP.gif',
-            'https://iili.io/b5Gqs1.gif',
-            'https://iili.io/b5GCqF.gif',
-            'https://iili.io/b5Gn0g.gif',
-            'https://iili.io/b5Goga.gif' ]
+        const gifs = [ 'https://ucarecdn.com/6f049df6-89db-4f17-8a0c-47b3414704ab/goodmorning2.gif',
+            'https://ucarecdn.com/94ea669c-f4f3-4f21-a40e-1667828ccc7b/goodmorning5.gif',
+            'https://ucarecdn.com/85eeed53-06ab-4d51-aba1-829edf84fc2a/goodmorning1.gif',
+            'https://ucarecdn.com/cc8fa9c0-e969-4d4f-b633-e36ce973c8ac/goodmorning4.gif',
+            'https://ucarecdn.com/726b77fd-674e-418a-8c83-2e8784dbb275/goodmorning3.gif',
+            'https://ucarecdn.com/fe77154c-789c-486c-ae07-7272aae1354e/goodmorning.gif', ]
 
         if (count >= gifs.length) count = 0
 
