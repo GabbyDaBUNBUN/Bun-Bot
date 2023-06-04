@@ -48,9 +48,6 @@ module.exports = {
         if (pickData.MessageCount >= 31) pickData.MessageCount = 0
         await pickData.save()
 
-        console.log(pickData.MessageCount)
-        console.log(pickData.MessageCount / 30)
-
         if (pickData.MessageCount === 30) {
 
             const Embed = new EmbedBuilder()
