@@ -55,7 +55,7 @@ module.exports = {
 
         const channelData = await LevelsChannelDB.findOne({ Guild: guild.id }).catch(err => { })
 
-        const give = Math.floor(Math.random() * 29) + 1
+        const give = 20
 
         const data = await LevelsDB.findOne({ Guild: guild.id, User: author.id }).catch(err => { })
         if (!data) return
@@ -67,21 +67,22 @@ module.exports = {
             const econData = await EconomyDB.findOne({ Guild: guild.id, User: author.id }).catch(err => { })
             if (!data) return
 
-            econData.Balance = econData.Balance += data.Level += 1
-            await econData.save()
-
             data.XP += give
             data.Level += 1
             await data.save()
 
+            econData.Balance = econData.Balance += data.Level
+            await econData.save()
+
             if (data.Level === 5) {
-                if (guild.id === "1037958833529696276") {
-                    let role = guild.roles.cache.get("1092388694796808212")
-                    let member = guild.members.cache.get(author.id)
-                    member.roles.add(role)
-                }
 
                 if (channelData) {
+
+                    if (guild.id === "1037958833529696276") {
+                        let role = guild.roles.cache.get("1092388694796808212")
+                        let member = guild.members.cache.get(author.id)
+                        member.roles.add(role)
+                    }
 
                     const Channel = guild.channels.cache.get(channelData.Channel)
                     if (!Channel) return
@@ -101,6 +102,7 @@ module.exports = {
                     })
 
                 }
+
             } else if (channelData) {
 
                 const Channel = guild.channels.cache.get(channelData.Channel)
@@ -119,6 +121,8 @@ module.exports = {
                     ]
 
                 })
+
+
 
             }
 
