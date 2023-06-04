@@ -11,7 +11,7 @@ module.exports = {
      */
     async execute(message, client) {
 
-        const { guild, channel } = message
+        const { guild, channel, author } = message
         const { color } = client
         const sleep = async (ms) => {
             return new Promise((resolve, reject) => {
@@ -20,6 +20,8 @@ module.exports = {
                 }, ms || 0);
             });
         };
+
+        if (!guild || author.bot) return
 
         PickDB.findOne({ Guild: guild.id }, async (err, data) => {
 
@@ -43,11 +45,13 @@ module.exports = {
         if (!pickData.PickChannels.includes(channel.id)) return
 
         pickData.MessageCount = pickData.MessageCount + 1
+        if (pickData.MessageCount >= 31) pickData.MessageCount = 0
         await pickData.save()
 
-        let math = pickData.MessageCount / 30
+        console.log(pickData.MessageCount)
+        console.log(pickData.MessageCount / 30)
 
-        if (math === 0) {
+        if (pickData.MessageCount === 30) {
 
             const Embed = new EmbedBuilder()
                 .setColor(color)
@@ -61,6 +65,7 @@ module.exports = {
             }).catch(err => { })
 
             pickData.OpenWindow = true
+            pickData.MessageCount === 0
             await pickData.save()
 
             await sleep(20000)
