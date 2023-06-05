@@ -76,7 +76,7 @@ module.exports = {
 
             const Member = guild.members.cache.get(user.id)
             if (splittedArray[ 1 ] === `End`) {
-                if (Member.roles.highest.permissions.has(PermissionFlagsBits.Administrator)) return Reply(interaction, emojilist.cross, `You do not have permission to end the poll!`, true)
+                if (!Member.roles.highest.permissions.has(PermissionFlagsBits.Administrator)) return Reply(interaction, emojilist.cross, `You do not have permission to end the poll!`, true)
 
                 const pollEmbed = message.embeds[ 0 ]
                 if (!pollEmbed) return Reply(interaction, emojilist.cross, `Unable to find poll embed!`, true)
