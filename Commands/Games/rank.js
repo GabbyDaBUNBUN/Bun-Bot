@@ -58,7 +58,6 @@ module.exports = {
             .setLevel(Data.Level, "Level")
             .setProgressBar("#ffc0cb", "COLOR")
             .setUsername(member.user.username)
-            .setDiscriminator(member.user.discriminator)
 
         const Card = await rank.build().catch(err => console.log(err))
 

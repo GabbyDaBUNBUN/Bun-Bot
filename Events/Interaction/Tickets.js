@@ -28,7 +28,6 @@ module.exports = {
 
             case "open": {
 
-                await interaction.deferReply({ ephemeral: true });
                 const ID = Math.floor(Math.random() * 90000) + 10000
                 const everyone = guild.roles.cache.get(guild.roles.everyone.id)
 
@@ -86,7 +85,6 @@ module.exports = {
 
             case "close-delete": {
 
-                await interaction.deferReply({ ephemeral: true });
                 if (!member.permissions.has("Administrator")) return Reply(interaction, emojilist.cross, "You do not have permission to use this button!", true)
 
                 const Embed = new EmbedBuilder()
@@ -113,7 +111,6 @@ module.exports = {
 
             case "delete": {
 
-                await interaction.deferReply({ ephemeral: true });
                 if (!member.permissions.has("Administrator")) return Reply(interaction, emojilist.cross, "You do not have permission to use this button!", true)
 
                 let ticketData = await TicketDB.findOne({ GuildID: guild.id, ChannelID: channel.id }).catch(err => { })
