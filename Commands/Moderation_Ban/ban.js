@@ -50,7 +50,7 @@ module.exports = {
                     embeds: [
                         new EmbedBuilder()
                             .setColor(color)
-                            .setTitle("Kick Log Channel")
+                            .setTitle("Ban Log Channel")
                             .setDescription(`Your ban log channel ${channel} has been saved!`)
                             .setFooter({ text: "Ban by Bun Bot" })
                             .setTimestamp()
@@ -78,7 +78,7 @@ module.exports = {
                     embeds: [
                         new EmbedBuilder()
                             .setColor(color)
-                            .setTitle("Warning!")
+                            .setTitle("Banned!")
                             .setDescription(`${user} has been Banned by ${member} for \`${reason}\``)
                             .setFooter({ text: "Ban by Bun Bot" })
                             .setTimestamp()

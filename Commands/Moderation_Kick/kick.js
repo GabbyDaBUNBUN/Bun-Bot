@@ -78,7 +78,7 @@ module.exports = {
                     embeds: [
                         new EmbedBuilder()
                             .setColor(color)
-                            .setTitle("Warning!")
+                            .setTitle("Kicked!")
                             .setDescription(`${user} has been kicked by ${member} for \`${reason}\``)
                             .setFooter({ text: "Kick by Bun Bot" })
                             .setTimestamp()
@@ -91,7 +91,7 @@ module.exports = {
                     embeds: [
                         new EmbedBuilder()
                             .setColor(color)
-                            .setTitle("Warned!")
+                            .setTitle("Kicked!")
                             .setDescription(`${user} has been kicked.`)
                             .setFooter({ text: "Kick by Bun Bot" })
                             .setTimestamp()
