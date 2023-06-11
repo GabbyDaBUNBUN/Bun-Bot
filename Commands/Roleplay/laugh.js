@@ -23,20 +23,12 @@ module.exports = {
         const Mention = options.getUser("user") || ``
         const pingText = `${Mention} ${Text}`
 
-        const gifs = [ 'https://iili.io/b5Mv6X.gif',
-            'https://iili.io/b5MSFn.gif',
-            'https://iili.io/b5MUas.gif',
-            'https://iili.io/b5Mg8G.gif',
-            'https://iili.io/b5M49f.gif',
-            'https://iili.io/b5M6u4.gif',
-            'https://iili.io/b5MPwl.gif',
-            'https://iili.io/b5Mit2.gif',
-            'https://iili.io/b5MLnS.gif',
-            'https://iili.io/b5MQM7.gif',
-            'https://iili.io/b5MZP9.gif',
-            'https://iili.io/b5MDFe.gif',
-            'https://iili.io/b5Mbcu.gif',
-            'https://iili.io/b5Mm8b.gif' ]
+        const gifs = [ 'https://ucarecdn.com/a0e72b55-7109-4f94-adf6-46ba7c5b7707/laugh.gif',
+            'https://ucarecdn.com/07eca440-eb43-46ae-893c-c3c410b5bf22/laugh2.gif',
+            'https://ucarecdn.com/f4e5b973-bf12-44af-84d7-01c3c0f85375/laugh5.gif',
+            'https://ucarecdn.com/eef6a10f-4208-4ffb-ad5b-f40e08403d3d/laugh1.gif',
+            'https://ucarecdn.com/2a6f7d50-de99-458f-af45-92914aa01c29/laugh4.gif',
+            'https://ucarecdn.com/cd1db705-5227-42a9-92c4-6466eef04485/laugh3.gif', ]
 
         if (count >= gifs.length) count = 0
 
