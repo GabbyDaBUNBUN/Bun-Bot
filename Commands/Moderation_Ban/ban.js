@@ -14,7 +14,7 @@ module.exports = {
         .addSubcommand(sub => sub.setName("member")
             .setDescription("Ban a member.")
             .addUserOption(opt => opt.setName("user").setDescription("User you want to ban.").setRequired(true))
-            .addStringOption(opt => opt.setName("reason").setDescription("Reason for ban.").setRequired(false))),
+            .addStringOption(opt => opt.setName("reason").setDescription("Reason for ban.").setRequired(true))),
 
     /**
      * @param { ChatInputCommandInteraction } interaction

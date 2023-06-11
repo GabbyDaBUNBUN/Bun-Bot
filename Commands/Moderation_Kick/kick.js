@@ -14,7 +14,7 @@ module.exports = {
         .addSubcommand(sub => sub.setName("member")
             .setDescription("Kick a member.")
             .addUserOption(opt => opt.setName("user").setDescription("User you want to kick.").setRequired(true))
-            .addStringOption(opt => opt.setName("reason").setDescription("Reason for kick.").setRequired(false))),
+            .addStringOption(opt => opt.setName("reason").setDescription("Reason for kick.").setRequired(true))),
 
     /**
      * @param { ChatInputCommandInteraction } interaction

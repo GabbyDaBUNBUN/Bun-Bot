@@ -15,7 +15,7 @@ module.exports = {
         .addSubcommand(sub => sub.setName("member")
             .setDescription("Warn a member.")
             .addUserOption(opt => opt.setName("user").setDescription("User you want to warn.").setRequired(true))
-            .addStringOption(opt => opt.setName("reason").setDescription("Reason for warning.").setRequired(false)))
+            .addStringOption(opt => opt.setName("reason").setDescription("Reason for warning.").setRequired(true)))
         .addSubcommand(sub => sub.setName("info")
             .setDescription("Get Warn info on a user")
             .addUserOption(opt => opt.setName("user").setDescription("User you want to find warn info for.").setRequired(true))),
