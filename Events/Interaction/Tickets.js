@@ -19,7 +19,7 @@ module.exports = {
         const { guild, member, customId, channel, user, message } = interaction
         const { emojilist, color } = client
 
-        if (![ "open", "close-delete", "delete" ].includes(customId)) return
+        if (![ "open", "close-delete", "delete", "claim" ].includes(customId)) return
 
         let channelData = await TicketChannelDB.findOne({ GuildID: guild.id }).catch(err => { })
         if (!channelData) return Reply(interaction, emojilist.cross, `You don't have ticket logs set up yet! You can do so by using \`/ticket log-channel\`!`)
@@ -34,8 +34,10 @@ module.exports = {
                 const data = await TicketDB.findOne({ GuildID: guild.id, MemberID: user.id }).catch(err => { })
                 if (data) return Reply(interaction, emojilist.cross, `You already have an open ticket: <#${data.ChannelID}>!`, true)
 
+                const channelName = message.embeds[ 0 ].title
+
                 await guild.channels.create({
-                    name: `${message.embeds[ 0 ].title} ${ID}`,
+                    name: `${channelName} ${ID}`,
                     type: ChannelType.GuildText,
                     parent: channel.parentId,
                     permissionOverwrites: [
@@ -55,7 +57,8 @@ module.exports = {
                         MemberID: member.id,
                         TicketID: ID,
                         ChannelID: channel.id,
-                        Type: customId,
+                        OpenedUser: member.user.username,
+                        Type: channelName,
                     })
 
                     const Embed = new EmbedBuilder()
@@ -68,6 +71,11 @@ module.exports = {
 
                     const Buttons = new ActionRowBuilder().addComponents(
                         new ButtonBuilder()
+                            .setCustomId("claim")
+                            .setLabel("Claim Ticket")
+                            .setStyle(ButtonStyle.Primary)
+                            .setEmoji("🎟️"),
+                        new ButtonBuilder()
                             .setCustomId("close-delete")
                             .setLabel("Close & Delete")
                             .setStyle(ButtonStyle.Danger)
@@ -78,6 +86,33 @@ module.exports = {
 
                     return Reply(interaction, emojilist.tick, `${member} your ticket has been created: ${channel}`, true)
                 })
+
+            }
+
+                break;
+
+            case "claim": {
+
+                if (!member.permissions.has("Administrator")) return Reply(interaction, emojilist.cross, "You do not have permission to use this button!", true)
+
+                let ticketData = await TicketDB.findOne({ GuildID: guild.id, ChannelID: channel.id }).catch(err => { })
+                if (ticketData.ClaimedUser) return Reply(interaction, emojilist.cross, "This ticket has already been claimed!", true)
+
+                ticketData.ClaimedUser = member.id
+                await ticketData.save()
+
+                channel.send({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(color)
+                            .setTitle(`Claimed Ticket`)
+                            .setDescription(`This ticket has been claimed by: <@${member.id}>`)
+                            .setFooter({ text: "Tickets by Bun Bot" })
+                            .setTimestamp()
+                    ],
+                })
+
+                return Reply(interaction, emojilist.tick, `${member} you have claimed this ticket successfully!`, true)
 
             }
 
