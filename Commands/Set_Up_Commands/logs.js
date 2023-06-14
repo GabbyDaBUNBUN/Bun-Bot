@@ -3,6 +3,7 @@ const { CustomClient } = require("../../Structures/Classes/CustomClient")
 const WarnChannelDB = require("../../Structures/Schemas/WarnChannelDB")
 const KickChannelDB = require("../../Structures/Schemas/KickChannelDB")
 const BanChannelDB = require("../../Structures/Schemas/BanChannelDB")
+const TicketChannelDB = require("../../Structures/Schemas/TicketChannel")
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -17,7 +18,10 @@ module.exports = {
             .addChannelOption(opt => opt.setName("channel").setDescription("Channel you want the kick logs sent to.").setRequired(true)))
         .addSubcommand(sub => sub.setName("ban")
             .setDescription("Channel where you want the ban logs sent.")
-            .addChannelOption(opt => opt.setName("channel").setDescription("Channel you want the ban logs sent to.").setRequired(true))),
+            .addChannelOption(opt => opt.setName("channel").setDescription("Channel you want the ban logs sent to.").setRequired(true)))
+        .addSubcommand(sub => sub.setName("ticket")
+            .setDescription("Channel you want your ticket logs to be sent to.")
+            .addChannelOption(opt => opt.setName("channel").setDescription("Channel to send logs to.").setRequired(true))),
 
     /**
      * @param { ChatInputCommandInteraction } interaction
@@ -131,6 +135,39 @@ module.exports = {
             }
 
                 break;
+
+            case "ticket": {
+
+                const Channel = options.getChannel("channel")
+
+                let data = await TicketChannelDB.findOne({ GuildID: guild.id }).catch(err => { })
+                if (data) {
+
+                    data.ChannelID = Channel.id
+
+                } else if (!data) {
+
+                    data = new TicketChannelDB({
+                        GuildID: guild.id,
+                        ChannelID: Channel.id,
+                        ChannelType: [],
+                    })
+
+                }
+                await data.save()
+
+                interaction.reply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(color)
+                            .setTitle("Ticket Log Channel")
+                            .setDescription(`Your channel ${Channel} has been saved!`)
+                            .setFooter({ text: "Ticket System by Bun Bot" })
+                            .setTimestamp()
+                    ]
+                })
+
+            }
 
         }
 
