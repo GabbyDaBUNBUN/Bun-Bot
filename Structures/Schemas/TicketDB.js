@@ -8,6 +8,7 @@ module.exports = model("ticketSystem", new Schema({
     ChannelID: String,
     ClaimedUser: String,
     OpenedUser: String,
+    ClosedUser: String,
     Type: String,
 
 }));

@@ -82,7 +82,7 @@ module.exports = {
                             .setEmoji("⚠️"),
                     )
 
-                    channel.send({ content: `${member} here is your ticket:`, embeds: [ Embed ], components: [ Buttons ] })
+                    channel.send({ content: `${member}, an <@&1042604531747397703> will be with you shortly, here is your ticket:`, embeds: [ Embed ], components: [ Buttons ] })
 
                     return Reply(interaction, emojilist.tick, `${member} your ticket has been created: ${channel}`, true)
                 })
@@ -122,6 +122,12 @@ module.exports = {
 
                 if (!member.permissions.has("Administrator")) return Reply(interaction, emojilist.cross, "You do not have permission to use this button!", true)
 
+                let ticketData = await TicketDB.findOne({ GuildID: guild.id, ChannelID: channel.id }).catch(err => { })
+                if (!ticketData.ClaimedUser) return Reply(interaction, emojilist.cross, "The ticket must be claimed before it can be closed!", true)
+
+                ticketData.ClosedUser = member.id
+                await ticketData.save()
+
                 const Embed = new EmbedBuilder()
                     .setAuthor({ name: user.username, iconURL: member.displayAvatarURL() })
                     .setTitle("⚠️ | Close & Delete")
@@ -160,12 +166,21 @@ module.exports = {
                     files: [ attachement ]
                 })
                 const Message = Channel.messages.cache.get(sentTranscript.id)
+                const desc = [ `**Ticket Opened by:** <@${ticketData.MemberID}>
+                **Member Username:** ${ticketData.OpenedUser}
+                **Member ID:** ${ticketData.MemberID}
+                
+                **Ticket Claimed by:** <@${ticketData.ClaimedUser}>
+                **Ticket Closed by:** <@${ticketData.ClosedUser}>
+
+                **Ticket Type:** ${ticketData.Type}
+                **Ticket ID:** ${ticketData.TicketID}` ]
                 Channel.send({
                     embeds: [
                         new EmbedBuilder()
                             .setColor(color)
                             .setTitle(`Closed Ticket`)
-                            .setDescription(`**Ticket Details:**\n\n\`\`\`Member ID: ${ticketData.MemberID}\nTicket ID: ${ticketData.TicketID}\nChannel ID: ${ticketData.ChannelID}\`\`\``)
+                            .setDescription(`${desc}`)
                             .setFields(
                                 {
                                     name: `Ticket Link:`,
