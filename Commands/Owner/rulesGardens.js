@@ -3,9 +3,13 @@ const { CustomClient } = require("../../Structures/Classes/CustomClient")
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("rules-gardens")
-        .setDescription("Sends Server Rules.")
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+        .setName("gothic-garden-rules")
+        .setDescription("Sends the selected rules. (Owner only)")
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+        .addSubcommand(sub => sub.setName("little")
+            .setDescription("Little Rules"))
+        .addSubcommand(sub => sub.setName("rules")
+            .setDescription("Server Rules")),
 
     /**
      * @param { ChatInputCommandInteraction } interaction
@@ -13,9 +17,44 @@ module.exports = {
      */
     async execute(interaction, client) {
 
+        const { options } = interaction
         const { color } = client
 
-        const desc = [ `By Clicking On This Panel You Agree To The Rules And Regulations Of This Server Along With Discord TOS and Guidelines.
+        switch (options.getSubcommand()) {
+
+            case "little": {
+
+                const desc = [ `✨1. Please Ask Consent from Babysitters to babysit - don’t try to get their attention to take care of you when they are with another little
+
+                ✨2. Please try contacting your CG before going into Daycare as Daycare works just how a IRL one does - there for when your CG cannot take care of you OR if your CG wants to do it in the daycare that’s fine to
+        
+                ✨3. Do not brat without consent 
+        
+                ✨4. Always be nice to other littles 
+        
+                ✨5. No NSFW topics or media in Sunflower Fields
+        
+                ✨6. No sexualizing Littlespace 
+        
+                ✨7. No stealing attention, or being rude because you aren’t getting the attention you want` ]
+
+                const Embed = new EmbedBuilder()
+                    .setAuthor({ name: user.username, iconURL: member.displayAvatarURL() })
+                    .setColor(color)
+                    .setTitle(`Little Rules`)
+                    .setDescription(`${desc}`)
+                    .setFooter({ text: "Rules by Bun Bot" })
+                    .setTimestamp();
+
+                interaction.reply({ embeds: [ Embed ] });
+
+            }
+
+                break;
+
+            case "rules": {
+
+                const desc = [ `By Clicking On This Panel You Agree To The Rules And Regulations Of This Server Along With Discord TOS and Guidelines.
 
         🌿1. Respect the TOS and Guidelines of Discord
         
@@ -51,24 +90,31 @@ module.exports = {
         🌿Strike 3- Ban
         `]
 
-        const Embed = new EmbedBuilder()
-            .setColor(color)
-            .setTitle("Poll")
-            .setDescription(`${desc}`)
-            .setImage(`https://ucarecdn.com/a12de301-5bf2-44ef-a32c-8a456ad40054/IMG_5905.jpg`)
-            .setFooter({ text: "Rules by Bun Bot" })
-            .setTimestamp()
+                const Embed = new EmbedBuilder()
+                    .setColor(color)
+                    .setTitle("Poll")
+                    .setDescription(`${desc}`)
+                    .setImage(`https://ucarecdn.com/a12de301-5bf2-44ef-a32c-8a456ad40054/IMG_5905.jpg`)
+                    .setFooter({ text: "Rules by Bun Bot" })
+                    .setTimestamp()
 
-        const Buttons = new ActionRowBuilder()
-            .addComponents(
-                new ButtonBuilder()
-                    .setLabel(`Yes`)
-                    .setEmoji(`✅`)
-                    .setCustomId(`Rules-Agree`)
-                    .setStyle(ButtonStyle.Success),
-            )
+                const Buttons = new ActionRowBuilder()
+                    .addComponents(
+                        new ButtonBuilder()
+                            .setLabel(`Yes`)
+                            .setEmoji(`✅`)
+                            .setCustomId(`Rules-Agree`)
+                            .setStyle(ButtonStyle.Success),
+                    )
 
-        interaction.reply({ embeds: [ Embed ], components: [ Buttons ] })
+                interaction.reply({ embeds: [ Embed ], components: [ Buttons ] })
+
+            }
+
+                break;
+
+        }
 
     }
+
 }

@@ -36,12 +36,11 @@ module.exports = {
 
             case "name": {
 
-                await interaction.deferReply({ ephemeral: true });
                 const name = options.getString("name")
                 if (name.length > 22 || name.length < 1) Reply(interaction, emojilist.cross, `The name cannot exceed the 22 character limit!`)
                 ownedChannel.setName(name)
                 ownedTextChannel.setName(name)
-                return Reply(interaction, emojilist.tick, `Your Channel names have been changed!`)
+                return Reply(interaction, emojilist.tick, `Your Channel names have been changed!`, true)
 
             }
 
@@ -49,7 +48,6 @@ module.exports = {
 
             case "private": {
 
-                await interaction.deferReply({ ephemeral: true });
                 const private = options.getBoolean("invite-only")
 
                 if (private === true) {
@@ -77,7 +75,7 @@ module.exports = {
                             },
                         ]
                     })
-                } else {
+                } else if (private === false) {
                     ownedChannel.edit({
                         permissionOverwrites: [
                             {
@@ -98,13 +96,13 @@ module.exports = {
                             },
                             {
                                 id: guild.id,
-                                deny: [ "SendMessages", "EmbedLinks", "UseExternalEmojis", "AttachFiles", "UseApplicationCommands", "AddReactions", "ViewChannel" ],
+                                allow: [ "SendMessages", "EmbedLinks", "UseExternalEmojis", "AttachFiles", "UseApplicationCommands", "AddReactions", "ViewChannel" ],
                             },
                         ]
                     })
                 }
 
-                return Reply(interaction, emojilist.tick, `Your changes have been saved!`)
+                return Reply(interaction, emojilist.tick, `Your changes have been saved!`, true)
 
             }
 
@@ -112,11 +110,10 @@ module.exports = {
 
             case "invite": {
 
-                await interaction.deferReply({ ephemeral: true });
                 const targetMember = options.getUser("member")
                 ownedChannel.permissionOverwrites.edit(targetMember, { Connect: true })
                 ownedTextChannel.permissionOverwrites.edit(targetMember, { ViewChannel: true, SendMessages: true, EmbedLinks: true, UseExternalEmojis: true, AttachFiles: true, UseApplicationCommands: true, AddReactions: true })
-                return Reply(interaction, emojilist.tick, `${member} has invited ${targetMember} to <#${ownedChannel.id}>`)
+                return Reply(interaction, emojilist.tick, `${member} has invited ${targetMember} to <#${ownedChannel.id}>`, false)
 
             }
 
