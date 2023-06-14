@@ -124,17 +124,18 @@ module.exports = {
                 })
                 else console.error(e)
             })
-            .on('empty', channel => channel.send({
-                embeds: [
-                    new EmbedBuilder()
-                        .setColor(color)
-                        .setTitle("Empty")
-                        .setDescription(`Voice channel is empty! Leaving the channel...`)
-                        .setFooter({ text: `Music by Bun Bot` })
-                        .setTimestamp()
-                ]
+            .on('empty', (channel) => {
+                if (channel) channel.send({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(color)
+                            .setTitle("Empty")
+                            .setDescription(`Voice channel is empty! Leaving the channel...`)
+                            .setFooter({ text: `Music by Bun Bot` })
+                            .setTimestamp()
+                    ]
+                })
             })
-            )
             .on('searchNoResult', (interaction, query) =>
                 interaction.channel.send({
                     embeds: [

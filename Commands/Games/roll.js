@@ -1,5 +1,6 @@
 const { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder } = require("discord.js")
 const { CustomClient } = require("../../Structures/Classes/CustomClient")
+const Reply = require(`../../Systems/Reply`)
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -16,9 +17,10 @@ module.exports = {
     async execute(interaction, client) {
 
         const { options, user } = interaction
-        const { color } = client
+        const { color, emojilist } = client
 
         const numDice = options.getNumber("amount")
+        if (numDice >= 201) return Reply(interaction, emojilist.cross, "You can only roll up to 200 die at a time!", false)
         const numSides = options.getNumber("sides")
 
         const content = options.getString("multiplier")
