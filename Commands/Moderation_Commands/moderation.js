@@ -2,23 +2,30 @@ const { ChatInputCommandInteraction, SlashCommandBuilder, PermissionFlagsBits, E
 const { CustomClient } = require("../../Structures/Classes/CustomClient")
 const WarnChannelDB = require("../../Structures/Schemas/WarnChannelDB")
 const WarnDB = require("../../Structures/Schemas/WarnDB")
+const KickChannelDB = require("../../Structures/Schemas/KickChannelDB")
+const BanChannelDB = require("../../Structures/Schemas/BanChannelDB")
 const Reply = require("../../Systems/Reply")
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("warn")
+        .setName("moderation")
         .setDescription("Warn Commands.")
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-        .addSubcommand(sub => sub.setName("log-channel")
-            .setDescription("Channel where you want the warn logs sent.")
-            .addChannelOption(opt => opt.setName("channel").setDescription("Channel you want the warn logs sent to.").setRequired(true)))
-        .addSubcommand(sub => sub.setName("member")
+        .addSubcommand(sub => sub.setName("warn-member")
             .setDescription("Warn a member.")
             .addUserOption(opt => opt.setName("user").setDescription("User you want to warn.").setRequired(true))
             .addStringOption(opt => opt.setName("reason").setDescription("Reason for warning.").setRequired(true)))
-        .addSubcommand(sub => sub.setName("info")
+        .addSubcommand(sub => sub.setName("warn-info")
             .setDescription("Get Warn info on a user")
-            .addUserOption(opt => opt.setName("user").setDescription("User you want to find warn info for.").setRequired(true))),
+            .addUserOption(opt => opt.setName("user").setDescription("User you want to find warn info for.").setRequired(true)))
+        .addSubcommand(sub => sub.setName("kick-member")
+            .setDescription("Kick a member.")
+            .addUserOption(opt => opt.setName("user").setDescription("User you want to kick.").setRequired(true))
+            .addStringOption(opt => opt.setName("reason").setDescription("Reason for kick.").setRequired(true)))
+        .addSubcommand(sub => sub.setName("ban-member")
+            .setDescription("Ban a member.")
+            .addUserOption(opt => opt.setName("user").setDescription("User you want to ban.").setRequired(true))
+            .addStringOption(opt => opt.setName("reason").setDescription("Reason for ban.").setRequired(true))),
 
     /**
      * @param { ChatInputCommandInteraction } interaction
@@ -31,41 +38,7 @@ module.exports = {
 
         switch (options.getSubcommand()) {
 
-            case "log-channel": {
-
-                const channel = options.getChannel("channel")
-
-                let data = await WarnChannelDB.findOne({ Guild: guild.id }).catch(err => { })
-                if (data) {
-
-                    data.Channel = channel.id
-
-                } else if (!data) {
-
-                    data = new WarnChannelDB({
-                        Guild: guild.id,
-                        Channel: channel.id,
-                    })
-
-                }
-                await data.save()
-
-                interaction.reply({
-                    embeds: [
-                        new EmbedBuilder()
-                            .setColor(color)
-                            .setTitle("Warn Log Channel")
-                            .setDescription(`Your warn log channel ${channel} has been saved!`)
-                            .setFooter({ text: "Warn by Bun Bot" })
-                            .setTimestamp()
-                    ]
-                })
-
-            }
-
-                break;
-
-            case "member": {
+            case "warn-member": {
 
                 const user = options.getUser("user")
                 const reason = options.getString("reason") || `No reason provided`
@@ -147,7 +120,7 @@ module.exports = {
 
                 break;
 
-            case "info": {
+            case "warn-info": {
 
                 const user = options.getUser("user")
 
@@ -164,6 +137,90 @@ module.exports = {
                             .setTimestamp()
                     ],
                     ephemeral: true
+                })
+
+            }
+
+                break;
+
+            case "kick-member": {
+
+                const user = options.getUser("user")
+                const reason = options.getString("reason") || `No reason provided`
+                const findUser = guild.members.cache.get(user.id)
+                const findMember = guild.members.cache.get(member.id)
+
+                const kickChannel = await KickChannelDB.findOne({ Guild: guild.id }).catch(err => { })
+                if (!kickChannel) return Reply(interaction, emojilist.cross, `There is no kick log channel yet! Create one by using \`/kick log-channel\`!`, true)
+                const findKickChannel = guild.channels.cache.get(kickChannel.Channel)
+
+                if (findMember.roles.highest.position <= findUser.roles.highest.position) return Reply(interaction, emojilist.cross, `You cannot kick someone that is the same level as you or higher!`, true)
+
+                findKickChannel.send({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(color)
+                            .setTitle("Kicked!")
+                            .setDescription(`${user} has been kicked by ${member} for \`${reason}\``)
+                            .setFooter({ text: "Kick by Bun Bot" })
+                            .setTimestamp()
+                    ],
+                })
+
+                findUser.kick({ reason: reason })
+
+                interaction.reply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(color)
+                            .setTitle("Kicked!")
+                            .setDescription(`${user} has been kicked.`)
+                            .setFooter({ text: "Kick by Bun Bot" })
+                            .setTimestamp()
+                    ],
+                    ephemeral: true,
+                })
+
+            }
+
+                break;
+
+            case "ban-member": {
+
+                const user = options.getUser("user")
+                const reason = options.getString("reason") || `No reason provided`
+                const findUser = guild.members.cache.get(user.id)
+                const findMember = guild.members.cache.get(member.id)
+
+                const banChannel = await BanChannelDB.findOne({ Guild: guild.id }).catch(err => { })
+                if (!banChannel) return Reply(interaction, emojilist.cross, `There is no ban log channel yet! Create one by using \`/ban log-channel\`!`, true)
+                const findBanChannel = guild.channels.cache.get(banChannel.Channel)
+
+                if (findMember.roles.highest.position <= findUser.roles.highest.position) return Reply(interaction, emojilist.cross, `You cannot ban someone that is the same level as you or higher!`, true)
+
+                findBanChannel.send({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(color)
+                            .setTitle("Banned!")
+                            .setDescription(`${user} has been Banned by ${member} for \`${reason}\``)
+                            .setFooter({ text: "Ban by Bun Bot" })
+                            .setTimestamp()
+                    ],
+                })
+
+                findUser.ban({ reason: reason, deleteMessageSeconds: 7 * 24 * 60 * 60 })
+
+                interaction.reply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(color)
+                            .setTitle("Banned!")
+                            .setDescription(`${user} has been Banned.`)
+                            .setFooter({ text: "Ban by Bun Bot" })
+                            .setTimestamp()
+                    ],
+                    ephemeral: true,
                 })
 
             }
