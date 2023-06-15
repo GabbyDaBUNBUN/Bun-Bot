@@ -36,7 +36,7 @@ module.exports = {
                 const data = await CountingDB.findOne({ Guild: guild.id }).catch(err => { })
                 if (!data) return
 
-                data.Count = 0
+                data.HighScore = 0
                 await data.save()
 
                 interaction.reply({
