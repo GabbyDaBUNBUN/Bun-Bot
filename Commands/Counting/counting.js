@@ -8,6 +8,8 @@ module.exports = {
         .setName("counting")
         .setDescription("Counting commands.")
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
+        .addSubcommand(sub => sub.setName("reset")
+            .setDescription("Reset the count back to 0."))
         .addSubcommand(sub => sub.setName("save")
             .setDescription("Resets the count back to x number.")
             .addNumberOption(opt => opt.setName("number").setDescription("The number you want it reset to.").setRequired(true)))
@@ -29,6 +31,27 @@ module.exports = {
 
         switch (options.getSubcommand()) {
 
+            case "reset": {
+
+                const data = await CountingDB.findOne({ Guild: guild.id }).catch(err => { })
+                if (!data) return
+
+                data.Count = 0
+                await data.save()
+
+                interaction.reply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(color)
+                            .setTitle(`Counting Reset`)
+                            .setDescription(`You have reset the count! Your count will now begin at \`1\`!`)
+                            .setFooter({ text: "Counting by Bun Bot" })
+                            .setTimestamp()
+                    ]
+                })
+
+            }
+
             case "save": {
 
                 const number = options.getNumber("number")
@@ -46,7 +69,7 @@ module.exports = {
                     .setColor(color)
                     .setTitle(`Counting Save`)
                     .setDescription(`You have saved the count! Your count will now begin at ${newNumber}!`)
-                    .setFooter({ text: "Sent by Bun Bot" })
+                    .setFooter({ text: "Counting by Bun Bot" })
                     .setTimestamp();
 
                 interaction.reply({ embeds: [ Embed ] })
