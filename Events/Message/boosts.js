@@ -22,7 +22,7 @@ module.exports = {
         if (!oldMember.premiumSince && newMember.premiumSince) {
 
             Channel.send({
-                content: `${author}`,
+                content: `<@${newMember.id}>`,
                 embeds: [
                     new EmbedBuilder()
                         .setColor(color)
