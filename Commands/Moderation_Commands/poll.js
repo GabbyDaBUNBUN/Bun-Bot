@@ -29,8 +29,8 @@ module.exports = {
 
         const Embed = new EmbedBuilder()
             .setColor(color)
-            .setTitle("Poll")
-            .setDescription(`${question}:\n\nOption 1:${option1}\nOption 2:${option2}\nOption 3:${option3}\nOption 4:${option4}`)
+            .setTitle("Poll:")
+            .setDescription(`**${question}**`)
             .addFields(
                 {
                     name: `${option1}`,
@@ -103,25 +103,25 @@ module.exports = {
                     new ButtonBuilder()
                         .setLabel(`${option1}`)
                         .setEmoji(`✅`)
-                        .setCustomId(`Poll-Option1-${replyObject.id}`)
+                        .setCustomId(`Poll-Option1-${option1}-${replyObject.id}`)
                         .setStyle(ButtonStyle.Success)
                         .setDisabled(false),
                     new ButtonBuilder()
                         .setLabel(`${option2}`)
                         .setEmoji(`✅`)
-                        .setCustomId(`Poll-Option2-${replyObject.id}`)
+                        .setCustomId(`Poll-Option2-${option2}-${replyObject.id}`)
                         .setStyle(ButtonStyle.Success)
                         .setDisabled(false),
                     new ButtonBuilder()
                         .setLabel(`${option3}`)
                         .setEmoji(`✅`)
-                        .setCustomId(`Poll-Option3-${replyObject.id}`)
+                        .setCustomId(`Poll-Option3-${option3}-${replyObject.id}`)
                         .setStyle(ButtonStyle.Success)
                         .setDisabled(false),
                     new ButtonBuilder()
                         .setLabel(`${option4}`)
                         .setEmoji(`✅`)
-                        .setCustomId(`Poll-Option4-${replyObject.id}`)
+                        .setCustomId(`Poll-Option4-${option4}-${replyObject.id}`)
                         .setStyle(ButtonStyle.Success)
                         .setDisabled(true),
                     new ButtonBuilder()
@@ -141,25 +141,25 @@ module.exports = {
                     new ButtonBuilder()
                         .setLabel(`${option1}`)
                         .setEmoji(`✅`)
-                        .setCustomId(`Poll-Option1-${replyObject.id}`)
+                        .setCustomId(`Poll-Option1-${option1}-${replyObject.id}`)
                         .setStyle(ButtonStyle.Success)
                         .setDisabled(false),
                     new ButtonBuilder()
                         .setLabel(`${option2}`)
                         .setEmoji(`✅`)
-                        .setCustomId(`Poll-Option2-${replyObject.id}`)
+                        .setCustomId(`Poll-Option2-${option2}-${replyObject.id}`)
                         .setStyle(ButtonStyle.Success)
                         .setDisabled(false),
                     new ButtonBuilder()
                         .setLabel(`${option3}`)
                         .setEmoji(`✅`)
-                        .setCustomId(`Poll-Option3-${replyObject.id}`)
+                        .setCustomId(`Poll-Option3-${option3}-${replyObject.id}`)
                         .setStyle(ButtonStyle.Success)
                         .setDisabled(true),
                     new ButtonBuilder()
                         .setLabel(`${option4}`)
                         .setEmoji(`✅`)
-                        .setCustomId(`Poll-Option4-${replyObject.id}`)
+                        .setCustomId(`Poll-Option4-${option4}-${replyObject.id}`)
                         .setStyle(ButtonStyle.Success)
                         .setDisabled(false),
                     new ButtonBuilder()
@@ -179,25 +179,25 @@ module.exports = {
                     new ButtonBuilder()
                         .setLabel(`${option1}`)
                         .setEmoji(`✅`)
-                        .setCustomId(`Poll-Option1-${replyObject.id}`)
+                        .setCustomId(`Poll-Option1-${option1}-${replyObject.id}`)
                         .setStyle(ButtonStyle.Success)
                         .setDisabled(false),
                     new ButtonBuilder()
                         .setLabel(`${option2}`)
                         .setEmoji(`✅`)
-                        .setCustomId(`Poll-Option2-${replyObject.id}`)
+                        .setCustomId(`Poll-Option2-${option2}-${replyObject.id}`)
                         .setStyle(ButtonStyle.Success)
                         .setDisabled(false),
                     new ButtonBuilder()
                         .setLabel(`${option3}`)
                         .setEmoji(`✅`)
-                        .setCustomId(`Poll-Option3-${replyObject.id}`)
+                        .setCustomId(`Poll-Option3-${option3}-${replyObject.id}`)
                         .setStyle(ButtonStyle.Success)
                         .setDisabled(false),
                     new ButtonBuilder()
                         .setLabel(`${option4}`)
                         .setEmoji(`✅`)
-                        .setCustomId(`Poll-Option4-${replyObject.id}`)
+                        .setCustomId(`Poll-Option4-${option4}-${replyObject.id}`)
                         .setStyle(ButtonStyle.Success)
                         .setDisabled(false),
                     new ButtonBuilder()
