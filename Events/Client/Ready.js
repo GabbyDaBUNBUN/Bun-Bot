@@ -124,8 +124,8 @@ module.exports = {
                 })
                 else console.error(e)
             })
-            .on('empty', (channel) => {
-                if (channel) channel.send({
+            .on('empty', (queue) => {
+                queue.textChannel.send({
                     embeds: [
                         new EmbedBuilder()
                             .setColor(color)
