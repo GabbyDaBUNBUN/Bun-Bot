@@ -7,7 +7,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("embed")
         .setDescription("Create a custom embed.")
-        .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages | PermissionFlagsBits.ManageRoles)
+        .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages || PermissionFlagsBits.ManageRoles)
         .addSubcommand(sub => sub.setName("create")
             .setDescription("Create a new embed.")
             .addStringOption(opt => opt.setName("name").setDescription("The name you want your embed saved under.").setRequired(true))
