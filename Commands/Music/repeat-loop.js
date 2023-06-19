@@ -15,7 +15,7 @@ module.exports = {
 
     async execute(interaction, client) {
 
-        const { channel, member, guild } = interaction;
+        const { member, guild } = interaction;
         const { emojilist, distube, color } = client
         const voiceChannel = member.voice.channel
         if (!voiceChannel) return Reply(interaction, emojilist.cross, `You must be in a vc to use this command!`)
