@@ -20,7 +20,10 @@ module.exports = {
             .addStringOption(opt => opt.setName("name").setDescription("Name of your character.").setRequired(true))
             .addStringOption(opt => opt.setName("new-name").setDescription("What you want your characters name to change to.").setRequired(false))
             .addStringOption(opt => opt.setName("avatar").setDescription("What you want your characters new avatar to be.").setRequired(false))
-            .addStringOption(opt => opt.setName("proxy").setDescription("What you want your characters new proxy to be.").setRequired(false))),
+            .addStringOption(opt => opt.setName("proxy").setDescription("What you want your characters new proxy to be.").setRequired(false)))
+        .addSubcommand(sub => sub.setName("send")
+            .setDescription("Sends the character info.")
+            .addStringOption(opt => opt.setName("name").setDescription("Name of the character.").setRequired(true))),
 
     /**
      * 
@@ -141,6 +144,36 @@ module.exports = {
                 })
 
             }
+
+                break;
+
+            case "send": {
+
+                const name = options.getString("name")
+
+                const data = await CharactersDB.findOne({ GuildID: guild.id, MemberID: member.id, Name: name }).catch(err => { })
+                if (!data) return Reply(interaction, emojilist.cross, "There is no character by that name!", false)
+
+                const desc = [ `Name: ${data.Name}
+                Avatar URL: See below.
+                Proxy: \`${data.Proxy}\`
+                `]
+
+                interaction.reply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(color)
+                            .setTitle(`Character Info:`)
+                            .setDescription(`${desc}`)
+                            .setImage(`${data.Avatar}`)
+                            .setFooter({ text: "Character Creation by Bun Bot" })
+                            .setTimestamp()
+                    ]
+                })
+
+            }
+
+                break;
 
         }
 
